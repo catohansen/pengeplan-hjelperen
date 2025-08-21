@@ -109,6 +109,17 @@
         <main class="main-content">
             <header class="topbar container">
                 <button id="menuBtn" class="only-mobile" aria-label="Åpne meny">☰</button>
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <div></div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn-sm" onclick="window.open('test-admin.html', '_blank')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+                            🧪 Test Suite
+                        </button>
+                        <button class="btn-sm" onclick="window.open('admin.html', '_blank')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
+                            ⚙️ Admin
+                        </button>
+                    </div>
+                </div>
             </header>
             <!-- Dashboard Page -->
             <div class="page active" id="dashboard-page">
@@ -166,15 +177,15 @@
                         <h3>Hurtighandlinger</h3>
                         <p>Vanlige oppgaver du kan gjøre nå</p>
                         <div class="action-buttons">
-                            <button class="action-btn">
+                            <button class="action-btn btn-success">
                                 <span class="action-icon">💰</span>
                                 <span>Legg til inntekt eller utgift</span>
                             </button>
-                            <button class="action-btn">
+                            <button class="action-btn btn-info">
                                 <span class="action-icon">📄</span>
                                 <span>Registrer gjeld</span>
                             </button>
-                            <button class="action-btn">
+                            <button class="action-btn btn-warning">
                                 <span class="action-icon">📅</span>
                                 <span>Legg til regning</span>
                             </button>

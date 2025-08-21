@@ -36,7 +36,12 @@
         <main class="main-content">
             <header class="topbar container">
                 <button id="menuBtn" class="only-mobile" aria-label="Åpne meny">☰</button>
-                <h1>Admin</h1>
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <h1>Admin</h1>
+                    <button class="btn-sm" onclick="window.open('test-admin.html', '_blank')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
+                        🧪 Test Panel
+                    </button>
+                </div>
             </header>
 
             <section class="container">
@@ -51,8 +56,8 @@
                         <div id="usersView" class="admin-view active">
                             <div class="admin-actions">
                                 <div class="admin-actions-left">
-                                    <button id="addUserBtn" class="btn">
-                                        <span class="btn-icon">+</span>
+                                    <button id="addUserBtn" class="btn btn-success" aria-label="Legg til ny bruker">
+                                        <span class="btn-icon" aria-hidden="true">+</span>
                                         <span>Ny bruker</span>
                                     </button>
                                     <div class="admin-stats">
@@ -72,11 +77,11 @@
                                 </div>
                                 <div class="admin-actions-right">
                                     <div class="search-box">
-                                        <span class="search-icon">🔍</span>
-                                        <input id="searchUsers" class="input" placeholder="Søk brukere…">
+                                        <span class="search-icon" aria-hidden="true">🔍</span>
+                                        <input id="searchUsers" class="input" placeholder="Søk brukere…" aria-label="Søk i brukerliste">
                                     </div>
-                                    <button id="exportUsers" class="btn-secondary">
-                                        <span class="btn-icon">📊</span>
+                                    <button id="exportUsers" class="btn-secondary btn-info" aria-label="Eksporter brukerliste">
+                                        <span class="btn-icon" aria-hidden="true">📊</span>
                                         <span>Eksporter</span>
                                     </button>
                                 </div>
@@ -96,6 +101,7 @@
                                     </thead>
                                     <tbody id="usersTbody"></tbody>
                                 </table>
+                                <div id="paginationContainer"></div>
                             </div>
                         </div>
 
@@ -112,7 +118,7 @@
                                 </div>
                             </div>
                             <div class="sticky-actions">
-                                <button id="saveSettings" class="btn">Lagre</button>
+                                <button id="saveSettings" class="btn btn-success">Lagre</button>
                             </div>
                         </div>
 
@@ -129,7 +135,7 @@
                                 </div>
                             </div>
                             <div class="sticky-actions">
-                                <button id="saveApis" class="btn">Lagre</button>
+                                <button id="saveApis" class="btn btn-success">Lagre</button>
                             </div>
                         </div>
                     </div>
@@ -143,7 +149,7 @@
         <div class="modal admin-modal" role="dialog" aria-modal="true" aria-labelledby="userModalTitle">
             <div class="modal-header">
                 <h2 id="userModalTitle">Bruker</h2>
-                <button id="closeUserModal" class="modal-close" aria-label="Lukk">✕</button>
+                <button id="closeUserModal" class="modal-close" aria-label="Lukk modal">✕</button>
             </div>
             <div class="modal-content">
                 <div class="user-form-grid">
@@ -257,8 +263,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="cancelUser" class="secondary-btn">Avbryt</button>
-                <button id="saveUser" class="add-btn">
+                <button id="cancelUser" class="secondary-btn btn-warning">Avbryt</button>
+                <button id="saveUser" class="add-btn btn-success">
                     <span class="add-icon">✓</span>
                     <span>Lagre bruker</span>
                 </button>
