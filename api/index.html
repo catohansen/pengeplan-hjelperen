@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="color-scheme" content="light dark" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <title>Pengeplan - Logg inn</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    
+    <!-- OpenGraph metadata -->
+    <meta property="og:image" content="assets/logo.png">
+    <meta property="og:title" content="Pengeplan">
+    <meta property="og:description" content="Din økonomiske hjelper – Budsjett, gjeld og støtteordninger på ett sted.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+    <div class="container">
+        <div class="auth-card">
+            <div class="logo-section">
+                <div class="brand-logo-fallback">
+                    <div class="logo-icon">☑️</div>
+                    <h1 class="logo">Pengeplan</h1>
+                </div>
+                <p class="subtitle">Din økonomiske hjelper</p>
+            </div>
+            
+            <div class="features-overview">
+                <div class="feature-item">
+                    <div class="feature-icon blue">📊</div>
+                    <span>Budsjettstyring</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon green">🏠</div>
+                    <span>Gjeldsoversikt</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon green">📋</div>
+                    <span>Støtteordninger</span>
+                </div>
+            </div>
+            
+            <form id="loginForm" class="login-form" novalidate>
+                <h2>Logg inn</h2>
+                <p class="welcome-text">Velkommen tilbake til Pengeplan</p>
+                
+                <!-- CSRF Token -->
+                <input type="hidden" id="csrfToken" name="csrfToken">
+                
+                <div class="form-group">
+                    <label for="email">E-post</label>
+                    <input type="email" id="email" name="email" required placeholder="din@epost.no" autocomplete="email" maxlength="254">
+                    <div class="error-message" id="emailError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Passord</label>
+                    <input type="password" id="password" name="password" required placeholder="Ditt passord" autocomplete="current-password" minlength="8" maxlength="128">
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        <span class="checkmark"></span>
+                        Husk meg
+                    </label>
+                </div>
+                
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span class="btn-text">Logg inn</span>
+                    <div class="spinner" id="spinner"></div>
+                </button>
+            </form>
+            
+            <div class="signup-link">
+                <p>Har du ikke konto? <a href="#" id="signupLink">Opprett en her</a></p>
+                
+                <div class="social-login">
+                    <div class="social-buttons">
+                        <button type="button" class="social-btn bankid-btn" id="loginWithBankID">
+                            <span class="social-icon">🏦</span>
+                            <span>Logg inn med BankID</span>
+                        </button>
+                        <button type="button" class="social-btn google-btn" id="loginWithGoogle">
+                            <span class="social-icon">🔍</span>
+                            <span>Logg inn med Google</span>
+                        </button>
+                        <button type="button" class="social-btn facebook-btn" id="loginWithFacebook">
+                            <span class="social-icon">📘</span>
+                            <span>Logg inn med Facebook</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="terms">
+                <p>Ved å opprette konto godtar du våre <a href="#" id="termsLink">vilkår og betingelser</a>.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="notification" class="notification"></div>
+    
+    <script src="js/security.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
