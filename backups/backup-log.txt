@@ -1,0 +1,3 @@
+Backup completed: pengeplan-backup-20250821_202705
+Backup timestamp: Thu Aug 21 20:27:47 CEST 2025
+Git commit: 8c3516d Fix: Resolved topbar overlap issues across all pages - Added 200px margin-top to main-content and fixed double margin-top problem - Updated dashboard.css, budget.css, ai-advisor.css, responsive.css, profile.css - All pages now have perfect spacing and no content hidden behind topbar
