@@ -1,0 +1,23 @@
+{
+  "name": "pengeplan-hjelperen",
+  "version": "1.0.0",
+  "description": "Digital økonomisk hjelper for økonomisk utsatte grupper",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "start": "python3 -m http.server 8000",
+    "build": "echo 'Static site - no build required'"
+  },
+  "keywords": [
+    "pengeplan",
+    "økonomisk",
+    "hjelper",
+    "nav",
+    "støtteordninger"
+  ],
+  "author": "Cato Hansen",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
