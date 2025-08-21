@@ -1,24 +1,28 @@
-// Mobile Menu Manager for Pengeplan
-// Fixes menu navigation issues and improves mobile UX
+// Bootstrap-style Mobile Menu for Pengeplan
+// Simple, reliable mobile navigation that works like Bootstrap
 
-class MobileMenuManager {
+class BootstrapMenu {
     constructor() {
         this.sidebar = null;
         this.overlay = null;
         this.menuBtn = null;
         this.isOpen = false;
-        this.currentPage = null;
         
         this.init();
     }
 
     init() {
-        // Create overlay if it doesn't exist
-        this.createOverlay();
-        
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.setup());
+        } else {
+            this.setup();
+        }
+    }
+
+    setup() {
         // Find elements
         this.sidebar = document.querySelector('.sidebar');
-        this.overlay = document.querySelector('.sidebar-overlay');
         this.menuBtn = document.querySelector('.mobile-menu-btn');
         
         if (!this.sidebar) {
@@ -26,73 +30,84 @@ class MobileMenuManager {
             return;
         }
 
-        // Set up event listeners
-        this.setupEventListeners();
+        // Create overlay
+        this.createOverlay();
         
-        // Set current page
-        this.setCurrentPage();
+        // Setup event listeners
+        this.setupEvents();
         
-        // Close menu on page load (fixes the issue where menu stays open)
+        // Close menu on page load
         this.closeMenu();
     }
 
     createOverlay() {
-        if (!document.querySelector('.sidebar-overlay')) {
-            const overlay = document.createElement('div');
-            overlay.className = 'sidebar-overlay';
-            document.body.appendChild(overlay);
+        // Remove existing overlay
+        const existingOverlay = document.querySelector('.sidebar-overlay');
+        if (existingOverlay) {
+            existingOverlay.remove();
         }
+
+        // Create new overlay
+        this.overlay = document.createElement('div');
+        this.overlay.className = 'sidebar-overlay';
+        document.body.appendChild(this.overlay);
     }
 
-    setupEventListeners() {
-        // Menu button
+    setupEvents() {
+        // Menu button click
         if (this.menuBtn) {
             this.menuBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 this.toggleMenu();
             });
         }
 
-        // Overlay click to close
+        // Overlay click - close menu
         if (this.overlay) {
-            this.overlay.addEventListener('click', () => {
+            this.overlay.addEventListener('click', (e) => {
+                e.preventDefault();
                 this.closeMenu();
             });
         }
 
-        // Navigation links
+        // Navigation links - close menu after click
         const navLinks = document.querySelectorAll('.nav-link');
         navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                // Don't prevent default for actual navigation
-                // Just close the menu after a short delay
-                setTimeout(() => {
-                    this.closeMenu();
-                }, 100);
+            link.addEventListener('click', () => {
+                // Close menu immediately for better UX
+                this.closeMenu();
             });
         });
 
-        // Keyboard navigation
+        // Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.isOpen) {
                 this.closeMenu();
             }
         });
 
-        // Handle window resize
+        // Window resize - close menu on desktop
         window.addEventListener('resize', () => {
             if (window.innerWidth >= 1024 && this.isOpen) {
                 this.closeMenu();
             }
         });
 
-        // Handle orientation change
-        window.addEventListener('orientationchange', () => {
-            setTimeout(() => {
-                if (this.isOpen) {
-                    this.closeMenu();
-                }
-            }, 100);
+        // Click outside to close
+        document.addEventListener('click', (e) => {
+            if (this.isOpen && 
+                !this.sidebar.contains(e.target) && 
+                !this.menuBtn.contains(e.target)) {
+                this.closeMenu();
+            }
+        });
+
+        // Prevent body scroll when menu is open
+        this.sidebar.addEventListener('touchmove', (e) => {
+            if (this.isOpen) {
+                e.stopPropagation();
+            }
         });
     }
 
@@ -108,28 +123,36 @@ class MobileMenuManager {
         if (!this.sidebar || !this.overlay) return;
         
         this.isOpen = true;
+        
+        // Add classes
         this.sidebar.classList.add('open');
         this.overlay.classList.add('open');
         
         // Prevent body scroll
         document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
         
         // Focus management
-        this.trapFocus();
+        this.focusFirstElement();
         
         // Announce to screen readers
-        this.announceToScreenReader('Meny åpnet');
+        this.announce('Meny åpnet');
     }
 
     closeMenu() {
         if (!this.sidebar || !this.overlay) return;
         
         this.isOpen = false;
+        
+        // Remove classes
         this.sidebar.classList.remove('open');
         this.overlay.classList.remove('open');
         
         // Restore body scroll
         document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
         
         // Return focus to menu button
         if (this.menuBtn) {
@@ -137,143 +160,50 @@ class MobileMenuManager {
         }
         
         // Announce to screen readers
-        this.announceToScreenReader('Meny lukket');
+        this.announce('Meny lukket');
     }
 
-    setCurrentPage() {
-        const currentPath = window.location.pathname;
-        const navLinks = document.querySelectorAll('.nav-link');
-        
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            
-            // Check if this link matches current page
-            const href = link.getAttribute('href');
-            if (href && (currentPath.includes(href) || 
-                (currentPath === '/' && href === 'dashboard.html') ||
-                (currentPath.includes('index.html') && href === 'dashboard.html'))) {
-                link.classList.add('active');
-                this.currentPage = href;
-            }
-        });
-    }
-
-    // Focus trap for accessibility
-    trapFocus() {
+    focusFirstElement() {
         const focusableElements = this.sidebar.querySelectorAll(
-            'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
+            'a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
         );
         
-        if (focusableElements.length === 0) return;
-        
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-        
-        // Focus first element
-        firstElement.focus();
-        
-        // Handle tab navigation
-        this.sidebar.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') {
-                if (e.shiftKey) {
-                    if (document.activeElement === firstElement) {
-                        e.preventDefault();
-                        lastElement.focus();
-                    }
-                } else {
-                    if (document.activeElement === lastElement) {
-                        e.preventDefault();
-                        firstElement.focus();
-                    }
-                }
-            }
-        });
+        if (focusableElements.length > 0) {
+            focusableElements[0].focus();
+        }
     }
 
-    // Screen reader announcements
-    announceToScreenReader(message) {
+    announce(message) {
+        // Create temporary announcement for screen readers
         const announcement = document.createElement('div');
         announcement.setAttribute('aria-live', 'polite');
         announcement.setAttribute('aria-atomic', 'true');
-        announcement.className = 'sr-only';
+        announcement.style.position = 'absolute';
+        announcement.style.left = '-10000px';
+        announcement.style.width = '1px';
+        announcement.style.height = '1px';
+        announcement.style.overflow = 'hidden';
         announcement.textContent = message;
         
         document.body.appendChild(announcement);
         
         setTimeout(() => {
-            document.body.removeChild(announcement);
+            if (announcement.parentNode) {
+                announcement.parentNode.removeChild(announcement);
+            }
         }, 1000);
     }
-
-    // Update menu state based on authentication
-    updateMenuState() {
-        const session = localStorage.getItem('pengeplan_session');
-        const isAuthenticated = session !== null;
-        
-        // Show/hide admin link based on role
-        const adminLink = document.querySelector('[href="admin.html"]');
-        if (adminLink) {
-            try {
-                const userData = JSON.parse(session);
-                if (userData && userData.user && userData.user.role === 'admin') {
-                    adminLink.style.display = 'flex';
-                } else {
-                    adminLink.style.display = 'none';
-                }
-            } catch (error) {
-                adminLink.style.display = 'none';
-            }
-        }
-        
-        // Update logout button
-        const logoutBtn = document.querySelector('.logout-btn');
-        if (logoutBtn) {
-            logoutBtn.style.display = isAuthenticated ? 'flex' : 'none';
-        }
-    }
-
-    // Smooth scroll to top when navigating
-    scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
 }
 
-// Initialize mobile menu manager
-const mobileMenu = new MobileMenuManager();
+// Initialize Bootstrap-style menu
+const bootstrapMenu = new BootstrapMenu();
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = MobileMenuManager;
-} else {
-    window.MobileMenuManager = MobileMenuManager;
-    window.mobileMenu = mobileMenu;
+// Global functions for easy access
+window.toggleMobileMenu = () => bootstrapMenu.toggleMenu();
+window.closeMobileMenu = () => bootstrapMenu.closeMenu();
+window.openMobileMenu = () => bootstrapMenu.openMenu();
+
+// Auto-initialize
+if (typeof window !== 'undefined') {
+    window.bootstrapMenu = bootstrapMenu;
 }
-
-// Auto-initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    // Update menu state
-    if (window.mobileMenu) {
-        window.mobileMenu.updateMenuState();
-    }
-    
-    // Add smooth scrolling to all internal links
-    const internalLinks = document.querySelectorAll('a[href^="#"], a[href^="./"], a[href^="/"]');
-    internalLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            // Don't interfere with actual navigation
-            if (link.getAttribute('href').startsWith('#')) {
-                e.preventDefault();
-                const target = document.querySelector(link.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            }
-        });
-    });
-});
