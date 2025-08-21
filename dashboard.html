@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Pengeplan - Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <meta property="og:image" content="assets/logo.png">
+    <meta property="og:title" content="Pengeplan">
+    <meta property="og:description" content="Din økonomiske hjelper – Budsjett, gjeld og støtteordninger på ett sted.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="logo brand" onclick="return false;" title="Du er allerede på dashboard">
+                    <span class="logo-icon">☑️</span>
+                    <span class="logo-text">Pengeplan</span>
+                </a>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active" data-page="dashboard">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="budget">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon">💰</span>
+                        <span class="nav-text">Budsjett</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="debt">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon">💳</span>
+                        <span class="nav-text">Gjeld</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="bills">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon">📅</span>
+                        <span class="nav-text">Regninger</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="tasks">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon">✅</span>
+                        <span class="nav-text">Oppgaver</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="support">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon">❓</span>
+                        <span class="nav-text">Støtteordninger</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-page="ai-advisor">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon">💬</span>
+                        <span class="nav-text">AI-rådgiver</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Profil</span>
+                    </a>
+                </li>
+                <li class="nav-item admin-only" style="display:none">
+                    <a href="admin.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-text">Admin</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="documents.html" class="nav-link">
+                        <span class="nav-icon">📄</span>
+                        <span class="nav-text">Dokumenter</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile" id="openProfile" style="cursor:pointer" title="Åpne profil">
+                    <span class="user-icon">👤</span>
+                    <div class="user-info">
+                        <div class="user-name">Cato Hansen</div>
+                        <div class="user-email">cato@catohansen.no</div>
+                    </div>
+                </div>
+                <a href="#" class="logout-link">
+                    <span class="logout-icon">→</span>
+                    <span>Logg ut</span>
+                </a>
+            </div>
+        </aside>
+
+        <div class="overlay" id="overlay"></div>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="topbar container">
+                <button id="menuBtn" class="only-mobile" aria-label="Åpne meny">☰</button>
+            </header>
+            <!-- Dashboard Page -->
+            <div class="page active" id="dashboard-page">
+                <div class="page-header container">
+                    <div class="page-title">
+                        <div class="brand-inline">
+                            <span class="logo-icon-sm">☑️</span>
+                            <h1 id="dashboardTitle">Dashboard</h1>
+                        </div>
+                        <p>Oversikt over din økonomi</p>
+                    </div>
+                </div>
+                
+                <section class="container">
+                <div class="card-grid">
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value">+0 kr</div>
+                            <div class="card-label">Månedlig balanse</div>
+                        </div>
+                        <div class="card-icon">📊</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value">0 kr</div>
+                            <div class="card-label">Total gjeld</div>
+                        </div>
+                        <div class="card-icon">📄</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value">0</div>
+                            <div class="card-label">Kommende regninger</div>
+                        </div>
+                        <div class="card-icon">📅</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value">0/0</div>
+                            <div class="card-label">Oppgavefremgang</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="card-icon">🎯</div>
+                    </div>
+                </div>
+                </section>
+
+                <div class="content-sections container">
+                    <div class="section quick-actions">
+                        <h3>Hurtighandlinger</h3>
+                        <p>Vanlige oppgaver du kan gjøre nå</p>
+                        <div class="action-buttons">
+                            <button class="action-btn">
+                                <span class="action-icon">💰</span>
+                                <span>Legg til inntekt eller utgift</span>
+                            </button>
+                            <button class="action-btn">
+                                <span class="action-icon">📄</span>
+                                <span>Registrer gjeld</span>
+                            </button>
+                            <button class="action-btn">
+                                <span class="action-icon">📅</span>
+                                <span>Legg til regning</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="section reminders">
+                        <h3>Viktige påminnelser</h3>
+                        <div class="reminder-item success">
+                            <span class="reminder-icon">✅</span>
+                            <span>Alt ser bra ut! 🎉</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Budget Page -->
+            <div class="page" id="budget-page">
+                <div class="page-header container">
+                    <div class="page-title">
+                        <h1>Budsjett</h1>
+                        <p>Administrer dine inntekter og utgifter</p>
+                    </div>
+                    <button class="add-btn">
+                        <span class="add-icon">+</span>
+                        <span>Legg til post</span>
+                    </button>
+                </div>
+
+                <section class="container">
+                <div class="summary-cards card-grid">
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value income">0 kr</div>
+                            <div class="card-label">Total inntekt</div>
+                        </div>
+                        <div class="card-icon">📈</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value expense">0 kr</div>
+                            <div class="card-label">Total utgifter</div>
+                        </div>
+                        <div class="card-icon">📉</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value balance">+0 kr</div>
+                            <div class="card-label">Balanse</div>
+                        </div>
+                        <div class="card-icon">📈</div>
+                    </div>
+                </div>
+                </section>
+
+                <div class="budget-sections container">
+                    <div class="budget-section">
+                        <h3>📈 Inntekter</h3>
+                        <div class="empty-state">
+                            <div class="empty-icon">📈</div>
+                            <p>Ingen inntekter registrert</p>
+                        </div>
+                    </div>
+                    
+                    <div class="budget-section">
+                        <h3>📉 Utgifter</h3>
+                        <div class="empty-state">
+                            <div class="empty-icon">📉</div>
+                            <p>Ingen utgifter registrert</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Debt Page -->
+            <div class="page" id="debt-page">
+                <div class="page-header container">
+                    <div class="page-title">
+                        <h1>Gjeld</h1>
+                        <p>Oversikt og nedbetalingsplan</p>
+                    </div>
+                    <button class="add-btn">
+                        <span class="add-icon">+</span>
+                        <span>Legg til gjeld</span>
+                        </button>
+                </div>
+
+                <section class="container">
+                <div class="summary-cards card-grid">
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value">0 kr</div>
+                            <div class="card-label">Av opprinnelig 0 kr</div>
+                        </div>
+                        <div class="card-icon">💳</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value">0</div>
+                            <div class="card-label">Kreditorer</div>
+                        </div>
+                        <div class="card-icon">〰️</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value">0%</div>
+                            <div class="card-label">Nedbetalt</div>
+                        </div>
+                        <div class="card-icon">📈</div>
+                    </div>
+                </div>
+                </section>
+
+                <div class="strategy-section container">
+                    <h3>Nedbetalingsstrategi</h3>
+                    <p>Velg strategi for å prioritere hvilken gjeld du skal betale ned først</p>
+                    
+                    <div class="strategy-cards">
+                        <div class="strategy-card active">
+                            <h4>Snøball-metoden</h4>
+                            <p>Betal ned gjeld med lavest saldo først. Gir raskere følelse av fremgang.</p>
+                        </div>
+                        <div class="strategy-card">
+                            <h4>Skred-metoden</h4>
+                            <p>Betal ned gjeld med høyest rente først. Sparer mest penger totalt.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="debt-list-section container">
+                    <h3>Dine gjeld (0)</h3>
+                    <div class="empty-state">
+                        <div class="empty-icon">💳</div>
+                        <p>Ingen gjeld registrert</p>
+                        <p class="empty-subtitle">Legg inn kreditor, saldo og forfall - så lager vi en plan.</p>
+                        <button class="add-btn">
+                            <span class="add-icon">+</span>
+                            <span>Legg til første gjeld</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bills Page -->
+            <div class="page" id="bills-page">
+                <div class="page-header container">
+                    <div class="page-title">
+                        <h1>Regninger</h1>
+                        <p>Oversikt og betalingskalender</p>
+                    </div>
+                    <button class="add-btn">
+                        <span class="add-icon">+</span>
+                        <span>Legg til regning</span>
+                    </button>
+                </div>
+
+                <section class="container">
+                <div class="summary-cards card-grid">
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value">0</div>
+                            <div class="card-label">oppgaver å gjøre</div>
+                        </div>
+                        <div class="card-icon">⏰</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value overdue">0</div>
+                            <div class="card-label">kr</div>
+                        </div>
+                        <div class="card-icon">⚠️</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value">0</div>
+                            <div class="card-label">kr</div>
+                        </div>
+                        <div class="card-icon">✅</div>
+                    </div>
+                </div>
+                </section>
+
+                <div class="view-tabs container">
+                    <button class="tab-btn active">Liste</button>
+                    <button class="tab-btn">Kalender</button>
+                </div>
+
+                <div class="list-tabs container">
+                    <button class="list-tab active">Alle (0)</button>
+                    <button class="list-tab">Planlagt (0)</button>
+                    <button class="list-tab">Betalt (0)</button>
+                    <button class="list-tab">Forfalt (0)</button>
+                </div>
+
+                <div class="empty-state container">
+                    <div class="empty-icon">📄</div>
+                    <p>Ingen regninger registrert</p>
+                    <p class="empty-subtitle">Legg til første forfall.</p>
+                    <button class="add-btn">
+                        <span class="add-icon">+</span>
+                        <span>Legg til regning</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tasks Page -->
+            <div class="page" id="tasks-page">
+                <div class="page-header container">
+                    <div class="page-title">
+                        <h1>Oppgaver</h1>
+                        <p>Steg-for-steg mot bedre økonomi</p>
+                    </div>
+                    <button class="add-btn">
+                        <span class="add-icon">+</span>
+                        <span>Legg til oppgave</span>
+                    </button>
+                </div>
+                
+                <section class="container">
+                <div class="summary-cards card-grid">
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value">0</div>
+                            <div class="card-label">oppgaver å gjøre</div>
+                        </div>
+                        <div class="card-icon">⏰</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value">0</div>
+                            <div class="card-label">oppgaver ferdig</div>
+                        </div>
+                        <div class="card-icon">✅</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-content">
+                            <div class="card-value">0</div>
+                            <div class="card-label">sjekklister i gang</div>
+                        </div>
+                        <div class="card-icon">📋</div>
+                    </div>
+                </div>
+                </section>
+
+                <div class="task-tabs container">
+                    <button class="task-tab active">Mine oppgaver</button>
+                    <button class="task-tab">Sjekklister</button>
+                </div>
+                
+                <div class="empty-state container">
+                    <div class="empty-icon">✅</div>
+                    <p>Ingen oppgaver ennå</p>
+                    <p class="empty-subtitle">Velg en sjekkliste for å komme i gang, eller lag din egen oppgave.</p>
+                    <div class="empty-actions">
+                        <button class="add-btn">
+                            <span class="add-icon">+</span>
+                            <span>Legg til oppgave</span>
+                        </button>
+                        <button class="secondary-btn">
+                            <span class="btn-icon">📋</span>
+                            <span>Se sjekklister</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Schemes Page -->
+            <div class="page" id="support-page">
+                <div class="page-header container">
+                    <div class="page-title">
+                        <h1>Støtteordninger</h1>
+                        <p>Oversikt over tilgjengelige støtteordninger fra NAV, kommunen og frivillige organisasjoner</p>
+                    </div>
+                </div>
+                
+                <div class="search-section container">
+                    <div class="search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Søk etter støtteordninger...">
+                    </div>
+                    <div class="filter-dropdown">
+                        <span class="filter-icon">🔽</span>
+                        <span>Alle kategorier</span>
+                    </div>
+                </div>
+                
+                <div class="results-info container">
+                    <p>Viser 4 av 4 støtteordninger</p>
+                </div>
+                
+                <div class="support-grid container">
+                    <div class="support-card">
+                        <div class="support-header">
+                            <span class="support-icon">🏠</span>
+                            <span class="support-category">Bostøtte</span>
+                        </div>
+                        <h3>Bostøtte</h3>
+                        <p>Økonomisk støtte til boutgifter for personer med lav inntekt</p>
+                        <div class="support-details">
+                            <strong>Hvem kan søke:</strong>
+                            <p>Lav inntekt, dokumenterte boutgifter</p>
+                        </div>
+                        <button class="support-btn">
+                            <span class="btn-icon">📄</span>
+                            <span>Gå til søknad</span>
+                        </button>
+                    </div>
+
+                    <div class="support-card">
+                        <div class="support-header">
+                            <span class="support-icon">🎓</span>
+                            <span class="support-category">Kvalifiseringsprogram</span>
+                        </div>
+                        <h3>Kvalifiseringsprogram</h3>
+                        <p>Program for personer med vesentlig nedsatt arbeids- og inntektsevne</p>
+                        <div class="support-details">
+                            <strong>Hvem kan søke:</strong>
+                            <p>Vesentlig nedsatt arbeidsevne, behov for tett oppfølging</p>
+                        </div>
+                        <button class="support-btn">
+                            <span class="btn-icon">📄</span>
+                            <span>Gå til søknad</span>
+                        </button>
+                    </div>
+
+                    <div class="support-card">
+                        <div class="support-header">
+                            <span class="support-icon">🛒</span>
+                            <span class="support-category">Matstøtte</span>
+                        </div>
+                        <h3>Matvarebank</h3>
+                        <p>Gratis mat til personer i økonomisk krise</p>
+                        <div class="support-details">
+                            <strong>Hvem kan søke:</strong>
+                            <p>Økonomisk krise, henvisning fra kommune/NAV</p>
+                        </div>
+                        <button class="support-btn">
+                            <span class="btn-icon">📄</span>
+                            <span>Gå til søknad</span>
+                        </button>
+                    </div>
+
+                    <div class="support-card">
+                        <div class="support-header">
+                            <span class="support-icon">❤️</span>
+                            <span class="support-category">Sosialhjelp</span>
+                        </div>
+                        <h3>Sosialhjelp</h3>
+                        <p>Økonomisk støtte til livsopphold når andre muligheter er uttømt</p>
+                        <div class="support-details">
+                            <strong>Hvem kan søke:</strong>
+                            <p>Mangel på midler til livsopphold</p>
+                        </div>
+                        <button class="support-btn">
+                            <span class="btn-icon">📄</span>
+                            <span>Gå til søknad</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI Advisor Page -->
+            <div class="page" id="ai-advisor-page">
+                <div class="page-header container">
+                    <div class="page-title">
+                        <h1>AI-rådgiver</h1>
+                    </div>
+                </div>
+
+                <div class="ai-content container">
+                    <div class="quick-tools">
+                        <h3>Hurtigverktøy</h3>
+                        <div class="tool-buttons">
+                            <button class="tool-btn">
+                                <span class="tool-icon">+</span>
+                                <span>Ny budsjettpost</span>
+                            </button>
+                            <button class="tool-btn">
+                                <span class="tool-icon">📄</span>
+                                <span>Ny regning</span>
+                            </button>
+                            <button class="tool-btn">
+                                <span class="tool-icon">✅</span>
+                                <span>Ny oppgave</span>
+                            </button>
+                            <button class="tool-btn">
+                                <span class="tool-icon">📄</span>
+                                <span>Brev til kreditor</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="ai-chat">
+                        <div class="ai-chat-header">
+                            <h3>AI‑rådgiver</h3>
+                            <button id="aiSettingsBtn" class="secondary-btn"><span class="btn-icon">⚙️</span><span>Innstillinger</span></button>
+                        </div>
+                        <div id="aiMessages" class="ai-messages" aria-live="polite"></div>
+                        <form id="aiForm" class="ai-input" autocomplete="off">
+                            <textarea id="aiInput" placeholder="Skriv et spørsmål til rådgiveren..." rows="1" required></textarea>
+                            <button type="submit" class="add-btn"><span class="add-icon">➤</span><span>Send</span></button>
+                        </form>
+                        <p class="ai-hint">Tip: Sett opp nøkkel i Innstillinger for å bruke din egen ChatGPT‑nøkkel, eller bruk vårt administrerte endepunkt.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Profil-modal -->
+    <div id="profileModal" class="modal-overlay hidden" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+            <div class="modal-header">
+                <h2 id="profileTitle">Min profil</h2>
+                <button id="closeProfile" class="modal-close" aria-label="Lukk">✕</button>
+            </div>
+
+            <div class="modal-content">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="profileName">Navn</label>
+                        <input id="profileName" type="text" placeholder="Ditt navn">
+                    </div>
+                    <div class="form-group">
+                        <label for="profileEmail">E‑post</label>
+                        <input id="profileEmail" type="email" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileMunicipality">Kommune</label>
+                        <input id="profileMunicipality" type="text" placeholder="Din kommune">
+                    </div>
+                    <div class="form-group">
+                        <label for="profileHousehold">Husholdning</label>
+                        <input id="profileHousehold" type="text" placeholder="Antall personer / beskrivelse">
+                    </div>
+                </div>
+
+                <div class="toggle-grid">
+                    <label class="toggle-item"><input type="checkbox" id="notifyEmail"> E‑postvarsler</label>
+                    <label class="toggle-item"><input type="checkbox" id="notifySms"> SMS‑varsler</label>
+                    <label class="toggle-item"><input type="checkbox" id="betaAccess"> Beta‑tilgang</label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="cancelProfile" class="secondary-btn">Avbryt</button>
+                <button id="saveProfile" class="add-btn"><span class="add-icon">✓</span><span>Lagre</span></button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- AI Settings Modal -->
+    <div id="aiSettingsModal" class="modal-overlay hidden" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="aiSettingsTitle">
+            <div class="modal-header">
+                <h2 id="aiSettingsTitle">AI‑innstillinger</h2>
+                <button id="closeAiSettings" class="modal-close" aria-label="Lukk">✕</button>
+            </div>
+            <div class="modal-content">
+                <div class="form-grid">
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label for="aiProvider">Leverandør</label>
+                        <select id="aiProvider" class="select">
+                            <option value="managed">Administrert tjeneste (anbefalt)</option>
+                            <option value="openai">Egen OpenAI‑nøkkel</option>
+                        </select>
+                    </div>
+                    <div class="form-group managed-only">
+                        <label for="aiManagedUrl">Endpoint URL</label>
+                        <input id="aiManagedUrl" type="text" placeholder="https://din-api/ai/chat">
+                    </div>
+                    <div class="form-group managed-only">
+                        <label for="aiManagedToken">Auth token (valgfritt)</label>
+                        <input id="aiManagedToken" type="password" placeholder="Bearer‑token hvis påkrevd">
+                    </div>
+                    <div class="form-group openai-only">
+                        <label for="openaiApiKey">OpenAI API‑nøkkel</label>
+                        <input id="openaiApiKey" type="password" placeholder="sk‑...">
+                    </div>
+                    <div class="form-group openai-only">
+                        <label for="openaiModel">Modell</label>
+                        <input id="openaiModel" type="text" value="gpt-4o-mini" placeholder="f.eks gpt-4o-mini">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelAiSettings" class="secondary-btn">Avbryt</button>
+                <button id="saveAiSettings" class="add-btn"><span class="add-icon">✓</span><span>Lagre</span></button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="dashboard.js"></script>
+</body>
+</html>
