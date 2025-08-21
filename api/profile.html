@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="color-scheme" content="light dark" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <title>Profil & Konto - Pengeplan</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    
+    <!-- OpenGraph metadata -->
+    <meta property="og:image" content="assets/logo.png">
+    <meta property="og:title" content="Profil & Konto - Pengeplan">
+    <meta property="og:description" content="Administrer din profil og kontoinnstillinger">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="logo brand" title="Gå til Dashboard">
+                    <span class="logo-icon">☑️</span>
+                    <span class="logo-text">Pengeplan</span>
+                </a>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon">💰</span>
+                        <span class="nav-text">Budsjett</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon">💳</span>
+                        <span class="nav-text">Gjeld</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon">📅</span>
+                        <span class="nav-text">Regninger</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Rapporter</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="support-programs.html" class="nav-link">
+                        <span class="nav-icon">🏛️</span>
+                        <span class="nav-text">Støtteordninger</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="profile.html" class="nav-link">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Profil</span>
+                    </a>
+                </li>
+                <li class="nav-item admin-only" style="display: none;">
+                    <a href="admin.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-text">Admin</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">
+                        <span class="avatar-initials">U</span>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Bruker</div>
+                        <div class="user-role" id="userRole">Bruker</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="security.logout()">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Logg ut</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar container">
+                <button class="mobile-menu-btn" aria-label="Åpne meny">
+                    <span>☰</span>
+                </button>
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <div></div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn-sm" onclick="window.open('test-admin.html', '_blank')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+                            🧪 Test Suite
+                        </button>
+                        <button class="btn-sm" onclick="window.open('admin.html', '_blank')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
+                            ⚙️ Admin
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="container">
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="profile-header-left">
+                        <button class="back-btn" onclick="history.back()">
+                            <span class="nav-icon">←</span>
+                            <span>Tilbake</span>
+                        </button>
+                        <div class="profile-info">
+                            <div class="profile-avatar-large" id="profileAvatarLarge">
+                                <span class="avatar-initials-large">U</span>
+                            </div>
+                            <div class="profile-details">
+                                <h1 class="profile-name" id="profileName">Bruker Navn</h1>
+                                <p class="profile-email" id="profileEmail">bruker@epost.no</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-header-right">
+                        <div class="profile-meta">
+                            <span class="join-date">Medlem siden <span id="joinDate">2024</span></span>
+                        </div>
+                        <button class="delete-btn" onclick="deleteAccount()" title="Slett konto">
+                            <span class="nav-icon">🗑️</span>
+                            <span>Slett</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profile Content -->
+                <div class="profile-content">
+                    <!-- Left Column -->
+                    <div class="profile-left">
+                        <!-- Profile Image Section -->
+                        <div class="profile-image-section">
+                            <div class="profile-image-container">
+                                <div class="profile-image" id="profileImage">
+                                    <span class="avatar-initials-large">U</span>
+                                </div>
+                                <button class="change-image-btn" onclick="changeProfileImage()">
+                                    <span class="nav-icon">📷</span>
+                                    <span>Endre profilbilde</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Personal Information -->
+                        <div class="profile-section">
+                            <h3 class="section-title">Personlig informasjon</h3>
+                            <div class="form-group">
+                                <label for="firstName">Fornavn</label>
+                                <input type="text" id="firstName" name="firstName" placeholder="Ditt fornavn">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Etternavn</label>
+                                <input type="text" id="lastName" name="lastName" placeholder="Ditt etternavn">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-postadresse</label>
+                                <div class="input-with-copy">
+                                    <input type="email" id="email" name="email" placeholder="din@epost.no" readonly>
+                                    <button class="copy-btn" onclick="copyToClipboard('email')" title="Kopier e-post">
+                                        <span class="nav-icon">📋</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Telefonnummer</label>
+                                <div class="input-with-copy">
+                                    <input type="tel" id="phone" name="phone" placeholder="+47 123 45 678">
+                                    <button class="copy-btn" onclick="copyToClipboard('phone')" title="Kopier telefonnummer">
+                                        <span class="nav-icon">📋</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="postalCode">Postnummer</label>
+                                <input type="text" id="postalCode" name="postalCode" placeholder="0000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="profile-right">
+                        <!-- Role and Plan Section -->
+                        <div class="profile-section">
+                            <h3 class="section-title">Rolle og plan</h3>
+                            <div class="form-group">
+                                <label for="role">Rolle</label>
+                                <select id="role" name="role">
+                                    <option value="user">Bruker</option>
+                                    <option value="partner">Partner</option>
+                                    <option value="admin">Administrator</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="plan">Plan</label>
+                                <select id="plan" name="plan">
+                                    <option value="free">Gratis</option>
+                                    <option value="pro">Pro</option>
+                                    <option value="partner">Partner</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Notification Settings -->
+                        <div class="profile-section">
+                            <h3 class="section-title">Varslingsinnstillinger</h3>
+                            <div class="toggle-group">
+                                <label class="toggle-label">
+                                    <input type="checkbox" id="emailNotifications" checked>
+                                    <span class="toggle-switch"></span>
+                                    <span class="toggle-text">E-postvarsler</span>
+                                </label>
+                            </div>
+                            <div class="toggle-group">
+                                <label class="toggle-label">
+                                    <input type="checkbox" id="smsNotifications">
+                                    <span class="toggle-switch"></span>
+                                    <span class="toggle-text">SMS-varsler</span>
+                                </label>
+                            </div>
+                            <div class="toggle-group">
+                                <label class="toggle-label">
+                                    <input type="checkbox" id="pushNotifications" checked>
+                                    <span class="toggle-switch"></span>
+                                    <span class="toggle-text">Push-varsler</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Privacy and Data -->
+                        <div class="profile-section">
+                            <h3 class="section-title">Personvern og data</h3>
+                            <div class="toggle-group">
+                                <label class="toggle-label">
+                                    <input type="checkbox" id="dataSharing" checked>
+                                    <span class="toggle-switch"></span>
+                                    <span class="toggle-text">Del data for forbedring</span>
+                                </label>
+                            </div>
+                            <div class="toggle-group">
+                                <label class="toggle-label">
+                                    <input type="checkbox" id="marketingEmails">
+                                    <span class="toggle-switch"></span>
+                                    <span class="toggle-text">Markedsføringse-post</span>
+                                </label>
+                            </div>
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary" onclick="exportData()">
+                                    <span class="nav-icon">📥</span>
+                                    <span>Eksporter data</span>
+                                </button>
+                                <button class="btn btn-secondary" onclick="downloadData()">
+                                    <span class="nav-icon">💾</span>
+                                    <span>Last ned ZIP</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="profile-actions">
+                    <button class="btn btn-primary" onclick="saveProfile()">
+                        <span class="nav-icon">💾</span>
+                        <span>Lagre endringer</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="cancelChanges()">
+                        <span>Avbryt</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Hidden file input for profile image -->
+    <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Scripts -->
+    <script src="js/security.js"></script>
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>
