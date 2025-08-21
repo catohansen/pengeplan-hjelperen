@@ -589,13 +589,32 @@ async function checkAdminAccess() {
 checkAdminAccess();
 
 // AI Chat functionality
-function initAiChat() {
+let aiAdvisor = null;
+
+async function initAiChat() {
   const aiForm = document.getElementById('aiForm');
   const aiInput = document.getElementById('aiInput');
   const aiMessages = document.getElementById('aiMessages');
   const aiSettingsBtn = document.getElementById('aiSettingsBtn');
 
   if (!aiForm || !aiInput || !aiMessages) return;
+
+  // Initialize AI Advisor
+  try {
+    aiAdvisor = new AIAdvisor();
+    const initialized = await aiAdvisor.initialize();
+    
+    if (initialized) {
+      // Load conversation history
+      aiAdvisor.loadConversation();
+      renderConversationHistory();
+    } else {
+      appendMessage('assistant', '🤖 AI-rådgiver ikke konfigurert. Gå til innstillinger for å sette opp.', false);
+    }
+  } catch (error) {
+    console.error('AI initialization failed:', error);
+    appendMessage('assistant', '🤖 AI-rådgiver ikke tilgjengelig. Sjekk innstillinger.', false);
+  }
 
   // Auto-resize textarea
   aiInput.addEventListener('input', function() {
@@ -615,18 +634,74 @@ function initAiChat() {
     aiInput.style.height = 'auto';
 
     // Show loading
-    const loadingId = appendMessage('assistant', '...', true);
+    const loadingId = appendMessage('assistant', '🤔 Tenker...', true);
 
     try {
-      const response = await sendAiMessage(userText);
-      updateMessage(loadingId, response);
+      if (!aiAdvisor) {
+        throw new Error('AI-rådgiver ikke initialisert');
+      }
+      
+      // Send message to AI
+      const response = await aiAdvisor.sendMessage(userText);
+      
+      if (response.success) {
+        // Replace loading with response
+        updateMessage(loadingId, response.message);
+        
+        // Save conversation
+        aiAdvisor.saveConversation();
+      } else {
+        throw new Error(response.error);
+      }
     } catch (error) {
+      console.error('AI chat error:', error);
       updateMessage(loadingId, `Beklager, jeg kunne ikke svare: ${error.message}`);
     }
   });
 
   // Settings button
   aiSettingsBtn?.addEventListener('click', () => toggleAiSettings(true));
+}
+
+// Render conversation history
+function renderConversationHistory() {
+  if (!aiAdvisor) return;
+  
+  const aiMessages = document.getElementById('aiMessages');
+  if (!aiMessages) return;
+  
+  const history = aiAdvisor.getHistory();
+  
+  if (history.length === 0) {
+    // Show welcome message and quick responses
+    appendMessage('assistant', '👋 Hei! Jeg er din økonomiske rådgiver. Hvordan kan jeg hjelpe deg i dag?', false);
+    
+    // Add quick response buttons
+    const quickResponses = aiAdvisor.getQuickResponses();
+    const quickResponseHtml = quickResponses.map(response => 
+      `<button class="quick-response-btn" onclick="sendQuickResponse('${response.message}')">${response.title}</button>`
+    ).join('');
+    
+    const quickResponseDiv = document.createElement('div');
+    quickResponseDiv.className = 'quick-responses';
+    quickResponseDiv.innerHTML = quickResponseHtml;
+    aiMessages.appendChild(quickResponseDiv);
+  } else {
+    // Render existing conversation
+    history.forEach(msg => {
+      appendMessage(msg.role === 'user' ? 'user' : 'assistant', msg.content, false);
+    });
+  }
+}
+
+// Send quick response
+function sendQuickResponse(message) {
+  const aiInput = document.getElementById('aiInput');
+  if (aiInput) {
+    aiInput.value = message;
+    aiInput.dispatchEvent(new Event('input'));
+    document.getElementById('aiForm').dispatchEvent(new Event('submit'));
+  }
 }
 
 function appendMessage(role, content, isLoading = false) {

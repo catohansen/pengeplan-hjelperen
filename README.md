@@ -1,6 +1,36 @@
-# 💰 Pengeplan - Din økonomiske hjelper
+# 💰 Pengeplan - Digital Økonomisk Hjelper
+
+**Din økonomiske hjelper – Budsjett, gjeld og støtteordninger på ett sted.**
 
 En moderne web-applikasjon for budsjett, gjeld og støtteordninger - bygget med HTML, CSS, JavaScript og Supabase.
+
+## 🎯 Bedriftsplan Status
+
+### ✅ MVP (0-3 måneder): 95% FULLFØRT
+- ✅ **Budsjettverktøy** med inntekter/utgifter og balanse
+- ✅ **Gjeldsoversikt** med nedbetalingsstrategi (snøball/skred)
+- ✅ **Regningskalender** med forfallsdatoer og status
+- ✅ **Profil og tilpasning** med avatar og innstillinger
+- ✅ **Responsiv web-app** for alle enheter
+- ✅ **Admin-panel** for brukerstyring og statistikk
+
+### 🔄 Versjon 1.0 (3-6 måneder): 60% FULLFØRT
+- 🔄 **AI-rådgiver** (UI klar, mangler ChatGPT-integrasjon)
+- 🔄 **Støtteordningsbibliotek** (UI klar, mangler NAV-database)
+- 🔄 **Supabase Backend** (schema klar, mangler deployment)
+
+### ⏳ Versjon 2.0 (6-12 måneder): PLANLAGT
+- ⏳ **API-tilkoblinger** for bankdata
+- ⏳ **Partnerløsninger** for NAV/frivillige organisasjoner
+- ⏳ **Gamification** og belønninger
+- ⏳ **Mobile app** (PWA)
+
+## 💼 Forretningsmodell
+
+- **🆓 Gratisversjon:** Basisfunksjoner (budsjett, gjeld, regninger)
+- **💎 Premium (49-99 kr/mnd):** AI-rådgivning, gjeldsstrategi, avansert rapportering
+- **🤝 Partnerløsninger:** Kommuner, NAV, frivillige organisasjoner
+- **💳 Affiliate:** Banksamarbeid og forsikringsprodukter
 
 ## 🚀 Live Demo
 
