@@ -1,18 +1,28 @@
 // Profile Management for Pengeplan
-// Enhanced with elegant HR-style layout and advanced functionality
+// Enhanced with elegant HR-style layout, advanced functionality, and perfect accessibility
 
 class ProfileManager {
     constructor() {
         this.profile = null;
         this.originalProfile = null;
+        this.isLoading = false;
         this.init();
     }
 
     async init() {
-        await this.loadProfile();
-        this.setupEventListeners();
-        this.renderProfile();
-        this.checkAdminAccess();
+        try {
+            this.showLoading('Laster profil...');
+            await this.loadProfile();
+            this.setupEventListeners();
+            this.renderProfile();
+            this.checkAdminAccess();
+            this.setupKeyboardNavigation();
+        } catch (error) {
+            console.error('Error initializing profile:', error);
+            this.showNotification('Feil ved lasting av profil', 'error');
+        } finally {
+            this.hideLoading();
+        }
     }
 
     async loadProfile() {
@@ -61,18 +71,110 @@ class ProfileManager {
             profileImageInput.addEventListener('change', (e) => this.handleImageUpload(e));
         }
 
-        // Form validation
+        // Form validation with debouncing
         const inputs = document.querySelectorAll('input, select');
         inputs.forEach(input => {
-            input.addEventListener('input', () => this.validateField(input));
+            input.addEventListener('input', this.debounce(() => this.validateField(input), 300));
             input.addEventListener('blur', () => this.validateField(input));
         });
 
-        // Auto-save on changes
+        // Auto-save on changes with debouncing
         const formElements = document.querySelectorAll('input, select');
         formElements.forEach(element => {
-            element.addEventListener('change', () => this.autoSave());
+            element.addEventListener('change', this.debounce(() => this.autoSave(), 1000));
         });
+
+        // Toggle switch keyboard support
+        const toggleSwitches = document.querySelectorAll('.toggle-switch');
+        toggleSwitches.forEach(toggle => {
+            toggle.addEventListener('keydown', (e) => this.handleToggleKeydown(e));
+        });
+
+        // Form submission prevention
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', (e) => e.preventDefault());
+        });
+    }
+
+    setupKeyboardNavigation() {
+        // Focus management for better keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.handleEscapeKey(e);
+            }
+        });
+
+        // Trap focus in modals when they're open
+        this.setupFocusTrap();
+    }
+
+    setupFocusTrap() {
+        // Focus trap for better accessibility
+        const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                const activeElement = document.activeElement;
+                const container = activeElement.closest('.profile-section, .profile-image-section');
+                
+                if (container) {
+                    const focusable = container.querySelectorAll(focusableElements);
+                    const firstElement = focusable[0];
+                    const lastElement = focusable[focusable.length - 1];
+                    
+                    if (e.shiftKey) {
+                        if (activeElement === firstElement) {
+                            e.preventDefault();
+                            lastElement.focus();
+                        }
+                    } else {
+                        if (activeElement === lastElement) {
+                            e.preventDefault();
+                            firstElement.focus();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    handleEscapeKey(e) {
+        // Close any open modals or return to previous state
+        if (this.isLoading) {
+            this.hideLoading();
+        }
+    }
+
+    handleToggleKeydown(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const checkbox = e.target.previousElementSibling;
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event('change'));
+                this.updateToggleAria(checkbox);
+            }
+        }
+    }
+
+    updateToggleAria(checkbox) {
+        const toggleSwitch = checkbox.nextElementSibling;
+        if (toggleSwitch) {
+            toggleSwitch.setAttribute('aria-checked', checkbox.checked.toString());
+        }
+    }
+
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
     }
 
     renderProfile() {
@@ -80,6 +182,7 @@ class ProfileManager {
         this.updateProfileForm();
         this.updateSidebarUser();
         this.updateAvatar();
+        this.updateToggleAriaStates();
     }
 
     updateProfileHeader() {
@@ -129,6 +232,13 @@ class ProfileManager {
         this.setFieldValue('marketingEmails', this.profile.privacy.marketingEmails);
     }
 
+    updateToggleAriaStates() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            this.updateToggleAria(checkbox);
+        });
+    }
+
     updateSidebarUser() {
         const userName = document.getElementById('userName');
         const userRole = document.getElementById('userRole');
@@ -166,9 +276,11 @@ class ProfileManager {
             element.style.backgroundSize = 'cover';
             element.style.backgroundPosition = 'center';
             element.innerHTML = '';
+            element.setAttribute('aria-label', 'Profilbilde');
         } else {
             element.style.backgroundImage = '';
             element.innerHTML = `<span class="${element.classList.contains('user-avatar') ? 'avatar-initials' : 'avatar-initials-large'}">${initials}</span>`;
+            element.setAttribute('aria-label', `Profilbilde med initialer: ${initials}`);
         }
     }
 
@@ -197,32 +309,38 @@ class ProfileManager {
 
         // Remove existing error styling
         field.classList.remove('error');
+        this.clearFieldError(field);
 
         // Validation rules
         switch (field.name) {
             case 'firstName':
+                if (value.length > 0 && value.length < 2) {
+                    isValid = false;
+                    errorMessage = 'Fornavn må være minst 2 tegn';
+                }
+                break;
             case 'lastName':
                 if (value.length > 0 && value.length < 2) {
                     isValid = false;
-                    errorMessage = 'Må være minst 2 tegn';
+                    errorMessage = 'Etternavn må være minst 2 tegn';
                 }
                 break;
             case 'email':
                 if (value && !this.isValidEmail(value)) {
                     isValid = false;
-                    errorMessage = 'Ugyldig e-postadresse';
+                    errorMessage = 'Vennligst skriv inn en gyldig e-postadresse';
                 }
                 break;
             case 'phone':
                 if (value && !this.isValidPhone(value)) {
                     isValid = false;
-                    errorMessage = 'Ugyldig telefonnummer';
+                    errorMessage = 'Vennligst skriv inn et gyldig telefonnummer (minst 8 siffer)';
                 }
                 break;
             case 'postalCode':
                 if (value && !this.isValidPostalCode(value)) {
                     isValid = false;
-                    errorMessage = 'Ugyldig postnummer';
+                    errorMessage = 'Vennligst skriv inn et gyldig postnummer (4 siffer)';
                 }
                 break;
         }
@@ -231,8 +349,11 @@ class ProfileManager {
         if (!isValid) {
             field.classList.add('error');
             this.showFieldError(field, errorMessage);
+            field.setAttribute('aria-invalid', 'true');
+            field.setAttribute('aria-describedby', `error-${field.id}`);
         } else {
-            this.clearFieldError(field);
+            field.setAttribute('aria-invalid', 'false');
+            field.removeAttribute('aria-describedby');
         }
 
         return isValid;
@@ -258,6 +379,7 @@ class ProfileManager {
         if (!errorElement) {
             errorElement = document.createElement('div');
             errorElement.className = 'field-error';
+            errorElement.id = `error-${field.id}`;
             field.parentNode.appendChild(errorElement);
         }
         errorElement.textContent = message;
@@ -274,7 +396,19 @@ class ProfileManager {
         const file = event.target.files[0];
         if (!file) return;
 
+        // Validate file type and size
+        if (!file.type.startsWith('image/')) {
+            this.showNotification('Vennligst velg et bilde', 'error');
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) { // 5MB limit
+            this.showNotification('Bildet er for stort. Maksimal størrelse er 5MB', 'error');
+            return;
+        }
+
         try {
+            this.showLoading('Laster opp profilbilde...');
             const resizedImage = await this.resizeToSquare(file, 512);
             this.profile.avatar = resizedImage;
             this.updateAvatar();
@@ -284,34 +418,44 @@ class ProfileManager {
             await this.autoSave();
         } catch (error) {
             console.error('Error uploading image:', error);
-            this.showNotification('Feil ved opplasting av bilde', 'error');
+            this.showNotification('Feil ved opplasting av bilde. Prøv igjen.', 'error');
+        } finally {
+            this.hideLoading();
         }
     }
 
     async resizeToSquare(file, size) {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
 
             img.onload = () => {
-                canvas.width = size;
-                canvas.height = size;
+                try {
+                    canvas.width = size;
+                    canvas.height = size;
 
-                // Calculate dimensions to maintain aspect ratio
-                const minDimension = Math.min(img.width, img.height);
-                const startX = (img.width - minDimension) / 2;
-                const startY = (img.height - minDimension) / 2;
+                    // Calculate dimensions to maintain aspect ratio
+                    const minDimension = Math.min(img.width, img.height);
+                    const startX = (img.width - minDimension) / 2;
+                    const startY = (img.height - minDimension) / 2;
 
-                ctx.drawImage(img, startX, startY, minDimension, minDimension, 0, 0, size, size);
-                resolve(canvas.toDataURL('image/jpeg', 0.8));
+                    ctx.drawImage(img, startX, startY, minDimension, minDimension, 0, 0, size, size);
+                    resolve(canvas.toDataURL('image/jpeg', 0.8));
+                } catch (error) {
+                    reject(error);
+                }
             };
+
+            img.onerror = () => reject(new Error('Failed to load image'));
 
             img.src = URL.createObjectURL(file);
         });
     }
 
     async autoSave() {
+        if (this.isLoading) return;
+        
         try {
             await this.saveProfile();
         } catch (error) {
@@ -320,7 +464,12 @@ class ProfileManager {
     }
 
     async saveProfile() {
+        if (this.isLoading) return false;
+
         try {
+            this.isLoading = true;
+            this.showLoading('Lagrer endringer...');
+
             // Collect form data
             this.profile.firstName = document.getElementById('firstName').value.trim();
             this.profile.lastName = document.getElementById('lastName').value.trim();
@@ -353,20 +502,25 @@ class ProfileManager {
             return true;
         } catch (error) {
             console.error('Error saving profile:', error);
-            this.showNotification('Feil ved lagring av profil', 'error');
+            this.showNotification('Feil ved lagring av profil. Prøv igjen.', 'error');
             return false;
+        } finally {
+            this.isLoading = false;
+            this.hideLoading();
         }
     }
 
     validateAllFields() {
-        const fields = ['firstName', 'lastName', 'email'];
-        return fields.every(fieldId => {
+        const requiredFields = ['firstName', 'lastName', 'email'];
+        return requiredFields.every(fieldId => {
             const field = document.getElementById(fieldId);
             return field && this.validateField(field);
         });
     }
 
     cancelChanges() {
+        if (this.isLoading) return;
+        
         this.profile = JSON.parse(JSON.stringify(this.originalProfile));
         this.renderProfile();
         this.showNotification('Endringer avbrutt', 'info');
@@ -374,6 +528,8 @@ class ProfileManager {
 
     async exportData() {
         try {
+            this.showLoading('Eksporterer data...');
+            
             const data = {
                 profile: this.profile,
                 exportDate: new Date().toISOString(),
@@ -392,33 +548,44 @@ class ProfileManager {
         } catch (error) {
             console.error('Error exporting data:', error);
             this.showNotification('Feil ved eksport av data', 'error');
+        } finally {
+            this.hideLoading();
         }
     }
 
     async downloadData() {
         try {
+            this.showLoading('Forbereder nedlasting...');
             // This would create a ZIP file with all user data
             // For now, we'll just export as JSON
             await this.exportData();
         } catch (error) {
             console.error('Error downloading data:', error);
             this.showNotification('Feil ved nedlasting av data', 'error');
+        } finally {
+            this.hideLoading();
         }
     }
 
     async deleteAccount() {
-        if (confirm('Er du sikker på at du vil slette kontoen din? Dette kan ikke angres.')) {
-            try {
-                // Clear all data
-                localStorage.clear();
-                this.showNotification('Konto slettet', 'success');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 2000);
-            } catch (error) {
-                console.error('Error deleting account:', error);
-                this.showNotification('Feil ved sletting av konto', 'error');
-            }
+        if (this.isLoading) return;
+        
+        const confirmed = confirm('Er du sikker på at du vil slette kontoen din? Dette kan ikke angres.');
+        if (!confirmed) return;
+
+        try {
+            this.showLoading('Sletter konto...');
+            // Clear all data
+            localStorage.clear();
+            this.showNotification('Konto slettet', 'success');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        } catch (error) {
+            console.error('Error deleting account:', error);
+            this.showNotification('Feil ved sletting av konto', 'error');
+        } finally {
+            this.hideLoading();
         }
     }
 
@@ -439,7 +606,29 @@ class ProfileManager {
         
         adminElements.forEach(element => {
             element.style.display = isAdmin ? 'block' : 'none';
+            element.setAttribute('aria-hidden', (!isAdmin).toString());
         });
+    }
+
+    showLoading(message = 'Laster...') {
+        this.isLoading = true;
+        const loading = document.getElementById('loading');
+        const loadingText = loading?.querySelector('.loading-text');
+        
+        if (loading) {
+            loading.style.display = 'flex';
+            if (loadingText) {
+                loadingText.textContent = message;
+            }
+        }
+    }
+
+    hideLoading() {
+        this.isLoading = false;
+        const loading = document.getElementById('loading');
+        if (loading) {
+            loading.style.display = 'none';
+        }
     }
 
     showNotification(message, type = 'info') {
@@ -449,9 +638,13 @@ class ProfileManager {
             notification.className = `notification notification-${type}`;
             notification.style.display = 'block';
             
+            // Announce to screen readers
+            notification.setAttribute('aria-live', 'assertive');
+            
             setTimeout(() => {
                 notification.style.display = 'none';
-            }, 3000);
+                notification.setAttribute('aria-live', 'polite');
+            }, 5000);
         }
     }
 }

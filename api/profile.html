@@ -27,68 +27,70 @@
 <body>
     <div class="app">
         <!-- Sidebar Navigation -->
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Hovednavigasjon">
             <div class="sidebar-header">
-                <a href="dashboard.html" class="logo brand" title="Gå til Dashboard">
-                    <span class="logo-icon">☑️</span>
+                <a href="dashboard.html" class="logo brand" title="Gå til Dashboard" aria-label="Pengeplan - Gå til Dashboard">
+                    <span class="logo-icon" aria-hidden="true">☑️</span>
                     <span class="logo-text">Pengeplan</span>
                 </a>
             </div>
             
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="dashboard.html" class="nav-link">
-                        <span class="nav-icon">🏠</span>
-                        <span class="nav-text">Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <span class="nav-icon">💰</span>
-                        <span class="nav-text">Budsjett</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <span class="nav-icon">💳</span>
-                        <span class="nav-text">Gjeld</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <span class="nav-icon">📅</span>
-                        <span class="nav-text">Regninger</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <span class="nav-icon">📊</span>
-                        <span class="nav-text">Rapporter</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="support-programs.html" class="nav-link">
-                        <span class="nav-icon">🏛️</span>
-                        <span class="nav-text">Støtteordninger</span>
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="profile.html" class="nav-link">
-                        <span class="nav-icon">👤</span>
-                        <span class="nav-text">Profil</span>
-                    </a>
-                </li>
-                <li class="nav-item admin-only" style="display: none;">
-                    <a href="admin.html" class="nav-link">
-                        <span class="nav-icon">⚙️</span>
-                        <span class="nav-text">Admin</span>
-                    </a>
-                </li>
-            </ul>
+            <nav class="nav-menu" role="navigation" aria-label="Meny">
+                <ul>
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link" aria-label="Gå til Dashboard">
+                            <span class="nav-icon" aria-hidden="true">🏠</span>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" aria-label="Budsjett (ikke tilgjengelig)">
+                            <span class="nav-icon" aria-hidden="true">💰</span>
+                            <span class="nav-text">Budsjett</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" aria-label="Gjeld (ikke tilgjengelig)">
+                            <span class="nav-icon" aria-hidden="true">💳</span>
+                            <span class="nav-text">Gjeld</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" aria-label="Regninger (ikke tilgjengelig)">
+                            <span class="nav-icon" aria-hidden="true">📅</span>
+                            <span class="nav-text">Regninger</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" aria-label="Rapporter (ikke tilgjengelig)">
+                            <span class="nav-icon" aria-hidden="true">📊</span>
+                            <span class="nav-text">Rapporter</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="support-programs.html" class="nav-link" aria-label="Gå til Støtteordninger">
+                            <span class="nav-icon" aria-hidden="true">🏛️</span>
+                            <span class="nav-text">Støtteordninger</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active" aria-current="page">
+                        <a href="profile.html" class="nav-link" aria-label="Profil (aktiv side)">
+                            <span class="nav-icon" aria-hidden="true">👤</span>
+                            <span class="nav-text">Profil</span>
+                        </a>
+                    </li>
+                    <li class="nav-item admin-only" style="display: none;" aria-hidden="true">
+                        <a href="admin.html" class="nav-link" aria-label="Gå til Admin-panel">
+                            <span class="nav-icon" aria-hidden="true">⚙️</span>
+                            <span class="nav-text">Admin</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
             
-            <div class="sidebar-footer">
+            <div class="sidebar-footer" role="complementary" aria-label="Brukerinformasjon">
                 <div class="user-info">
-                    <div class="user-avatar" id="userAvatar">
+                    <div class="user-avatar" id="userAvatar" aria-label="Brukeravatar">
                         <span class="avatar-initials">U</span>
                     </div>
                     <div class="user-details">
@@ -96,27 +98,29 @@
                         <div class="user-role" id="userRole">Bruker</div>
                     </div>
                 </div>
-                <button class="logout-btn" onclick="security.logout()">
-                    <span class="nav-icon">🚪</span>
+                <button class="logout-btn" onclick="security.logout()" aria-label="Logg ut av systemet">
+                    <span class="nav-icon" aria-hidden="true">🚪</span>
                     <span class="nav-text">Logg ut</span>
                 </button>
             </div>
         </aside>
 
         <!-- Main Content -->
-        <main class="main-content">
-            <header class="topbar container">
-                <button class="mobile-menu-btn" aria-label="Åpne meny">
-                    <span>☰</span>
+        <main class="main-content" role="main" aria-label="Profilinnhold">
+            <header class="topbar container" role="banner">
+                <button class="mobile-menu-btn" aria-label="Åpne meny" aria-expanded="false" aria-controls="sidebar">
+                    <span aria-hidden="true">☰</span>
                 </button>
                 <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
                     <div></div>
                     <div style="display: flex; gap: 12px;">
-                        <button class="btn-sm" onclick="window.open('test-admin.html', '_blank')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
-                            🧪 Test Suite
+                        <button class="btn-sm" onclick="window.open('test-admin.html', '_blank')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;" aria-label="Åpne Test Suite i ny fane">
+                            <span aria-hidden="true">🧪</span>
+                            <span>Test Suite</span>
                         </button>
-                        <button class="btn-sm" onclick="window.open('admin.html', '_blank')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
-                            ⚙️ Admin
+                        <button class="btn-sm" onclick="window.open('admin.html', '_blank')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;" aria-label="Åpne Admin-panel i ny fane">
+                            <span aria-hidden="true">⚙️</span>
+                            <span>Admin</span>
                         </button>
                     </div>
                 </div>
@@ -124,14 +128,14 @@
 
             <div class="container">
                 <!-- Profile Header -->
-                <div class="profile-header">
+                <header class="profile-header" role="banner" aria-label="Profiloversikt">
                     <div class="profile-header-left">
-                        <button class="back-btn" onclick="history.back()">
-                            <span class="nav-icon">←</span>
+                        <button class="back-btn" onclick="history.back()" aria-label="Gå tilbake til forrige side">
+                            <span class="nav-icon" aria-hidden="true">←</span>
                             <span>Tilbake</span>
                         </button>
                         <div class="profile-info">
-                            <div class="profile-avatar-large" id="profileAvatarLarge">
+                            <div class="profile-avatar-large" id="profileAvatarLarge" aria-label="Stort profilbilde">
                                 <span class="avatar-initials-large">U</span>
                             </div>
                             <div class="profile-details">
@@ -144,165 +148,187 @@
                         <div class="profile-meta">
                             <span class="join-date">Medlem siden <span id="joinDate">2024</span></span>
                         </div>
-                        <button class="delete-btn" onclick="deleteAccount()" title="Slett konto">
-                            <span class="nav-icon">🗑️</span>
+                        <button class="delete-btn" onclick="deleteAccount()" title="Slett konto permanent" aria-label="Slett konto permanent - denne handlingen kan ikke angres">
+                            <span class="nav-icon" aria-hidden="true">🗑️</span>
                             <span>Slett</span>
                         </button>
                     </div>
-                </div>
+                </header>
 
                 <!-- Profile Content -->
-                <div class="profile-content">
+                <div class="profile-content" role="main" aria-label="Profilinnstillinger">
                     <!-- Left Column -->
                     <div class="profile-left">
                         <!-- Profile Image Section -->
-                        <div class="profile-image-section">
+                        <section class="profile-image-section" aria-labelledby="profile-image-title">
+                            <h2 id="profile-image-title" class="sr-only">Profilbilde</h2>
                             <div class="profile-image-container">
-                                <div class="profile-image" id="profileImage">
+                                <div class="profile-image" id="profileImage" aria-label="Ditt profilbilde">
                                     <span class="avatar-initials-large">U</span>
                                 </div>
-                                <button class="change-image-btn" onclick="changeProfileImage()">
-                                    <span class="nav-icon">📷</span>
+                                <button class="change-image-btn" onclick="changeProfileImage()" aria-label="Endre profilbilde">
+                                    <span class="nav-icon" aria-hidden="true">📷</span>
                                     <span>Endre profilbilde</span>
                                 </button>
                             </div>
-                        </div>
+                        </section>
 
                         <!-- Personal Information -->
-                        <div class="profile-section">
-                            <h3 class="section-title">Personlig informasjon</h3>
-                            <div class="form-group">
-                                <label for="firstName">Fornavn</label>
-                                <input type="text" id="firstName" name="firstName" placeholder="Ditt fornavn">
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName">Etternavn</label>
-                                <input type="text" id="lastName" name="lastName" placeholder="Ditt etternavn">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">E-postadresse</label>
-                                <div class="input-with-copy">
-                                    <input type="email" id="email" name="email" placeholder="din@epost.no" readonly>
-                                    <button class="copy-btn" onclick="copyToClipboard('email')" title="Kopier e-post">
-                                        <span class="nav-icon">📋</span>
-                                    </button>
+                        <section class="profile-section" aria-labelledby="personal-info-title">
+                            <h3 id="personal-info-title" class="section-title">Personlig informasjon</h3>
+                            <form class="personal-info-form" role="form" aria-label="Personlig informasjon">
+                                <div class="form-group">
+                                    <label for="firstName" id="firstName-label">Fornavn *</label>
+                                    <input type="text" id="firstName" name="firstName" placeholder="Ditt fornavn" 
+                                           aria-labelledby="firstName-label" aria-required="true" autocomplete="given-name">
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Telefonnummer</label>
-                                <div class="input-with-copy">
-                                    <input type="tel" id="phone" name="phone" placeholder="+47 123 45 678">
-                                    <button class="copy-btn" onclick="copyToClipboard('phone')" title="Kopier telefonnummer">
-                                        <span class="nav-icon">📋</span>
-                                    </button>
+                                <div class="form-group">
+                                    <label for="lastName" id="lastName-label">Etternavn *</label>
+                                    <input type="text" id="lastName" name="lastName" placeholder="Ditt etternavn" 
+                                           aria-labelledby="lastName-label" aria-required="true" autocomplete="family-name">
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="postalCode">Postnummer</label>
-                                <input type="text" id="postalCode" name="postalCode" placeholder="0000">
-                            </div>
-                        </div>
+                                <div class="form-group">
+                                    <label for="email" id="email-label">E-postadresse *</label>
+                                    <div class="input-with-copy">
+                                        <input type="email" id="email" name="email" placeholder="din@epost.no" readonly 
+                                               aria-labelledby="email-label" aria-required="true" autocomplete="email">
+                                        <button class="copy-btn" onclick="copyToClipboard('email')" title="Kopier e-postadresse" 
+                                                aria-label="Kopier e-postadresse til utklippstavle">
+                                            <span class="nav-icon" aria-hidden="true">📋</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone" id="phone-label">Telefonnummer</label>
+                                    <div class="input-with-copy">
+                                        <input type="tel" id="phone" name="phone" placeholder="+47 123 45 678" 
+                                               aria-labelledby="phone-label" autocomplete="tel">
+                                        <button class="copy-btn" onclick="copyToClipboard('phone')" title="Kopier telefonnummer" 
+                                                aria-label="Kopier telefonnummer til utklippstavle">
+                                            <span class="nav-icon" aria-hidden="true">📋</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="postalCode" id="postalCode-label">Postnummer</label>
+                                    <input type="text" id="postalCode" name="postalCode" placeholder="0000" 
+                                           aria-labelledby="postalCode-label" autocomplete="postal-code">
+                                </div>
+                            </form>
+                        </section>
                     </div>
 
                     <!-- Right Column -->
                     <div class="profile-right">
                         <!-- Role and Plan Section -->
-                        <div class="profile-section">
-                            <h3 class="section-title">Rolle og plan</h3>
-                            <div class="form-group">
-                                <label for="role">Rolle</label>
-                                <select id="role" name="role">
-                                    <option value="user">Bruker</option>
-                                    <option value="partner">Partner</option>
-                                    <option value="admin">Administrator</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="plan">Plan</label>
-                                <select id="plan" name="plan">
-                                    <option value="free">Gratis</option>
-                                    <option value="pro">Pro</option>
-                                    <option value="partner">Partner</option>
-                                </select>
-                            </div>
-                        </div>
+                        <section class="profile-section" aria-labelledby="role-plan-title">
+                            <h3 id="role-plan-title" class="section-title">Rolle og plan</h3>
+                            <form class="role-plan-form" role="form" aria-label="Rolle og plan innstillinger">
+                                <div class="form-group">
+                                    <label for="role" id="role-label">Rolle</label>
+                                    <select id="role" name="role" aria-labelledby="role-label">
+                                        <option value="user">Bruker</option>
+                                        <option value="partner">Partner</option>
+                                        <option value="admin">Administrator</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="plan" id="plan-label">Plan</label>
+                                    <select id="plan" name="plan" aria-labelledby="plan-label">
+                                        <option value="free">Gratis</option>
+                                        <option value="pro">Pro</option>
+                                        <option value="partner">Partner</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </section>
 
                         <!-- Notification Settings -->
-                        <div class="profile-section">
-                            <h3 class="section-title">Varslingsinnstillinger</h3>
-                            <div class="toggle-group">
-                                <label class="toggle-label">
-                                    <input type="checkbox" id="emailNotifications" checked>
-                                    <span class="toggle-switch"></span>
-                                    <span class="toggle-text">E-postvarsler</span>
-                                </label>
+                        <section class="profile-section" aria-labelledby="notifications-title">
+                            <h3 id="notifications-title" class="section-title">Varslingsinnstillinger</h3>
+                            <div class="notifications-form" role="form" aria-label="Varslingsinnstillinger">
+                                <div class="toggle-group">
+                                    <label class="toggle-label" for="emailNotifications">
+                                        <input type="checkbox" id="emailNotifications" checked>
+                                        <span class="toggle-switch" role="switch" aria-checked="true"></span>
+                                        <span class="toggle-text">E-postvarsler</span>
+                                    </label>
+                                </div>
+                                <div class="toggle-group">
+                                    <label class="toggle-label" for="smsNotifications">
+                                        <input type="checkbox" id="smsNotifications">
+                                        <span class="toggle-switch" role="switch" aria-checked="false"></span>
+                                        <span class="toggle-text">SMS-varsler</span>
+                                    </label>
+                                </div>
+                                <div class="toggle-group">
+                                    <label class="toggle-label" for="pushNotifications">
+                                        <input type="checkbox" id="pushNotifications" checked>
+                                        <span class="toggle-switch" role="switch" aria-checked="true"></span>
+                                        <span class="toggle-text">Push-varsler</span>
+                                    </label>
+                                </div>
                             </div>
-                            <div class="toggle-group">
-                                <label class="toggle-label">
-                                    <input type="checkbox" id="smsNotifications">
-                                    <span class="toggle-switch"></span>
-                                    <span class="toggle-text">SMS-varsler</span>
-                                </label>
-                            </div>
-                            <div class="toggle-group">
-                                <label class="toggle-label">
-                                    <input type="checkbox" id="pushNotifications" checked>
-                                    <span class="toggle-switch"></span>
-                                    <span class="toggle-text">Push-varsler</span>
-                                </label>
-                            </div>
-                        </div>
+                        </section>
 
                         <!-- Privacy and Data -->
-                        <div class="profile-section">
-                            <h3 class="section-title">Personvern og data</h3>
-                            <div class="toggle-group">
-                                <label class="toggle-label">
-                                    <input type="checkbox" id="dataSharing" checked>
-                                    <span class="toggle-switch"></span>
-                                    <span class="toggle-text">Del data for forbedring</span>
-                                </label>
+                        <section class="profile-section" aria-labelledby="privacy-title">
+                            <h3 id="privacy-title" class="section-title">Personvern og data</h3>
+                            <div class="privacy-form" role="form" aria-label="Personvern og data innstillinger">
+                                <div class="toggle-group">
+                                    <label class="toggle-label" for="dataSharing">
+                                        <input type="checkbox" id="dataSharing" checked>
+                                        <span class="toggle-switch" role="switch" aria-checked="true"></span>
+                                        <span class="toggle-text">Del data for forbedring</span>
+                                    </label>
+                                </div>
+                                <div class="toggle-group">
+                                    <label class="toggle-label" for="marketingEmails">
+                                        <input type="checkbox" id="marketingEmails">
+                                        <span class="toggle-switch" role="switch" aria-checked="false"></span>
+                                        <span class="toggle-text">Markedsføringse-post</span>
+                                    </label>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="btn btn-secondary" onclick="exportData()" aria-label="Eksporter dine data som JSON-fil">
+                                        <span class="nav-icon" aria-hidden="true">📥</span>
+                                        <span>Eksporter data</span>
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="downloadData()" aria-label="Last ned dine data som ZIP-fil">
+                                        <span class="nav-icon" aria-hidden="true">💾</span>
+                                        <span>Last ned ZIP</span>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="toggle-group">
-                                <label class="toggle-label">
-                                    <input type="checkbox" id="marketingEmails">
-                                    <span class="toggle-switch"></span>
-                                    <span class="toggle-text">Markedsføringse-post</span>
-                                </label>
-                            </div>
-                            <div class="action-buttons">
-                                <button class="btn btn-secondary" onclick="exportData()">
-                                    <span class="nav-icon">📥</span>
-                                    <span>Eksporter data</span>
-                                </button>
-                                <button class="btn btn-secondary" onclick="downloadData()">
-                                    <span class="nav-icon">💾</span>
-                                    <span>Last ned ZIP</span>
-                                </button>
-                            </div>
-                        </div>
+                        </section>
                     </div>
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="profile-actions">
-                    <button class="btn btn-primary" onclick="saveProfile()">
-                        <span class="nav-icon">💾</span>
+                <footer class="profile-actions" role="contentinfo" aria-label="Handlingsknapper">
+                    <button class="btn btn-primary" onclick="saveProfile()" aria-label="Lagre alle endringer">
+                        <span class="nav-icon" aria-hidden="true">💾</span>
                         <span>Lagre endringer</span>
                     </button>
-                    <button class="btn btn-secondary" onclick="cancelChanges()">
+                    <button class="btn btn-secondary" onclick="cancelChanges()" aria-label="Avbryt endringer og gå tilbake">
                         <span>Avbryt</span>
                     </button>
-                </div>
+                </footer>
             </div>
         </main>
     </div>
 
     <!-- Hidden file input for profile image -->
-    <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+    <input type="file" id="profileImageInput" accept="image/*" style="display: none;" aria-label="Velg profilbilde">
 
     <!-- Notification -->
-    <div id="notification" class="notification"></div>
+    <div id="notification" class="notification" role="alert" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Loading indicator -->
+    <div id="loading" class="loading-overlay" style="display: none;" role="status" aria-label="Laster">
+        <div class="loading-spinner"></div>
+        <span class="loading-text">Laster...</span>
+    </div>
 
     <!-- Scripts -->
     <script src="js/security.js"></script>
