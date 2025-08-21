@@ -2,35 +2,20 @@
 <html lang="no">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="color-scheme" content="light dark" />
-    <title>Pengeplan - Logg inn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengeplan - Din økonomiske hjelper</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/png" href="assets/logo.png">
-    <meta property="og:image" content="assets/logo.png">
-    <meta property="og:title" content="Pengeplan">
-    <meta property="og:description" content="Din økonomiske hjelper – Budsjett, gjeld og støtteordninger på ett sted.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="responsive.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
 </head>
 <body>
     <div class="container">
         <div class="auth-card">
             <div class="logo-section">
-                <div class="brand-logo-fallback">
-                    <div class="logo-icon">☑️</div>
-                    <h1 class="logo">Pengeplan</h1>
+                <div class="logo-container">
+                    <span class="logo-icon">📋</span>
+                    <span class="logo-text">Pengeplan</span>
                 </div>
-                <p class="subtitle">Din økonomiske hjelper</p>
-                <div style="display: flex; gap: 12px; margin-top: 20px; justify-content: center;">
-                    <button class="btn-sm" onclick="window.open('test-admin.html', '_blank')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 14px; cursor: pointer;">
-                        🧪 Test Suite
-                    </button>
-                    <button class="btn-sm" onclick="window.open('admin.html', '_blank')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 14px; cursor: pointer;">
-                        ⚙️ Admin
-                    </button>
-                </div>
+                <p class="logo-subtitle">Din økonomiske hjelper</p>
             </div>
             
             <div class="features-overview">
@@ -51,41 +36,43 @@
             <form id="loginForm" class="auth-form">
                 <h2>Logg inn</h2>
                 <p class="welcome-text">Velkommen tilbake til Pengeplan</p>
-                
+
                 <div class="form-group">
-                    <label for="email">E-post</label>
-                    <input type="email" id="email" name="email" required placeholder="din@epost.no">
+                    <div class="input-container">
+                        <div class="input-icon">📧</div>
+                        <input type="email" id="email" name="email" required placeholder="din@epost.no">
+                    </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="password">Passord</label>
-                    <input type="password" id="password" name="password" required placeholder="Ditt passord">
+                    <div class="input-container">
+                        <div class="input-icon">🔒</div>
+                        <input type="password" id="password" name="password" required placeholder="Ditt passord">
+                    </div>
                 </div>
                 
                 <button type="submit" class="login-btn">
-                    <span class="btn-text">Logg inn</span>
-                    <div class="spinner" id="spinner"></div>
+                    <span>Logg inn</span>
                 </button>
             </form>
             
+            <div class="divider">
+                <span>eller</span>
+            </div>
+            
+            <div class="social-login">
+                <button class="social-btn google-btn" id="loginWithGoogle">
+                    <span class="social-icon">🔍</span>
+                    <span>Google</span>
+                </button>
+                <button class="social-btn bankid-btn" id="loginWithBankID">
+                    <span class="social-icon">🏦</span>
+                    <span>BankID</span>
+                </button>
+            </div>
+            
             <div class="signup-link">
-                <p>Har du ikke konto? <a href="#" id="signupLink">Opprett en her</a></p>
-                <div class="social-login">
-                    <div class="social-buttons">
-                        <button class="social-btn bankid-btn" id="loginWithBankID">
-                            <span class="social-icon">🏦</span>
-                            <span>Logg inn med BankID</span>
-                        </button>
-                        <button class="social-btn google-btn" id="loginWithGoogle">
-                            <span class="social-icon">🔍</span>
-                            <span>Logg inn med Google</span>
-                        </button>
-                        <button class="social-btn facebook-btn" id="loginWithFacebook">
-                            <span class="social-icon">📘</span>
-                            <span>Logg inn med Facebook</span>
-                        </button>
-                    </div>
-                </div>
+                <p>Ny på Pengeplan? <a href="register.html" id="signupLink">Registrer deg</a></p>
             </div>
             
             <div class="terms">
@@ -93,9 +80,9 @@
             </div>
         </div>
     </div>
-    
-    <div id="notification" class="notification"></div>
-    
+
+    <div id="notificationContainer" class="notification-container"></div>
+    <script src="js/security.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

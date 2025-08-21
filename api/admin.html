@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- OpenGraph Metadata -->
+    <meta property="og:title" content="Admin - Pengeplan">
+    <meta property="og:description" content="Administrator kontrollpanel">
+    <meta property="og:image" content="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjIwIiB2aWV3Qm94PSIwIDAgMTIwIDIwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjIwIiByeD0iNCIgZmlsbD0iIzE2OEQ2MCIvPgo8cGF0aCBkPSJNNSAxMGwzIDMgNS01IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+">
+    <meta property="og:url" content="https://pengeplan.no/admin">
+    
+    <title>Admin - Pengeplan</title>
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzE2OEQ2MCIvPgo8cGF0aCBkPSJNOCAxNmw0IDQgOC04IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+        <div class="topbar-content">
+            <div class="topbar-left">
+                <button class="mobile-menu-btn" aria-label="Åpne meny">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Admin Panel</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <button class="nav-btn" onclick="location.href='profile.html'">
+                    <span class="nav-icon">👤</span>
+                    <span class="nav-text">Profil</span>
+                </button>
+                <button class="nav-btn" onclick="logout()">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Logg ut</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">📋</span>
+                <span class="logo-text">Pengeplan</span>
+            </div>
+        </div>
+        
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-link" data-page="dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            
+            <a href="budget.html" class="nav-link" data-page="budget">
+                <span class="nav-icon">💰</span>
+                <span class="nav-text">Budsjett</span>
+            </a>
+            
+            <a href="debts.html" class="nav-link" data-page="debts">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">Gjeld</span>
+            </a>
+            
+            <a href="support-programs.html" class="nav-link" data-page="support">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">Støtteordninger</span>
+            </a>
+            
+            <a href="ai-advisor.html" class="nav-link" data-page="ai">
+                <span class="nav-icon">🤖</span>
+                <span class="nav-text">AI-Rådgiver</span>
+            </a>
+            
+            <a href="documents.html" class="nav-link" data-page="documents">
+                <span class="nav-icon">📄</span>
+                <span class="nav-text">Dokumenter</span>
+            </a>
+            
+            <a href="calendar.html" class="nav-link" data-page="calendar">
+                <span class="nav-icon">📅</span>
+                <span class="nav-text">Kalender</span>
+            </a>
+            
+            <div class="nav-divider"></div>
+            
+            <a href="test-roles.html" class="nav-link admin-only" data-page="test" style="display: none;">
+                <span class="nav-icon">🧪</span>
+                <span class="nav-text">Test Suite</span>
+            </a>
+            
+            <a href="admin.html" class="nav-link admin-only active" data-page="admin" style="display: none;">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Admin</span>
+            </a>
+        </div>
+        
+        <div class="sidebar-footer">
+            <a href="profile.html" class="profile-link" id="profileLink">
+                <span class="profile-avatar">👤</span>
+                <span class="profile-name" id="profileName">cato@catohansen.no</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-container">
+            <!-- Admin Overview -->
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <h1 class="welcome-title">Administrator Panel</h1>
+                    <p class="welcome-subtitle">Systemkontroll og brukeradministrasjon</p>
+                    <div class="welcome-stats">
+                        <div class="stat-item">
+                            <span class="stat-value" id="totalUsers">1,247</span>
+                            <span class="stat-label">Totale brukere</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="activeUsers">892</span>
+                            <span class="stat-label">Aktive brukere</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="systemHealth">98%</span>
+                            <span class="stat-label">System helse</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="revenue">kr 45,200</span>
+                            <span class="stat-label">Månedlig omsetning</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Actions -->
+            <section class="quick-actions">
+                <h2 class="section-title">Administratorhandlinger</h2>
+                <div class="action-grid">
+                    <div class="action-card">
+                        <div class="action-icon">👥</div>
+                        <div class="action-title">Brukeradministrasjon</div>
+                        <div class="action-description">Administrer brukere og roller</div>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">📊</div>
+                        <div class="action-title">Systemstatistikk</div>
+                        <div class="action-description">Se systemytelse og bruk</div>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">🔧</div>
+                        <div class="action-title">Systeminnstillinger</div>
+                        <div class="action-description">Konfigurer systemet</div>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">📋</div>
+                        <div class="action-title">Logg og rapporter</div>
+                        <div class="action-description">Se systemlogger</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Status -->
+            <section class="recent-activity">
+                <h2 class="section-title">Systemstatus</h2>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">✅</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Database</div>
+                            <div class="activity-time">Online - Alle systemer operative</div>
+                        </div>
+                        <div class="activity-amount">OK</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">✅</div>
+                        <div class="activity-content">
+                            <div class="activity-title">API Services</div>
+                            <div class="activity-time">Alle endepunkter responderer</div>
+                        </div>
+                        <div class="activity-amount">OK</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">⚠️</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Backup System</div>
+                            <div class="activity-time">Siste backup: 2 timer siden</div>
+                        </div>
+                        <div class="activity-amount">OK</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Insights -->
+            <section class="ai-insights">
+                <h2 class="section-title">Systemanalyse</h2>
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <div class="insight-icon">🤖</div>
+                        <div class="insight-title">Automatisk systemanalyse</div>
+                    </div>
+                    <div class="insight-content">
+                        Systemet fungerer optimalt med 98% oppetid. Brukeraktivitet er høy med 892 aktive brukere. Vi anbefaler å øke serverkapasiteten med 20% for å håndtere forventet vekst de neste 3 månedene.
+                    </div>
+                    <a href="#" class="insight-btn">Se detaljert rapport</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/security.js"></script>
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script src="test-automation.js"></script>
+    <script src="js/enhanced-testing.js"></script>
+</body>
+</html>

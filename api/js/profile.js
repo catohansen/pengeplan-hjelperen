@@ -1,241 +1,206 @@
-// Profile Management for Pengeplan
-// Enhanced with elegant HR-style layout, advanced functionality, and perfect accessibility
+/**
+ * Profile Manager
+ * Handles user profile, subscription, and payment functionality
+ */
+
+// Import NOK function or define it locally
+function NOK(amount) {
+    return new Intl.NumberFormat('nb-NO', {
+        style: 'currency',
+        currency: 'NOK',
+        minimumFractionDigits: 0
+    }).format(amount);
+}
 
 class ProfileManager {
     constructor() {
-        this.profile = null;
-        this.originalProfile = null;
-        this.isLoading = false;
-        this.init();
+        this.profile = {};
+        this.subscription = 'free';
+        this.paymentMethods = [];
+        this.notifications = {};
     }
 
     async init() {
         try {
-            this.showLoading('Laster profil...');
             await this.loadProfile();
             this.setupEventListeners();
             this.renderProfile();
             this.checkAdminAccess();
-            this.setupKeyboardNavigation();
         } catch (error) {
-            console.error('Error initializing profile:', error);
+            console.error('Profile initialization failed:', error);
             this.showNotification('Feil ved lasting av profil', 'error');
-        } finally {
-            this.hideLoading();
         }
     }
 
     async loadProfile() {
         try {
-            this.profile = await db.getProfile();
-            if (!this.profile) {
+            // Load from localStorage (will be replaced with Supabase)
+            const storedProfile = localStorage.getItem('userProfile');
+            if (storedProfile) {
+                this.profile = JSON.parse(storedProfile);
+            } else {
                 this.profile = this.createDefaultProfile();
+                this.saveProfile();
             }
-            this.originalProfile = JSON.parse(JSON.stringify(this.profile));
+
+            // Load subscription and payment info
+            this.subscription = localStorage.getItem('userSubscription') || 'free';
+            this.paymentMethods = JSON.parse(localStorage.getItem('paymentMethods') || '[]');
+            this.notifications = JSON.parse(localStorage.getItem('notificationSettings') || '{}');
         } catch (error) {
-            console.error('Error loading profile:', error);
+            console.error('Failed to load profile:', error);
             this.profile = this.createDefaultProfile();
-            this.originalProfile = JSON.parse(JSON.stringify(this.profile));
         }
     }
 
     createDefaultProfile() {
         return {
-            id: crypto.randomUUID(),
-            firstName: '',
-            lastName: '',
-            email: 'bruker@epost.no',
-            phone: '',
-            postalCode: '',
+            firstName: 'Cato',
+            lastName: 'Hansen',
+            email: 'cato@catohansen.no',
+            phone: '+47 123 45 678',
+            address: 'Oslo, Norge',
+            postalCode: '0001',
+            avatar: null,
             role: 'user',
             plan: 'free',
-            avatar: null,
-            joinDate: new Date().toISOString(),
-            notifications: {
-                email: true,
-                sms: false,
-                push: true
-            },
-            privacy: {
-                dataSharing: true,
-                marketingEmails: false
-            },
+            joinDate: '2024-01-01',
             status: 'active'
         };
     }
 
+    saveProfile() {
+        try {
+            localStorage.setItem('userProfile', JSON.stringify(this.profile));
+            localStorage.setItem('userSubscription', this.subscription);
+            localStorage.setItem('paymentMethods', JSON.stringify(this.paymentMethods));
+            localStorage.setItem('notificationSettings', JSON.stringify(this.notifications));
+        } catch (error) {
+            console.error('Failed to save profile:', error);
+        }
+    }
+
     setupEventListeners() {
-        // Profile image upload
-        const profileImageInput = document.getElementById('profileImageInput');
-        if (profileImageInput) {
-            profileImageInput.addEventListener('change', (e) => this.handleImageUpload(e));
-        }
-
-        // Form validation with debouncing
-        const inputs = document.querySelectorAll('input, select');
-        inputs.forEach(input => {
-            input.addEventListener('input', this.debounce(() => this.validateField(input), 300));
-            input.addEventListener('blur', () => this.validateField(input));
-        });
-
-        // Auto-save on changes with debouncing
-        const formElements = document.querySelectorAll('input, select');
-        formElements.forEach(element => {
-            element.addEventListener('change', this.debounce(() => this.autoSave(), 1000));
-        });
-
-        // Toggle switch keyboard support
-        const toggleSwitches = document.querySelectorAll('.toggle-switch');
-        toggleSwitches.forEach(toggle => {
-            toggle.addEventListener('keydown', (e) => this.handleToggleKeydown(e));
-        });
-
-        // Form submission prevention
-        const forms = document.querySelectorAll('form');
-        forms.forEach(form => {
-            form.addEventListener('submit', (e) => e.preventDefault());
-        });
-    }
-
-    setupKeyboardNavigation() {
-        // Focus management for better keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                this.handleEscapeKey(e);
-            }
-        });
-
-        // Trap focus in modals when they're open
-        this.setupFocusTrap();
-    }
-
-    setupFocusTrap() {
-        // Focus trap for better accessibility
-        const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+        // Avatar upload
+        const avatarInput = document.getElementById('avatarInput');
+        const profileAvatar = document.getElementById('profileAvatar');
         
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') {
-                const activeElement = document.activeElement;
-                const container = activeElement.closest('.profile-section, .profile-image-section');
-                
-                if (container) {
-                    const focusable = container.querySelectorAll(focusableElements);
-                    const firstElement = focusable[0];
-                    const lastElement = focusable[focusable.length - 1];
-                    
-                    if (e.shiftKey) {
-                        if (activeElement === firstElement) {
-                            e.preventDefault();
-                            lastElement.focus();
-                        }
-                    } else {
-                        if (activeElement === lastElement) {
-                            e.preventDefault();
-                            firstElement.focus();
-                        }
-                    }
-                }
-            }
+        if (profileAvatar && avatarInput) {
+            profileAvatar.addEventListener('click', () => avatarInput.click());
+            avatarInput.addEventListener('change', (e) => this.handleAvatarUpload(e));
+        }
+
+        // Form auto-save
+        const formInputs = document.querySelectorAll('.form-group input');
+        formInputs.forEach(input => {
+            input.addEventListener('blur', () => this.autoSave());
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') this.autoSave();
+            });
         });
-    }
 
-    handleEscapeKey(e) {
-        // Close any open modals or return to previous state
-        if (this.isLoading) {
-            this.hideLoading();
-        }
-    }
-
-    handleToggleKeydown(e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            const checkbox = e.target.previousElementSibling;
-            if (checkbox) {
-                checkbox.checked = !checkbox.checked;
-                checkbox.dispatchEvent(new Event('change'));
-                this.updateToggleAria(checkbox);
-            }
-        }
-    }
-
-    updateToggleAria(checkbox) {
-        const toggleSwitch = checkbox.nextElementSibling;
-        if (toggleSwitch) {
-            toggleSwitch.setAttribute('aria-checked', checkbox.checked.toString());
-        }
-    }
-
-    debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
+        // Notification toggles
+        const toggles = document.querySelectorAll('.toggle-switch input');
+        toggles.forEach(toggle => {
+            toggle.addEventListener('change', () => this.saveNotificationSettings());
+        });
     }
 
     renderProfile() {
         this.updateProfileHeader();
-        this.updateProfileForm();
+        this.updateFormFields();
+        this.updateSubscriptionDisplay();
+        this.updateNotificationSettings();
         this.updateSidebarUser();
-        this.updateAvatar();
-        this.updateToggleAriaStates();
     }
 
     updateProfileHeader() {
         const profileName = document.getElementById('profileName');
         const profileEmail = document.getElementById('profileEmail');
-        const joinDate = document.getElementById('joinDate');
-        const profileAvatarLarge = document.getElementById('profileAvatarLarge');
+        const profileAvatar = document.getElementById('profileAvatar');
+        const statusBadge = document.getElementById('statusBadge');
 
         if (profileName) {
-            const fullName = `${this.profile.firstName} ${this.profile.lastName}`.trim() || 'Bruker Navn';
-            profileName.textContent = fullName;
+            profileName.textContent = `${this.profile.firstName} ${this.profile.lastName}`;
         }
 
         if (profileEmail) {
             profileEmail.textContent = this.profile.email;
         }
 
-        if (joinDate) {
-            const date = new Date(this.profile.joinDate);
-            joinDate.textContent = date.getFullYear();
+        if (profileAvatar) {
+            if (this.profile.avatar) {
+                profileAvatar.style.backgroundImage = `url(${this.profile.avatar})`;
+                profileAvatar.style.backgroundSize = 'cover';
+                profileAvatar.style.backgroundPosition = 'center';
+                profileAvatar.innerHTML = '';
+            } else {
+                const initials = this.getInitials(`${this.profile.firstName} ${this.profile.lastName}`);
+                profileAvatar.innerHTML = `<span class="avatar-initials">${initials}</span>`;
+            }
         }
 
-        if (profileAvatarLarge) {
-            this.updateAvatarElement(profileAvatarLarge, this.profile.avatar, this.getInitials());
+        if (statusBadge) {
+            statusBadge.textContent = this.profile.status === 'active' ? 'Aktiv' : 'Inaktiv';
+            statusBadge.className = `status-badge ${this.profile.status === 'active' ? 'active' : 'inactive'}`;
         }
     }
 
-    updateProfileForm() {
-        // Personal information
-        this.setFieldValue('firstName', this.profile.firstName);
-        this.setFieldValue('lastName', this.profile.lastName);
-        this.setFieldValue('email', this.profile.email);
-        this.setFieldValue('phone', this.profile.phone);
-        this.setFieldValue('postalCode', this.profile.postalCode);
+    updateFormFields() {
+        const fields = {
+            'firstName': this.profile.firstName,
+            'lastName': this.profile.lastName,
+            'email': this.profile.email,
+            'phone': this.profile.phone,
+            'address': this.profile.address,
+            'postalCode': this.profile.postalCode
+        };
 
-        // Role and plan
-        this.setFieldValue('role', this.profile.role);
-        this.setFieldValue('plan', this.profile.plan);
-
-        // Notifications
-        this.setFieldValue('emailNotifications', this.profile.notifications.email);
-        this.setFieldValue('smsNotifications', this.profile.notifications.sms);
-        this.setFieldValue('pushNotifications', this.profile.notifications.push);
-
-        // Privacy
-        this.setFieldValue('dataSharing', this.profile.privacy.dataSharing);
-        this.setFieldValue('marketingEmails', this.profile.privacy.marketingEmails);
+        Object.entries(fields).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element && element.value !== value) {
+                element.value = value;
+            }
+        });
     }
 
-    updateToggleAriaStates() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
-            this.updateToggleAria(checkbox);
+    updateSubscriptionDisplay() {
+        const planCards = document.querySelectorAll('.plan-card');
+        planCards.forEach(card => {
+            const plan = card.dataset.plan;
+            const button = card.querySelector('.plan-btn');
+            
+            if (plan === this.subscription) {
+                card.classList.add('current-plan');
+                if (button) {
+                    button.className = 'plan-btn current';
+                    button.textContent = 'Nåværende plan';
+                    button.disabled = true;
+                }
+            } else {
+                card.classList.remove('current-plan');
+                if (button) {
+                    button.className = 'plan-btn upgrade';
+                    button.disabled = false;
+                }
+            }
+        });
+    }
+
+    updateNotificationSettings() {
+        const settings = {
+            'emailNotifications': true,
+            'pushNotifications': false,
+            'monthlyReport': true,
+            'supportNotifications': true,
+            ...this.notifications
+        };
+
+        Object.entries(settings).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.checked = value;
+            }
         });
     }
 
@@ -245,441 +210,324 @@ class ProfileManager {
         const userAvatar = document.getElementById('userAvatar');
 
         if (userName) {
-            const fullName = `${this.profile.firstName} ${this.profile.lastName}`.trim() || 'Bruker';
-            userName.textContent = fullName;
+            userName.textContent = `${this.profile.firstName} ${this.profile.lastName}`;
         }
 
         if (userRole) {
             const roleNames = {
-                user: 'Bruker',
-                partner: 'Partner',
-                admin: 'Administrator'
+                'user': 'Bruker',
+                'partner': 'Partner',
+                'admin': 'Administrator'
             };
             userRole.textContent = roleNames[this.profile.role] || 'Bruker';
         }
 
         if (userAvatar) {
-            this.updateAvatarElement(userAvatar, this.profile.avatar, this.getInitials());
-        }
-    }
-
-    updateAvatar() {
-        const profileImage = document.getElementById('profileImage');
-        if (profileImage) {
-            this.updateAvatarElement(profileImage, this.profile.avatar, this.getInitials());
-        }
-    }
-
-    updateAvatarElement(element, avatarData, initials) {
-        if (avatarData) {
-            element.style.backgroundImage = `url(${avatarData})`;
-            element.style.backgroundSize = 'cover';
-            element.style.backgroundPosition = 'center';
-            element.innerHTML = '';
-            element.setAttribute('aria-label', 'Profilbilde');
-        } else {
-            element.style.backgroundImage = '';
-            element.innerHTML = `<span class="${element.classList.contains('user-avatar') ? 'avatar-initials' : 'avatar-initials-large'}">${initials}</span>`;
-            element.setAttribute('aria-label', `Profilbilde med initialer: ${initials}`);
-        }
-    }
-
-    getInitials() {
-        const firstName = this.profile.firstName || '';
-        const lastName = this.profile.lastName || '';
-        const initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
-        return initials || 'U';
-    }
-
-    setFieldValue(fieldId, value) {
-        const field = document.getElementById(fieldId);
-        if (field) {
-            if (field.type === 'checkbox') {
-                field.checked = value;
+            if (this.profile.avatar) {
+                userAvatar.style.backgroundImage = `url(${this.profile.avatar})`;
+                userAvatar.style.backgroundSize = 'cover';
+                userAvatar.style.backgroundPosition = 'center';
+                userAvatar.innerHTML = '';
             } else {
-                field.value = value;
+                const initials = this.getInitials(`${this.profile.firstName} ${this.profile.lastName}`);
+                userAvatar.innerHTML = `<span class="avatar-initials">${initials}</span>`;
             }
         }
     }
 
-    validateField(field) {
-        const value = field.value.trim();
-        let isValid = true;
-        let errorMessage = '';
-
-        // Remove existing error styling
-        field.classList.remove('error');
-        this.clearFieldError(field);
-
-        // Validation rules
-        switch (field.name) {
-            case 'firstName':
-                if (value.length > 0 && value.length < 2) {
-                    isValid = false;
-                    errorMessage = 'Fornavn må være minst 2 tegn';
-                }
-                break;
-            case 'lastName':
-                if (value.length > 0 && value.length < 2) {
-                    isValid = false;
-                    errorMessage = 'Etternavn må være minst 2 tegn';
-                }
-                break;
-            case 'email':
-                if (value && !this.isValidEmail(value)) {
-                    isValid = false;
-                    errorMessage = 'Vennligst skriv inn en gyldig e-postadresse';
-                }
-                break;
-            case 'phone':
-                if (value && !this.isValidPhone(value)) {
-                    isValid = false;
-                    errorMessage = 'Vennligst skriv inn et gyldig telefonnummer (minst 8 siffer)';
-                }
-                break;
-            case 'postalCode':
-                if (value && !this.isValidPostalCode(value)) {
-                    isValid = false;
-                    errorMessage = 'Vennligst skriv inn et gyldig postnummer (4 siffer)';
-                }
-                break;
-        }
-
-        // Apply validation result
-        if (!isValid) {
-            field.classList.add('error');
-            this.showFieldError(field, errorMessage);
-            field.setAttribute('aria-invalid', 'true');
-            field.setAttribute('aria-describedby', `error-${field.id}`);
-        } else {
-            field.setAttribute('aria-invalid', 'false');
-            field.removeAttribute('aria-describedby');
-        }
-
-        return isValid;
-    }
-
-    isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-
-    isValidPhone(phone) {
-        const phoneRegex = /^[\+]?[0-9\s\-\(\)]{8,}$/;
-        return phoneRegex.test(phone);
-    }
-
-    isValidPostalCode(postalCode) {
-        const postalRegex = /^[0-9]{4}$/;
-        return postalRegex.test(postalCode);
-    }
-
-    showFieldError(field, message) {
-        let errorElement = field.parentNode.querySelector('.field-error');
-        if (!errorElement) {
-            errorElement = document.createElement('div');
-            errorElement.className = 'field-error';
-            errorElement.id = `error-${field.id}`;
-            field.parentNode.appendChild(errorElement);
-        }
-        errorElement.textContent = message;
-    }
-
-    clearFieldError(field) {
-        const errorElement = field.parentNode.querySelector('.field-error');
-        if (errorElement) {
-            errorElement.remove();
-        }
-    }
-
-    async handleImageUpload(event) {
+    async handleAvatarUpload(event) {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Validate file type and size
-        if (!file.type.startsWith('image/')) {
-            this.showNotification('Vennligst velg et bilde', 'error');
-            return;
-        }
-
-        if (file.size > 5 * 1024 * 1024) { // 5MB limit
-            this.showNotification('Bildet er for stort. Maksimal størrelse er 5MB', 'error');
-            return;
-        }
-
         try {
-            this.showLoading('Laster opp profilbilde...');
-            const resizedImage = await this.resizeToSquare(file, 512);
-            this.profile.avatar = resizedImage;
-            this.updateAvatar();
-            this.updateSidebarUser();
-            this.updateProfileHeader();
-            this.showNotification('Profilbilde oppdatert!', 'success');
-            await this.autoSave();
+            const imageUrl = await this.resizeAndUploadImage(file);
+            this.profile.avatar = imageUrl;
+            this.saveProfile();
+            this.renderProfile();
+            this.showNotification('Profilbilde oppdatert', 'success');
         } catch (error) {
-            console.error('Error uploading image:', error);
-            this.showNotification('Feil ved opplasting av bilde. Prøv igjen.', 'error');
-        } finally {
-            this.hideLoading();
+            console.error('Avatar upload failed:', error);
+            this.showNotification('Feil ved opplasting av bilde', 'error');
         }
     }
 
-    async resizeToSquare(file, size) {
-        return new Promise((resolve, reject) => {
+    async resizeAndUploadImage(file) {
+        return new Promise((resolve) => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
 
             img.onload = () => {
-                try {
-                    canvas.width = size;
-                    canvas.height = size;
+                const size = 200;
+                canvas.width = size;
+                canvas.height = size;
 
-                    // Calculate dimensions to maintain aspect ratio
-                    const minDimension = Math.min(img.width, img.height);
-                    const startX = (img.width - minDimension) / 2;
-                    const startY = (img.height - minDimension) / 2;
+                // Create circular crop
+                ctx.beginPath();
+                ctx.arc(size / 2, size / 2, size / 2, 0, 2 * Math.PI);
+                ctx.clip();
 
-                    ctx.drawImage(img, startX, startY, minDimension, minDimension, 0, 0, size, size);
-                    resolve(canvas.toDataURL('image/jpeg', 0.8));
-                } catch (error) {
-                    reject(error);
-                }
+                // Draw and resize image
+                ctx.drawImage(img, 0, 0, size, size);
+                
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                resolve(dataUrl);
             };
-
-            img.onerror = () => reject(new Error('Failed to load image'));
 
             img.src = URL.createObjectURL(file);
         });
     }
 
-    async autoSave() {
-        if (this.isLoading) return;
-        
-        try {
-            await this.saveProfile();
-        } catch (error) {
-            console.error('Auto-save failed:', error);
-        }
-    }
+    autoSave() {
+        const fields = {
+            'firstName': 'firstName',
+            'lastName': 'lastName',
+            'email': 'email',
+            'phone': 'phone',
+            'address': 'address',
+            'postalCode': 'postalCode'
+        };
 
-    async saveProfile() {
-        if (this.isLoading) return false;
-
-        try {
-            this.isLoading = true;
-            this.showLoading('Lagrer endringer...');
-
-            // Collect form data
-            this.profile.firstName = document.getElementById('firstName').value.trim();
-            this.profile.lastName = document.getElementById('lastName').value.trim();
-            this.profile.phone = document.getElementById('phone').value.trim();
-            this.profile.postalCode = document.getElementById('postalCode').value.trim();
-            this.profile.role = document.getElementById('role').value;
-            this.profile.plan = document.getElementById('plan').value;
-
-            // Notifications
-            this.profile.notifications.email = document.getElementById('emailNotifications').checked;
-            this.profile.notifications.sms = document.getElementById('smsNotifications').checked;
-            this.profile.notifications.push = document.getElementById('pushNotifications').checked;
-
-            // Privacy
-            this.profile.privacy.dataSharing = document.getElementById('dataSharing').checked;
-            this.profile.privacy.marketingEmails = document.getElementById('marketingEmails').checked;
-
-            // Validate required fields
-            if (!this.validateAllFields()) {
-                this.showNotification('Vennligst fyll ut alle påkrevde felter', 'error');
-                return false;
+        Object.entries(fields).forEach(([id, key]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                this.profile[key] = element.value;
             }
+        });
 
-            // Save to database
-            await db.setProfile(this.profile);
-            this.originalProfile = JSON.parse(JSON.stringify(this.profile));
+        this.saveProfile();
+        this.renderProfile();
+    }
+
+    saveNotificationSettings() {
+        const settings = {
+            'emailNotifications': document.getElementById('emailNotifications')?.checked || false,
+            'pushNotifications': document.getElementById('pushNotifications')?.checked || false,
+            'monthlyReport': document.getElementById('monthlyReport')?.checked || false,
+            'supportNotifications': document.getElementById('supportNotifications')?.checked || false
+        };
+
+        this.notifications = settings;
+        this.saveProfile();
+    }
+
+    getInitials(name) {
+        return name.split(' ')
+            .map(word => word.charAt(0))
+            .join('')
+            .toUpperCase()
+            .slice(0, 2);
+    }
+
+    // Subscription and Payment Methods
+    upgradeToPro() {
+        this.showPaymentModal('pro', 'Pro', 99);
+    }
+
+    upgradeToPartner() {
+        this.showPaymentModal('partner', 'Partner', 199);
+    }
+
+    showPaymentModal(plan, planName, price) {
+        const modal = document.getElementById('paymentModal');
+        if (modal) {
+            modal.style.display = 'block';
+            modal.dataset.plan = plan;
+            modal.dataset.price = price;
             
-            this.showNotification('Profil lagret!', 'success');
-            this.renderProfile();
-            return true;
-        } catch (error) {
-            console.error('Error saving profile:', error);
-            this.showNotification('Feil ved lagring av profil. Prøv igjen.', 'error');
-            return false;
-        } finally {
-            this.isLoading = false;
-            this.hideLoading();
+            // Update modal content
+            const header = modal.querySelector('.modal-header h3');
+            if (header) {
+                header.textContent = `Oppgrader til ${planName} - ${NOK(price)}/mnd`;
+            }
         }
     }
 
-    validateAllFields() {
-        const requiredFields = ['firstName', 'lastName', 'email'];
-        return requiredFields.every(fieldId => {
-            const field = document.getElementById(fieldId);
-            return field && this.validateField(field);
-        });
+    closePaymentModal() {
+        const modal = document.getElementById('paymentModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
     }
 
-    cancelChanges() {
-        if (this.isLoading) return;
+    async processPayment() {
+        const modal = document.getElementById('paymentModal');
+        const plan = modal?.dataset.plan;
+        const price = modal?.dataset.price;
+
+        if (!plan || !price) {
+            this.showNotification('Feil ved betaling', 'error');
+            return;
+        }
+
+        // Simulate payment processing
+        this.showNotification('Behandler betaling...', 'info');
         
-        this.profile = JSON.parse(JSON.stringify(this.originalProfile));
-        this.renderProfile();
-        this.showNotification('Endringer avbrutt', 'info');
+        setTimeout(() => {
+            this.subscription = plan;
+            this.saveProfile();
+            this.renderProfile();
+            this.closePaymentModal();
+            this.showNotification('Abonnement oppgradert!', 'success');
+        }, 2000);
     }
 
+    addPaymentMethod() {
+        this.showPaymentModal('payment_method', 'Legg til betalingsmetode', 0);
+    }
+
+    removePaymentMethod() {
+        if (confirm('Er du sikker på at du vil fjerne denne betalingsmetoden?')) {
+            this.paymentMethods = this.paymentMethods.slice(1);
+            this.saveProfile();
+            this.showNotification('Betalingsmetode fjernet', 'success');
+        }
+    }
+
+    // Data Export and Privacy
     async exportData() {
         try {
-            this.showLoading('Eksporterer data...');
-            
             const data = {
                 profile: this.profile,
-                exportDate: new Date().toISOString(),
-                version: '1.0'
+                subscription: this.subscription,
+                paymentMethods: this.paymentMethods,
+                notifications: this.notifications,
+                exportDate: new Date().toISOString()
             };
 
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
+            
             const a = document.createElement('a');
             a.href = url;
             a.download = `pengeplan-data-${new Date().toISOString().split('T')[0]}.json`;
             a.click();
+            
             URL.revokeObjectURL(url);
-
-            this.showNotification('Data eksportert!', 'success');
+            this.showNotification('Data eksportert', 'success');
         } catch (error) {
-            console.error('Error exporting data:', error);
-            this.showNotification('Feil ved eksport av data', 'error');
-        } finally {
-            this.hideLoading();
+            console.error('Export failed:', error);
+            this.showNotification('Feil ved eksport', 'error');
         }
     }
 
     async downloadData() {
-        try {
-            this.showLoading('Forbereder nedlasting...');
-            // This would create a ZIP file with all user data
-            // For now, we'll just export as JSON
-            await this.exportData();
-        } catch (error) {
-            console.error('Error downloading data:', error);
-            this.showNotification('Feil ved nedlasting av data', 'error');
-        } finally {
-            this.hideLoading();
-        }
+        // Simulate ZIP download
+        this.showNotification('Forbereder ZIP-fil...', 'info');
+        
+        setTimeout(() => {
+            this.showNotification('ZIP-fil lastet ned', 'success');
+        }, 1500);
     }
 
-    async deleteAccount() {
-        if (this.isLoading) return;
-        
-        const confirmed = confirm('Er du sikker på at du vil slette kontoen din? Dette kan ikke angres.');
-        if (!confirmed) return;
-
-        try {
-            this.showLoading('Sletter konto...');
-            // Clear all data
-            localStorage.clear();
+    requestDataDeletion() {
+        if (confirm('Er du sikker på at du vil slette kontoen din? Dette kan ikke angres.')) {
             this.showNotification('Konto slettet', 'success');
             setTimeout(() => {
+                localStorage.clear();
                 window.location.href = 'index.html';
             }, 2000);
-        } catch (error) {
-            console.error('Error deleting account:', error);
-            this.showNotification('Feil ved sletting av konto', 'error');
-        } finally {
-            this.hideLoading();
         }
     }
 
-    copyToClipboard(fieldId) {
-        const field = document.getElementById(fieldId);
-        if (field && field.value) {
-            navigator.clipboard.writeText(field.value).then(() => {
-                this.showNotification('Kopiert til utklippstavle!', 'success');
-            }).catch(() => {
-                this.showNotification('Feil ved kopiering', 'error');
-            });
-        }
+    saveProfile() {
+        this.autoSave();
+        this.showNotification('Profil lagret', 'success');
     }
 
     checkAdminAccess() {
-        const adminElements = document.querySelectorAll('.admin-only');
-        const isAdmin = this.profile.role === 'admin';
-        
-        adminElements.forEach(element => {
-            element.style.display = isAdmin ? 'block' : 'none';
-            element.setAttribute('aria-hidden', (!isAdmin).toString());
-        });
-    }
-
-    showLoading(message = 'Laster...') {
-        this.isLoading = true;
-        const loading = document.getElementById('loading');
-        const loadingText = loading?.querySelector('.loading-text');
-        
-        if (loading) {
-            loading.style.display = 'flex';
-            if (loadingText) {
-                loadingText.textContent = message;
+        if (this.profile.role === 'admin') {
+            const adminLink = document.querySelector('.admin-link');
+            if (adminLink) {
+                adminLink.style.display = 'block';
             }
         }
     }
 
-    hideLoading() {
-        this.isLoading = false;
-        const loading = document.getElementById('loading');
-        if (loading) {
-            loading.style.display = 'none';
-        }
-    }
-
     showNotification(message, type = 'info') {
-        const notification = document.getElementById('notification');
-        if (notification) {
-            notification.textContent = message;
-            notification.className = `notification notification-${type}`;
-            notification.style.display = 'block';
-            
-            // Announce to screen readers
-            notification.setAttribute('aria-live', 'assertive');
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-                notification.setAttribute('aria-live', 'polite');
-            }, 5000);
-        }
+        const container = document.getElementById('notificationContainer');
+        if (!container) return;
+
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+
+        container.appendChild(notification);
+
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
     }
 }
 
 // Global functions for HTML onclick handlers
-window.changeProfileImage = () => {
-    document.getElementById('profileImageInput').click();
+window.saveProfile = function() {
+    if (window.profileManager) {
+        window.profileManager.saveProfile();
+    }
 };
 
-window.saveProfile = async () => {
-    await profileManager.saveProfile();
+window.exportData = function() {
+    if (window.profileManager) {
+        window.profileManager.exportData();
+    }
 };
 
-window.cancelChanges = () => {
-    profileManager.cancelChanges();
+window.upgradeToPro = function() {
+    if (window.profileManager) {
+        window.profileManager.upgradeToPro();
+    }
 };
 
-window.exportData = () => {
-    profileManager.exportData();
+window.upgradeToPartner = function() {
+    if (window.profileManager) {
+        window.profileManager.upgradeToPartner();
+    }
 };
 
-window.downloadData = () => {
-    profileManager.downloadData();
+window.addPaymentMethod = function() {
+    if (window.profileManager) {
+        window.profileManager.addPaymentMethod();
+    }
 };
 
-window.deleteAccount = () => {
-    profileManager.deleteAccount();
+window.removePaymentMethod = function() {
+    if (window.profileManager) {
+        window.profileManager.removePaymentMethod();
+    }
 };
 
-window.copyToClipboard = (fieldId) => {
-    profileManager.copyToClipboard(fieldId);
+window.downloadData = function() {
+    if (window.profileManager) {
+        window.profileManager.downloadData();
+    }
+};
+
+window.requestDataDeletion = function() {
+    if (window.profileManager) {
+        window.profileManager.requestDataDeletion();
+    }
+};
+
+window.closePaymentModal = function() {
+    if (window.profileManager) {
+        window.profileManager.closePaymentModal();
+    }
+};
+
+window.processPayment = function() {
+    if (window.profileManager) {
+        window.profileManager.processPayment();
+    }
 };
 
 // Initialize profile manager
-let profileManager;
 document.addEventListener('DOMContentLoaded', () => {
-    profileManager = new ProfileManager();
+    window.profileManager = new ProfileManager();
+    window.profileManager.init();
 });

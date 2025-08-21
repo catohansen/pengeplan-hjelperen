@@ -96,15 +96,15 @@ pengeplan-hjelperen/
 ## 🚀 Rask Start
 
 ### 1. Klone prosjektet
-```bash
+   ```bash
 git clone https://github.com/ditt-brukernavn/pengeplan-hjelperen.git
 cd pengeplan-hjelperen
-```
+   ```
 
 ### 2. Lokal utvikling
-```bash
+   ```bash
 # Start lokal server
-python3 -m http.server 8000
+   python3 -m http.server 8000
 # eller
 npx serve . -p 8000
 # eller åpne direkte i nettleser

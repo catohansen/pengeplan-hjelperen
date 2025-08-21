@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- OpenGraph Metadata -->
+    <meta property="og:title" content="Dokumenter - Pengeplan">
+    <meta property="og:description" content="Organiser og administrer dine økonomiske dokumenter">
+    <meta property="og:image" content="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjIwIiB2aWV3Qm94PSIwIDAgMTIwIDIwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjIwIiByeD0iNCIgZmlsbD0iIzE2OEQ2MCIvPgo8cGF0aCBkPSJNNSAxMGwzIDMgNS01IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+">
+    <meta property="og:url" content="https://pengeplan.no/documents">
+    
+    <title>Dokumenter - Pengeplan</title>
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzE2OEQ2MCIvPgo8cGF0aCBkPSJNOCAxNmw0IDQgOC04IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+        <div class="topbar-content">
+            <div class="topbar-left">
+                <button class="mobile-menu-btn" aria-label="Åpne meny">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Dokumenter</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <button class="nav-btn" onclick="location.href='profile.html'">
+                    <span class="nav-icon">👤</span>
+                    <span class="nav-text">Profil</span>
+                </button>
+                <button class="nav-btn" onclick="logout()">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Logg ut</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">📋</span>
+                <span class="logo-text">Pengeplan</span>
+            </div>
+        </div>
+        
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-link" data-page="dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            
+            <a href="budget.html" class="nav-link" data-page="budget">
+                <span class="nav-icon">💰</span>
+                <span class="nav-text">Budsjett</span>
+            </a>
+            
+            <a href="debts.html" class="nav-link" data-page="debts">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">Gjeld</span>
+            </a>
+            
+            <a href="support-programs.html" class="nav-link" data-page="support">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">Støtteordninger</span>
+            </a>
+            
+            <a href="ai-advisor.html" class="nav-link" data-page="ai">
+                <span class="nav-icon">🤖</span>
+                <span class="nav-text">AI-Rådgiver</span>
+            </a>
+            
+            <a href="documents.html" class="nav-link active" data-page="documents">
+                <span class="nav-icon">📄</span>
+                <span class="nav-text">Dokumenter</span>
+            </a>
+            
+            <a href="calendar.html" class="nav-link" data-page="calendar">
+                <span class="nav-icon">📅</span>
+                <span class="nav-text">Kalender</span>
+            </a>
+            
+            <div class="nav-divider"></div>
+            
+            <a href="test-roles.html" class="nav-link admin-only" data-page="test" style="display: none;">
+                <span class="nav-icon">🧪</span>
+                <span class="nav-text">Test Suite</span>
+            </a>
+            
+            <a href="admin.html" class="nav-link admin-only" data-page="admin" style="display: none;">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Admin</span>
+            </a>
+        </div>
+        
+        <div class="sidebar-footer">
+            <a href="profile.html" class="profile-link" id="profileLink">
+                <span class="profile-avatar">👤</span>
+                <span class="profile-name" id="profileName">cato@catohansen.no</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-container">
+            <!-- Documents Overview -->
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <h1 class="welcome-title">Dokumenter</h1>
+                    <p class="welcome-subtitle">Organiser og administrer dine økonomiske dokumenter</p>
+                    <div class="welcome-stats">
+                        <div class="stat-item">
+                            <span class="stat-value" id="totalDocs">24</span>
+                            <span class="stat-label">Totale dokumenter</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="recentUploads">3</span>
+                            <span class="stat-label">Nylig opplastet</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="storageUsed">45%</span>
+                            <span class="stat-label">Lagringsplass brukt</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="secureDocs">100%</span>
+                            <span class="stat-label">Kryptert</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Document Categories -->
+            <section class="quick-actions">
+                <h2 class="section-title">Dokumentkategorier</h2>
+                <div class="action-grid">
+                    <div class="action-card">
+                        <div class="action-icon">🏦</div>
+                        <div class="action-title">Bankdokumenter</div>
+                        <div class="action-description">Kontoutskrifter og lån</div>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">📊</div>
+                        <div class="action-title">Skattepapirer</div>
+                        <div class="action-description">Skatteoppgjør og kvitteringer</div>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">📋</div>
+                        <div class="action-title">Støtteordninger</div>
+                        <div class="action-description">Søknader og vedtak</div>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">📄</div>
+                        <div class="action-title">Kontrakter</div>
+                        <div class="action-description">Leie, lån og forsikring</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Documents -->
+            <section class="recent-activity">
+                <h2 class="section-title">Nylige dokumenter</h2>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">🏦</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Kontoutskrift - DNB</div>
+                            <div class="activity-time">Opplastet i dag, 14:30</div>
+                        </div>
+                        <div class="activity-amount">PDF</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">📊</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Skatteoppgjør 2023</div>
+                            <div class="activity-time">Opplastet i går, 09:15</div>
+                        </div>
+                        <div class="activity-amount">PDF</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">📋</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Bostøtte søknad</div>
+                            <div class="activity-time">Opplastet 2 dager siden</div>
+                        </div>
+                        <div class="activity-amount">PDF</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Insights -->
+            <section class="ai-insights">
+                <h2 class="section-title">Dokumentanalyse</h2>
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <div class="insight-icon">🤖</div>
+                        <div class="insight-title">AI-dokumentanalyse</div>
+                    </div>
+                    <div class="insight-content">
+                        Basert på dine opplastede dokumenter har vi identifisert muligheter for å spare kr 2,400 i året på forsikringer og finne bedre lånevilkår. Vi anbefaler å gjennomgå disse mulighetene.
+                    </div>
+                    <a href="ai-advisor.html" class="insight-btn">Få detaljert analyse</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/security.js"></script>
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script src="test-automation.js"></script>
+    <script src="js/enhanced-testing.js"></script>
+</body>
+</html>

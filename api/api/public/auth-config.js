@@ -1,5 +1,5 @@
-// Supabase configuration endpoint for Pengeplan
-// This file provides Supabase URL and Anon Key to the frontend
+// Supabase Auth Configuration for Pengeplan
+// Vercel serverless function to expose Supabase environment variables
 
 export default function handler(req, res) {
   // Set CORS headers
@@ -24,22 +24,11 @@ export default function handler(req, res) {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
-    // Check if environment variables are set
-    if (!supabaseUrl || !supabaseAnonKey) {
-      console.warn('Supabase environment variables not set, using fallback');
-      res.status(200).json({
-        supabaseUrl: null,
-        supabaseAnonKey: null,
-        message: 'Supabase not configured - using localStorage fallback'
-      });
-      return;
-    }
-
-    // Return Supabase configuration
+    // Return configuration
     res.status(200).json({
-      supabaseUrl,
-      supabaseAnonKey,
-      message: 'Supabase configuration loaded successfully'
+      supabaseUrl: supabaseUrl || null,
+      supabaseAnonKey: supabaseAnonKey || null,
+      timestamp: new Date().toISOString()
     });
   } catch (error) {
     console.error('Error in auth-config:', error);

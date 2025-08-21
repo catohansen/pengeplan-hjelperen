@@ -1,277 +1,280 @@
-// Security Module for Pengeplan
-// Handles CSRF protection, input validation, rate limiting, and session management
+/**
+ * 🔒 SECURITY MANAGER
+ * Enhanced security with administrator role switching
+ */
 
 class SecurityManager {
     constructor() {
-        this.csrfToken = this.generateCSRFToken();
-        this.loginAttempts = new Map();
-        this.maxLoginAttempts = 5;
-        this.lockoutDuration = 15 * 60 * 1000; // 15 minutes
-        this.sessionTimeout = 30 * 60 * 1000; // 30 minutes
-        
+        this.currentUser = null;
+        this.isAdmin = false;
+        this.adminEmail = 'cato@catohansen.no';
         this.init();
     }
 
     init() {
-        // Set CSRF token
-        const csrfInput = document.getElementById('csrfToken');
-        if (csrfInput) {
-            csrfInput.value = this.csrfToken;
-        }
-
-        // Check for existing session
-        this.checkSession();
-        
-        // Set up session monitoring
-        this.setupSessionMonitoring();
-        
-        // Set up input validation
-        this.setupInputValidation();
+        this.loadUserSession();
+        this.setupAdminControls();
+        this.checkAdminAccess();
+        this.setupEventListeners();
     }
 
-    // Generate CSRF token
-    generateCSRFToken() {
-        const array = new Uint8Array(32);
-        crypto.getRandomValues(array);
-        return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-    }
-
-    // Validate CSRF token
-    validateCSRFToken(token) {
-        return token === this.csrfToken;
-    }
-
-    // Rate limiting for login attempts
-    checkRateLimit(identifier) {
-        const now = Date.now();
-        const attempts = this.loginAttempts.get(identifier) || { count: 0, firstAttempt: now, lastAttempt: now };
-        
-        // Reset if lockout period has passed
-        if (now - attempts.lastAttempt > this.lockoutDuration) {
-            attempts.count = 0;
-            attempts.firstAttempt = now;
-        }
-        
-        attempts.lastAttempt = now;
-        attempts.count++;
-        
-        this.loginAttempts.set(identifier, attempts);
-        
-        if (attempts.count > this.maxLoginAttempts) {
-            const remainingTime = Math.ceil((this.lockoutDuration - (now - attempts.lastAttempt)) / 1000 / 60);
-            throw new Error(`For mange innloggingsforsøk. Prøv igjen om ${remainingTime} minutter.`);
-        }
-        
-        return true;
-    }
-
-    // Input validation
-    validateEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email || email.length > 254) {
-            throw new Error('Ugyldig e-postadresse');
-        }
-        if (!emailRegex.test(email)) {
-            throw new Error('E-postadressen må være i riktig format');
-        }
-        return true;
-    }
-
-    validatePassword(password) {
-        if (!password || password.length < 8) {
-            throw new Error('Passordet må være minst 8 tegn');
-        }
-        if (password.length > 128) {
-            throw new Error('Passordet er for langt');
-        }
-        // Check for common weak passwords
-        const weakPasswords = ['password', '123456', 'qwerty', 'admin', 'test'];
-        if (weakPasswords.includes(password.toLowerCase())) {
-            throw new Error('Passordet er for svakt');
-        }
-        return true;
-    }
-
-    // Sanitize input
-    sanitizeInput(input) {
-        if (typeof input !== 'string') return input;
-        return input
-            .replace(/[<>]/g, '') // Remove potential HTML tags
-            .trim();
-    }
-
-    // Session management
-    createSession(userData) {
-        const session = {
-            id: this.generateSessionId(),
-            user: userData,
-            created: Date.now(),
-            lastActivity: Date.now()
+    loadUserSession() {
+        const session = JSON.parse(localStorage.getItem('pengeplan_session') || '{}');
+        this.currentUser = session.user || {
+            name: 'Bruker',
+            email: 'bruker@example.com',
+            role: 'user'
         };
         
+        // Check if current user is admin
+        this.isAdmin = this.currentUser.email === this.adminEmail || this.currentUser.role === 'admin';
+    }
+
+    setupAdminControls() {
+        // Create admin role switcher if user is admin
+        if (this.isAdmin) {
+            this.createAdminRoleSwitcher();
+        }
+    }
+
+    createAdminRoleSwitcher() {
+        // Create admin controls container
+        let adminControls = document.querySelector('.admin-controls');
+        if (!adminControls) {
+            adminControls = document.createElement('div');
+            adminControls.className = 'admin-controls';
+            adminControls.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                z-index: 1001;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                border-radius: 15px;
+                padding: 15px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                min-width: 200px;
+            `;
+            document.body.appendChild(adminControls);
+        }
+
+        adminControls.innerHTML = `
+            <div style="margin-bottom: 10px; font-weight: 600; color: #1f2937; font-size: 0.9rem;">
+                🔧 Admin Kontroll
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px; font-size: 0.8rem; color: #6b7280;">
+                    Aktuell rolle:
+                </label>
+                <span id="currentRole" style="font-weight: 600; color: #168d60; font-size: 0.9rem;">
+                    ${this.currentUser.role === 'admin' ? 'Administrator' : 'Bruker'}
+                </span>
+            </div>
+            <div style="display: flex; gap: 8px; flex-direction: column;">
+                <button id="switchToUser" class="admin-btn" style="
+                    background: ${this.currentUser.role === 'user' ? '#168d60' : '#f3f4f6'};
+                    color: ${this.currentUser.role === 'user' ? 'white' : '#374151'};
+                    border: 1px solid ${this.currentUser.role === 'user' ? '#168d60' : '#d1d5db'};
+                    padding: 8px 12px;
+                    border-radius: 8px;
+                    font-size: 0.8rem;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                ">
+                    👤 Vanlig Bruker
+                </button>
+                <button id="switchToAdmin" class="admin-btn" style="
+                    background: ${this.currentUser.role === 'admin' ? '#dc2626' : '#f3f4f6'};
+                    color: ${this.currentUser.role === 'admin' ? 'white' : '#374151'};
+                    border: 1px solid ${this.currentUser.role === 'admin' ? '#dc2626' : '#d1d5db'};
+                    padding: 8px 12px;
+                    border-radius: 8px;
+                    font-size: 0.8rem;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                ">
+                    ⚙️ Administrator
+                </button>
+            </div>
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;">
+                <div style="font-size: 0.7rem; color: #9ca3af; line-height: 1.3;">
+                    Logget inn som: ${this.currentUser.email}
+                </div>
+            </div>
+        `;
+
+        // Add event listeners
+        const userBtn = document.getElementById('switchToUser');
+        const adminBtn = document.getElementById('switchToAdmin');
+
+        if (userBtn) {
+            userBtn.addEventListener('click', () => this.switchRole('user'));
+        }
+        if (adminBtn) {
+            adminBtn.addEventListener('click', () => this.switchRole('admin'));
+        }
+    }
+
+    switchRole(role) {
+        // Update user role
+        this.currentUser.role = role;
+        
+        // Update session
+        const session = {
+            user: this.currentUser,
+            timestamp: Date.now(),
+            expires: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
+        };
         localStorage.setItem('pengeplan_session', JSON.stringify(session));
-        return session;
-    }
 
-    getSession() {
-        const sessionData = localStorage.getItem('pengeplan_session');
-        if (!sessionData) return null;
+        // Update UI
+        this.updateRoleDisplay();
+        this.checkAdminAccess();
         
-        try {
-            const session = JSON.parse(sessionData);
-            const now = Date.now();
-            
-            // Check if session has expired
-            if (now - session.lastActivity > this.sessionTimeout) {
-                this.destroySession();
-                return null;
-            }
-            
-            // Update last activity
-            session.lastActivity = now;
-            localStorage.setItem('pengeplan_session', JSON.stringify(session));
-            
-            return session;
-        } catch (error) {
-            this.destroySession();
-            return null;
-        }
-    }
-
-    destroySession() {
-        localStorage.removeItem('pengeplan_session');
-        localStorage.removeItem('pengeplan_user');
-    }
-
-    generateSessionId() {
-        const array = new Uint8Array(16);
-        crypto.getRandomValues(array);
-        return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-    }
-
-    // Check if user is authenticated
-    isAuthenticated() {
-        const session = this.getSession();
-        return session !== null;
-    }
-
-    // Check user role
-    hasRole(role) {
-        const session = this.getSession();
-        return session && session.user && session.user.role === role;
-    }
-
-    // Redirect if not authenticated
-    requireAuth(redirectUrl = 'index.html') {
-        if (!this.isAuthenticated()) {
-            window.location.href = redirectUrl;
-            return false;
-        }
-        return true;
-    }
-
-    // Redirect if not admin
-    requireAdmin(redirectUrl = 'dashboard.html') {
-        if (!this.hasRole('admin')) {
-            window.location.href = redirectUrl;
-            return false;
-        }
-        return true;
-    }
-
-    // Setup session monitoring
-    setupSessionMonitoring() {
-        // Monitor user activity
-        const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+        // Show notification
+        this.showNotification(`Rolle endret til: ${role === 'admin' ? 'Administrator' : 'Vanlig Bruker'}`, 'success');
         
-        activityEvents.forEach(event => {
-            document.addEventListener(event, () => {
-                const session = this.getSession();
-                if (session) {
-                    session.lastActivity = Date.now();
-                    localStorage.setItem('pengeplan_session', JSON.stringify(session));
-                }
-            }, { passive: true });
+        // Refresh page to update all admin elements
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
+    }
+
+    updateRoleDisplay() {
+        const currentRole = document.getElementById('currentRole');
+        if (currentRole) {
+            currentRole.textContent = this.currentUser.role === 'admin' ? 'Administrator' : 'Bruker';
+        }
+
+        // Update button styles
+        const userBtn = document.getElementById('switchToUser');
+        const adminBtn = document.getElementById('switchToAdmin');
+
+        if (userBtn) {
+            userBtn.style.background = this.currentUser.role === 'user' ? '#168d60' : '#f3f4f6';
+            userBtn.style.color = this.currentUser.role === 'user' ? 'white' : '#374151';
+            userBtn.style.borderColor = this.currentUser.role === 'user' ? '#168d60' : '#d1d5db';
+        }
+
+        if (adminBtn) {
+            adminBtn.style.background = this.currentUser.role === 'admin' ? '#dc2626' : '#f3f4f6';
+            adminBtn.style.color = this.currentUser.role === 'admin' ? 'white' : '#374151';
+            adminBtn.style.borderColor = this.currentUser.role === 'admin' ? '#dc2626' : '#d1d5db';
+        }
+    }
+
+    checkAdminAccess() {
+        const adminElements = document.querySelectorAll('.admin-only');
+        const isAdmin = this.currentUser.role === 'admin' || this.currentUser.email === this.adminEmail;
+        
+        adminElements.forEach(element => {
+            element.style.display = isAdmin ? 'flex' : 'none';
         });
 
-        // Check session periodically
-        setInterval(() => {
-            const session = this.getSession();
-            if (session && Date.now() - session.lastActivity > this.sessionTimeout) {
-                this.destroySession();
-                window.location.href = 'index.html';
+        // Update user info display
+        this.updateUserInfo();
+    }
+
+    updateUserInfo() {
+        const userName = document.getElementById('userName');
+        const profileName = document.getElementById('profileName');
+        
+        if (userName) {
+            const roleText = this.currentUser.role === 'admin' ? ' (Admin)' : '';
+            userName.textContent = `${this.currentUser.name}${roleText}`;
+        }
+        
+        if (profileName) {
+            profileName.textContent = this.currentUser.email;
+        }
+    }
+
+    setupEventListeners() {
+        // Logout functionality
+        window.logout = () => {
+            localStorage.removeItem('pengeplan_session');
+            window.location.href = 'index.html';
+        };
+
+        // Keyboard shortcuts for admin
+        if (this.isAdmin) {
+            document.addEventListener('keydown', (e) => {
+                // Ctrl+Shift+A to switch to admin
+                if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                    e.preventDefault();
+                    this.switchRole('admin');
+                }
+                // Ctrl+Shift+U to switch to user
+                if (e.ctrlKey && e.shiftKey && e.key === 'U') {
+                    e.preventDefault();
+                    this.switchRole('user');
+                }
+            });
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            font-weight: 500;
+            max-width: 300px;
+            animation: slideIn 0.3s ease;
+        `;
+        notification.textContent = message;
+
+        // Add animation styles
+        if (!document.querySelector('#notification-styles')) {
+            const style = document.createElement('style');
+            style.id = 'notification-styles';
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
             }
-        }, 60000); // Check every minute
+        }, 3000);
     }
 
-    // Setup input validation
-    setupInputValidation() {
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        
-        if (emailInput) {
-            emailInput.addEventListener('blur', () => {
-                try {
-                    this.validateEmail(emailInput.value);
-                    this.clearError('emailError');
-                } catch (error) {
-                    this.showError('emailError', error.message);
-                }
-            });
-        }
-        
-        if (passwordInput) {
-            passwordInput.addEventListener('blur', () => {
-                try {
-                    this.validatePassword(passwordInput.value);
-                    this.clearError('passwordError');
-                } catch (error) {
-                    this.showError('passwordError', error.message);
-                }
-            });
-        }
+    // Public methods
+    isUserAdmin() {
+        return this.currentUser.role === 'admin' || this.currentUser.email === this.adminEmail;
     }
 
-    // Error handling
-    showError(elementId, message) {
-        const errorElement = document.getElementById(elementId);
-        if (errorElement) {
-            errorElement.textContent = message;
-            errorElement.style.display = 'block';
-        }
+    getCurrentUser() {
+        return this.currentUser;
     }
 
-    clearError(elementId) {
-        const errorElement = document.getElementById(elementId);
-        if (errorElement) {
-            errorElement.textContent = '';
-            errorElement.style.display = 'none';
-        }
-    }
-
-    // Check session on page load
-    checkSession() {
-        const session = this.getSession();
-        if (session && window.location.pathname.includes('index.html')) {
-            // User is logged in, redirect to dashboard
-            window.location.href = 'dashboard.html';
-        }
-    }
-
-    // Logout function
-    logout() {
-        this.destroySession();
-        window.location.href = 'index.html';
+    getCurrentRole() {
+        return this.currentUser.role;
     }
 }
 
-// Initialize security manager
-const security = new SecurityManager();
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    window.securityManager = new SecurityManager();
+});
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = SecurityManager;
-} else {
-    window.SecurityManager = SecurityManager;
-    window.security = security;
-}
+// Export for external use
+window.SecurityManager = SecurityManager;

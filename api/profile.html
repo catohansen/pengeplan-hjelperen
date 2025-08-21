@@ -2,337 +2,394 @@
 <html lang="no">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - Pengeplan</title>
     
     <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     
-    <title>Profil & Konto - Pengeplan</title>
-    <link rel="stylesheet" href="dashboard.css">
-    <link rel="icon" type="image/png" href="assets/logo.png">
+    <!-- OpenGraph Metadata -->
+    <meta property="og:title" content="Profil - Pengeplan">
+    <meta property="og:description" content="Din personlige profil og innstillinger">
+    <meta property="og:image" content="https://pengeplan.no/logo.png">
+    <meta property="og:url" content="https://pengeplan.no/profile">
     
-    <!-- OpenGraph metadata -->
-    <meta property="og:image" content="assets/logo.png">
-    <meta property="og:title" content="Profil & Konto - Pengeplan">
-    <meta property="og:description" content="Administrer din profil og kontoinnstillinger">
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="profile.css">
+    
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app">
-        <!-- Sidebar Navigation -->
-        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Hovednavigasjon">
-            <div class="sidebar-header">
-                <a href="dashboard.html" class="logo brand" title="Gå til Dashboard" aria-label="Pengeplan - Gå til Dashboard">
-                    <span class="logo-icon" aria-hidden="true">☑️</span>
-                    <span class="logo-text">Pengeplan</span>
-                </a>
-            </div>
-            
-            <nav class="nav-menu" role="navigation" aria-label="Meny">
-                <ul>
-                    <li class="nav-item">
-                        <a href="dashboard.html" class="nav-link" aria-label="Gå til Dashboard">
-                            <span class="nav-icon" aria-hidden="true">🏠</span>
-                            <span class="nav-text">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" aria-label="Budsjett (ikke tilgjengelig)">
-                            <span class="nav-icon" aria-hidden="true">💰</span>
-                            <span class="nav-text">Budsjett</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" aria-label="Gjeld (ikke tilgjengelig)">
-                            <span class="nav-icon" aria-hidden="true">💳</span>
-                            <span class="nav-text">Gjeld</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" aria-label="Regninger (ikke tilgjengelig)">
-                            <span class="nav-icon" aria-hidden="true">📅</span>
-                            <span class="nav-text">Regninger</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" aria-label="Rapporter (ikke tilgjengelig)">
-                            <span class="nav-icon" aria-hidden="true">📊</span>
-                            <span class="nav-text">Rapporter</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="support-programs.html" class="nav-link" aria-label="Gå til Støtteordninger">
-                            <span class="nav-icon" aria-hidden="true">🏛️</span>
-                            <span class="nav-text">Støtteordninger</span>
-                        </a>
-                    </li>
-                    <li class="nav-item active" aria-current="page">
-                        <a href="profile.html" class="nav-link" aria-label="Profil (aktiv side)">
-                            <span class="nav-icon" aria-hidden="true">👤</span>
-                            <span class="nav-text">Profil</span>
-                        </a>
-                    </li>
-                    <li class="nav-item admin-only" style="display: none;" aria-hidden="true">
-                        <a href="admin.html" class="nav-link" aria-label="Gå til Admin-panel">
-                            <span class="nav-icon" aria-hidden="true">⚙️</span>
-                            <span class="nav-text">Admin</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            
-            <div class="sidebar-footer" role="complementary" aria-label="Brukerinformasjon">
-                <div class="user-info">
-                    <div class="user-avatar" id="userAvatar" aria-label="Brukeravatar">
-                        <span class="avatar-initials">U</span>
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name" id="userName">Bruker</div>
-                        <div class="user-role" id="userRole">Bruker</div>
-                    </div>
-                </div>
-                <button class="logout-btn" onclick="security.logout()" aria-label="Logg ut av systemet">
-                    <span class="nav-icon" aria-hidden="true">🚪</span>
-                    <span class="nav-text">Logg ut</span>
-                </button>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content" role="main" aria-label="Profilinnhold">
-            <header class="topbar container" role="banner">
-                <button class="mobile-menu-btn" aria-label="Åpne meny" aria-expanded="false" aria-controls="sidebar">
-                    <span aria-hidden="true">☰</span>
-                </button>
-                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                    <div></div>
-                    <div style="display: flex; gap: 12px;">
-                        <button class="btn-sm" onclick="window.open('test-admin.html', '_blank')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;" aria-label="Åpne Test Suite i ny fane">
-                            <span aria-hidden="true">🧪</span>
-                            <span>Test Suite</span>
-                        </button>
-                        <button class="btn-sm" onclick="window.open('admin.html', '_blank')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;" aria-label="Åpne Admin-panel i ny fane">
-                            <span aria-hidden="true">⚙️</span>
-                            <span>Admin</span>
-                        </button>
-                    </div>
-                </div>
-            </header>
-
-            <div class="container">
-                <!-- Profile Header -->
-                <header class="profile-header" role="banner" aria-label="Profiloversikt">
-                    <div class="profile-header-left">
-                        <button class="back-btn" onclick="history.back()" aria-label="Gå tilbake til forrige side">
-                            <span class="nav-icon" aria-hidden="true">←</span>
-                            <span>Tilbake</span>
-                        </button>
-                        <div class="profile-info">
-                            <div class="profile-avatar-large" id="profileAvatarLarge" aria-label="Stort profilbilde">
-                                <span class="avatar-initials-large">U</span>
-                            </div>
-                            <div class="profile-details">
-                                <h1 class="profile-name" id="profileName">Bruker Navn</h1>
-                                <p class="profile-email" id="profileEmail">bruker@epost.no</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="profile-header-right">
-                        <div class="profile-meta">
-                            <span class="join-date">Medlem siden <span id="joinDate">2024</span></span>
-                        </div>
-                        <button class="delete-btn" onclick="deleteAccount()" title="Slett konto permanent" aria-label="Slett konto permanent - denne handlingen kan ikke angres">
-                            <span class="nav-icon" aria-hidden="true">🗑️</span>
-                            <span>Slett</span>
-                        </button>
-                    </div>
-                </header>
-
-                <!-- Profile Content -->
-                <div class="profile-content" role="main" aria-label="Profilinnstillinger">
-                    <!-- Left Column -->
-                    <div class="profile-left">
-                        <!-- Profile Image Section -->
-                        <section class="profile-image-section" aria-labelledby="profile-image-title">
-                            <h2 id="profile-image-title" class="sr-only">Profilbilde</h2>
-                            <div class="profile-image-container">
-                                <div class="profile-image" id="profileImage" aria-label="Ditt profilbilde">
-                                    <span class="avatar-initials-large">U</span>
-                                </div>
-                                <button class="change-image-btn" onclick="changeProfileImage()" aria-label="Endre profilbilde">
-                                    <span class="nav-icon" aria-hidden="true">📷</span>
-                                    <span>Endre profilbilde</span>
-                                </button>
-                            </div>
-                        </section>
-
-                        <!-- Personal Information -->
-                        <section class="profile-section" aria-labelledby="personal-info-title">
-                            <h3 id="personal-info-title" class="section-title">Personlig informasjon</h3>
-                            <form class="personal-info-form" role="form" aria-label="Personlig informasjon">
-                                <div class="form-group">
-                                    <label for="firstName" id="firstName-label">Fornavn *</label>
-                                    <input type="text" id="firstName" name="firstName" placeholder="Ditt fornavn" 
-                                           aria-labelledby="firstName-label" aria-required="true" autocomplete="given-name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="lastName" id="lastName-label">Etternavn *</label>
-                                    <input type="text" id="lastName" name="lastName" placeholder="Ditt etternavn" 
-                                           aria-labelledby="lastName-label" aria-required="true" autocomplete="family-name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email" id="email-label">E-postadresse *</label>
-                                    <div class="input-with-copy">
-                                        <input type="email" id="email" name="email" placeholder="din@epost.no" readonly 
-                                               aria-labelledby="email-label" aria-required="true" autocomplete="email">
-                                        <button class="copy-btn" onclick="copyToClipboard('email')" title="Kopier e-postadresse" 
-                                                aria-label="Kopier e-postadresse til utklippstavle">
-                                            <span class="nav-icon" aria-hidden="true">📋</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone" id="phone-label">Telefonnummer</label>
-                                    <div class="input-with-copy">
-                                        <input type="tel" id="phone" name="phone" placeholder="+47 123 45 678" 
-                                               aria-labelledby="phone-label" autocomplete="tel">
-                                        <button class="copy-btn" onclick="copyToClipboard('phone')" title="Kopier telefonnummer" 
-                                                aria-label="Kopier telefonnummer til utklippstavle">
-                                            <span class="nav-icon" aria-hidden="true">📋</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="postalCode" id="postalCode-label">Postnummer</label>
-                                    <input type="text" id="postalCode" name="postalCode" placeholder="0000" 
-                                           aria-labelledby="postalCode-label" autocomplete="postal-code">
-                                </div>
-                            </form>
-                        </section>
-                    </div>
-
-                    <!-- Right Column -->
-                    <div class="profile-right">
-                        <!-- Role and Plan Section -->
-                        <section class="profile-section" aria-labelledby="role-plan-title">
-                            <h3 id="role-plan-title" class="section-title">Rolle og plan</h3>
-                            <form class="role-plan-form" role="form" aria-label="Rolle og plan innstillinger">
-                                <div class="form-group">
-                                    <label for="role" id="role-label">Rolle</label>
-                                    <select id="role" name="role" aria-labelledby="role-label">
-                                        <option value="user">Bruker</option>
-                                        <option value="partner">Partner</option>
-                                        <option value="admin">Administrator</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="plan" id="plan-label">Plan</label>
-                                    <select id="plan" name="plan" aria-labelledby="plan-label">
-                                        <option value="free">Gratis</option>
-                                        <option value="pro">Pro</option>
-                                        <option value="partner">Partner</option>
-                                    </select>
-                                </div>
-                            </form>
-                        </section>
-
-                        <!-- Notification Settings -->
-                        <section class="profile-section" aria-labelledby="notifications-title">
-                            <h3 id="notifications-title" class="section-title">Varslingsinnstillinger</h3>
-                            <div class="notifications-form" role="form" aria-label="Varslingsinnstillinger">
-                                <div class="toggle-group">
-                                    <label class="toggle-label" for="emailNotifications">
-                                        <input type="checkbox" id="emailNotifications" checked>
-                                        <span class="toggle-switch" role="switch" aria-checked="true"></span>
-                                        <span class="toggle-text">E-postvarsler</span>
-                                    </label>
-                                </div>
-                                <div class="toggle-group">
-                                    <label class="toggle-label" for="smsNotifications">
-                                        <input type="checkbox" id="smsNotifications">
-                                        <span class="toggle-switch" role="switch" aria-checked="false"></span>
-                                        <span class="toggle-text">SMS-varsler</span>
-                                    </label>
-                                </div>
-                                <div class="toggle-group">
-                                    <label class="toggle-label" for="pushNotifications">
-                                        <input type="checkbox" id="pushNotifications" checked>
-                                        <span class="toggle-switch" role="switch" aria-checked="true"></span>
-                                        <span class="toggle-text">Push-varsler</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </section>
-
-                        <!-- Privacy and Data -->
-                        <section class="profile-section" aria-labelledby="privacy-title">
-                            <h3 id="privacy-title" class="section-title">Personvern og data</h3>
-                            <div class="privacy-form" role="form" aria-label="Personvern og data innstillinger">
-                                <div class="toggle-group">
-                                    <label class="toggle-label" for="dataSharing">
-                                        <input type="checkbox" id="dataSharing" checked>
-                                        <span class="toggle-switch" role="switch" aria-checked="true"></span>
-                                        <span class="toggle-text">Del data for forbedring</span>
-                                    </label>
-                                </div>
-                                <div class="toggle-group">
-                                    <label class="toggle-label" for="marketingEmails">
-                                        <input type="checkbox" id="marketingEmails">
-                                        <span class="toggle-switch" role="switch" aria-checked="false"></span>
-                                        <span class="toggle-text">Markedsføringse-post</span>
-                                    </label>
-                                </div>
-                                <div class="action-buttons">
-                                    <button class="btn btn-secondary" onclick="exportData()" aria-label="Eksporter dine data som JSON-fil">
-                                        <span class="nav-icon" aria-hidden="true">📥</span>
-                                        <span>Eksporter data</span>
-                                    </button>
-                                    <button class="btn btn-secondary" onclick="downloadData()" aria-label="Last ned dine data som ZIP-fil">
-                                        <span class="nav-icon" aria-hidden="true">💾</span>
-                                        <span>Last ned ZIP</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <footer class="profile-actions" role="contentinfo" aria-label="Handlingsknapper">
-                    <button class="btn btn-primary" onclick="saveProfile()" aria-label="Lagre alle endringer">
-                        <span class="nav-icon" aria-hidden="true">💾</span>
-                        <span>Lagre endringer</span>
-                    </button>
-                    <button class="btn btn-secondary" onclick="cancelChanges()" aria-label="Avbryt endringer og gå tilbake">
-                        <span>Avbryt</span>
-                    </button>
-                </footer>
-            </div>
-        </main>
-    </div>
-
-    <!-- Hidden file input for profile image -->
-    <input type="file" id="profileImageInput" accept="image/*" style="display: none;" aria-label="Velg profilbilde">
-
-    <!-- Notification -->
-    <div id="notification" class="notification" role="alert" aria-live="polite" aria-atomic="true"></div>
-
-    <!-- Loading indicator -->
-    <div id="loading" class="loading-overlay" style="display: none;" role="status" aria-label="Laster">
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay">
         <div class="loading-spinner"></div>
-        <span class="loading-text">Laster...</span>
+        <p>Laster profil...</p>
     </div>
+
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="container">
+            <button class="mobile-menu-btn" aria-label="Åpne meny">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Logo in header -->
+            <div class="header-logo">
+                <span class="logo-icon">📋</span>
+                <span class="logo-text">Pengeplan</span>
+            </div>
+            
+            <div class="topbar-actions">
+                <button class="back-btn" onclick="window.history.back()">
+                    <span class="btn-icon">←</span>
+                    <span class="btn-text">Tilbake</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo" onclick="window.location.href='dashboard.html'">
+                <span class="logo-icon">📋</span>
+                <span class="logo-text">Pengeplan</span>
+            </div>
+        </div>
+        
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-link">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="profile.html" class="nav-link active" aria-current="page">
+                <span class="nav-icon">👤</span>
+                <span class="nav-text">Profil</span>
+            </a>
+            <a href="support-programs.html" class="nav-link">
+                <span class="nav-icon">💼</span>
+                <span class="nav-text">Støtteprogrammer</span>
+            </a>
+            <a href="ai-advisor.html" class="nav-link">
+                <span class="nav-icon">🤖</span>
+                <span class="nav-text">AI-Rådgiver</span>
+            </a>
+            <a href="admin.html" class="nav-link admin-link admin-only" style="display: none;">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Admin</span>
+            </a>
+        </div>
+        
+        <div class="sidebar-footer">
+            <div class="user-info" onclick="window.location.href='profile.html'" style="cursor: pointer;">
+                <div class="user-avatar" id="userAvatar">
+                    <span class="avatar-initials">U</span>
+                </div>
+                <div class="user-details">
+                    <span class="user-name" id="userName">Bruker</span>
+                    <span class="user-role" id="userRole">Bruker</span>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <span class="nav-icon">🚪</span>
+                <span class="nav-text">Logg ut</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-wrapper">
+            <!-- Profile Header -->
+            <section class="profile-header">
+                <div class="profile-avatar-section">
+                    <div class="profile-avatar" id="profileAvatar">
+                        <span class="avatar-initials">U</span>
+                        <div class="avatar-upload-overlay">
+                            <span class="upload-icon">📷</span>
+                            <span class="upload-text">Endre bilde</span>
+                        </div>
+                    </div>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                </div>
+                
+                <div class="profile-info">
+                    <h1 class="profile-name" id="profileName">Cato Hansen</h1>
+                    <p class="profile-email" id="profileEmail">cato@catohansen.no</p>
+                    <div class="profile-status">
+                        <span class="status-badge" id="statusBadge">Aktiv</span>
+                        <span class="join-date">Medlem siden januar 2024</span>
+                    </div>
+                </div>
+                
+                <div class="profile-actions">
+                    <button class="btn-primary" onclick="saveProfile()">
+                        <span class="btn-icon">💾</span>
+                        Lagre endringer
+                    </button>
+                    <button class="btn-secondary" onclick="exportData()">
+                        <span class="btn-icon">📤</span>
+                        Eksporter data
+                    </button>
+                </div>
+            </section>
+
+            <!-- Profile Content -->
+            <div class="profile-content">
+                <!-- Personal Information -->
+                <section class="profile-section">
+                    <h2>📋 Personlig informasjon</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="firstName">Fornavn</label>
+                            <input type="text" id="firstName" value="Cato" placeholder="Fornavn">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Etternavn</label>
+                            <input type="text" id="lastName" value="Hansen" placeholder="Etternavn">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-post</label>
+                            <input type="email" id="email" value="cato@catohansen.no" placeholder="E-post">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telefon</label>
+                            <input type="tel" id="phone" value="+47 123 45 678" placeholder="Telefon">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Adresse</label>
+                            <input type="text" id="address" value="Oslo, Norge" placeholder="Adresse">
+                        </div>
+                        <div class="form-group">
+                            <label for="postalCode">Postnummer</label>
+                            <input type="text" id="postalCode" value="0001" placeholder="Postnummer">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Subscription Plans -->
+                <section class="profile-section">
+                    <h2>💳 Abonnement og betaling</h2>
+                    <div class="plans-grid">
+                        <div class="plan-card" data-plan="free">
+                            <div class="plan-header">
+                                <h3>Gratis</h3>
+                                <div class="plan-price">0 kr/mnd</div>
+                            </div>
+                            <ul class="plan-features">
+                                <li>✓ Grunnleggende økonomioverblikk</li>
+                                <li>✓ Enkel budsjettering</li>
+                                <li>✓ AI-rådgiver (5 spørsmål/mnd)</li>
+                                <li>✓ Støtteprogrammer</li>
+                                <li>✗ Avansert rapportering</li>
+                                <li>✗ Prioriterte støtteprogrammer</li>
+                            </ul>
+                            <button class="plan-btn current" disabled>Nåværende plan</button>
+                        </div>
+                        
+                        <div class="plan-card" data-plan="pro">
+                            <div class="plan-header">
+                                <h3>Pro</h3>
+                                <div class="plan-price">99 kr/mnd</div>
+                            </div>
+                            <ul class="plan-features">
+                                <li>✓ Alt i Gratis</li>
+                                <li>✓ Avansert rapportering</li>
+                                <li>✓ Ubegrenset AI-rådgiver</li>
+                                <li>✓ Prioriterte støtteprogrammer</li>
+                                <li>✓ Eksport til Excel/PDF</li>
+                                <li>✓ Prioriter kundestøtte</li>
+                            </ul>
+                            <button class="plan-btn upgrade" onclick="upgradeToPro()">
+                                Oppgrader til Pro
+                            </button>
+                        </div>
+                        
+                        <div class="plan-card" data-plan="partner">
+                            <div class="plan-header">
+                                <h3>Partner</h3>
+                                <div class="plan-price">199 kr/mnd</div>
+                            </div>
+                            <ul class="plan-features">
+                                <li>✓ Alt i Pro</li>
+                                <li>✓ Personlig økonomisk rådgiver</li>
+                                <li>✓ Integrasjon med bank</li>
+                                <li>✓ Automatisk kategorisering</li>
+                                <li>✓ Skatteplanlegging</li>
+                                <li>✓ Dedikert kundesuksess</li>
+                            </ul>
+                            <button class="plan-btn upgrade" onclick="upgradeToPartner()">
+                                Oppgrader til Partner
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Payment Methods -->
+                <section class="profile-section">
+                    <h2>💳 Betalingsmetoder</h2>
+                    <div class="payment-methods">
+                        <div class="payment-method">
+                            <div class="payment-info">
+                                <span class="payment-icon">💳</span>
+                                <div class="payment-details">
+                                    <span class="card-number">•••• •••• •••• 1234</span>
+                                    <span class="card-expiry">Utløper 12/25</span>
+                                </div>
+                            </div>
+                            <button class="btn-remove" onclick="removePaymentMethod()">Fjern</button>
+                        </div>
+                        <button class="btn-add-payment" onclick="addPaymentMethod()">
+                            <span class="btn-icon">+</span>
+                            Legg til betalingsmetode
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Notification Settings -->
+                <section class="profile-section">
+                    <h2>🔔 Varsler og innstillinger</h2>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>E-postvarsler</h4>
+                                <p>Få varsler om viktige økonomiske hendelser</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="emailNotifications" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Push-varsler</h4>
+                                <p>Få varsler direkte på telefonen</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="pushNotifications">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Månedlig rapport</h4>
+                                <p>Få månedlig økonomisk oversikt</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="monthlyReport" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Støtteprogrammer</h4>
+                                <p>Varsler om nye relevante støtteprogrammer</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="supportNotifications" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Privacy & Data -->
+                <section class="profile-section">
+                    <h2>🔒 Personvern og data</h2>
+                    <div class="privacy-actions">
+                        <button class="btn-secondary" onclick="downloadData()">
+                            <span class="btn-icon">📥</span>
+                            Last ned alle data (ZIP)
+                        </button>
+                        <button class="btn-secondary" onclick="requestDataDeletion()">
+                            <span class="btn-icon">🗑️</span>
+                            Slett konto
+                        </button>
+                    </div>
+                    <div class="privacy-info">
+                        <p>Vi tar personvernet ditt på alvor. Alle data er kryptert og lagret sikkert i EU.</p>
+                        <a href="#" class="privacy-link">Les mer om personvern</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Oppgrader abonnement</h3>
+                <button class="modal-close" onclick="closePaymentModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-form">
+                    <div class="form-group">
+                        <label for="cardNumber">Kortnummer</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cardExpiry">Utløpsdato</label>
+                            <input type="text" id="cardExpiry" placeholder="MM/ÅÅ">
+                        </div>
+                        <div class="form-group">
+                            <label for="cardCvc">CVC</label>
+                            <input type="text" id="cardCvc" placeholder="123">
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="processPayment()">
+                        <span class="btn-icon">💳</span>
+                        Bekreft betaling
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
 
     <!-- Scripts -->
     <script src="js/security.js"></script>
     <script src="js/mobile-menu.js"></script>
     <script src="js/profile.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    
+    <script>
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loading overlay
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+            }, 500);
+            
+            // Initialize modules
+            if (typeof SecurityManager !== 'undefined') {
+                new SecurityManager().init();
+            }
+            if (typeof BootstrapMenu !== 'undefined') {
+                new BootstrapMenu().init();
+            }
+            if (typeof ProfileManager !== 'undefined') {
+                new ProfileManager().init();
+            }
+        });
+    </script>
 </body>
 </html>

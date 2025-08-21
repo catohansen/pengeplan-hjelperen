@@ -1,53 +1,853 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const loginForm = document.getElementById('loginForm');
-    const signupLink = document.getElementById('signupLink');
-    const spinner = document.getElementById('spinner');
-    const btnText = document.querySelector('.btn-text');
-
-    // Check if user is already logged in
-    const isLoggedIn = localStorage.getItem('pengeplan_logged_in');
-    if (isLoggedIn === 'true') {
-        window.location.href = 'dashboard.html';
-        return;
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
     }
-
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
-        // Validate inputs
-        if (!email || !password) {
-            showNotification('Vennligst fyll ut alle feltene', 'error');
-            return;
-        }
-        
-        if (!isValidEmail(email)) {
-            showNotification('Vennligst skriv inn en gyldig e-postadresse', 'error');
-            return;
-        }
-        
-        // Show loading state
-        setLoadingState(true);
-        
-        // Simulate login process
-        setTimeout(() => {
-            // For demo purposes, accept any valid email/password combination
-            if (email && password) {
-                // Store login state
-                localStorage.setItem('pengeplan_logged_in', 'true');
-                localStorage.setItem('pengeplan_email', email);
-                
-                showNotification('Innlogging vellykket!', 'success');
-                
-                // Redirect based on role (if profile exists and is admin)
-                setTimeout(() => {
-                    try {
-                        const p = JSON.parse(localStorage.getItem('pengeplan_profile')||'{}');
-                        if (p && p.role === 'admin') {
-                            window.location.href = 'admin.html';
-                        } else {
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
+// Login form handling
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize security manager if available
+    if (typeof SecurityManager !== "undefined") {
+        new SecurityManager().init();
+    }
+    
+    // Social login buttons
+    const socialButtons = document.querySelectorAll(".social-btn");
+    socialButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const provider = this.getAttribute("data-provider");
+            alert(`${provider} innlogging kommer snart!`);
+        });
+    });
+});
                             window.location.href = 'dashboard.html';
                         }
                     } catch {

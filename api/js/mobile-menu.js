@@ -1,209 +1,275 @@
-// Bootstrap-style Mobile Menu for Pengeplan
-// Simple, reliable mobile navigation that works like Bootstrap
+/**
+ * 📱 MOBILE MENU MANAGER
+ * Enhanced sidebar and mobile navigation functionality
+ */
 
-class BootstrapMenu {
+class MobileMenuManager {
     constructor() {
         this.sidebar = null;
-        this.overlay = null;
         this.menuBtn = null;
+        this.overlay = null;
         this.isOpen = false;
-        
+        this.isDesktop = window.innerWidth >= 769; // Changed from 1024 to match CSS
         this.init();
     }
 
     init() {
-        // Wait for DOM to be ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.setup());
-        } else {
-            this.setup();
+        this.setupElements();
+        this.setupEventListeners();
+        this.setupResizeHandler();
+        this.setupKeyboardNavigation();
+        this.setupFocusManagement();
+        
+        // Auto-open sidebar on desktop
+        if (this.isDesktop) {
+            this.openSidebar();
         }
     }
 
-    setup() {
-        // Find elements
-        this.sidebar = document.querySelector('.sidebar');
+    setupElements() {
+        this.sidebar = document.getElementById('sidebar');
         this.menuBtn = document.querySelector('.mobile-menu-btn');
         
-        if (!this.sidebar) {
-            console.warn('Sidebar not found');
+        // Create overlay if it doesn't exist
+        if (!document.querySelector('.sidebar-overlay')) {
+            this.overlay = document.createElement('div');
+            this.overlay.className = 'sidebar-overlay';
+            document.body.appendChild(this.overlay);
+        } else {
+            this.overlay = document.querySelector('.sidebar-overlay');
+        }
+
+        if (!this.sidebar || !this.menuBtn) {
+            console.warn('MobileMenuManager: Required elements not found');
             return;
         }
-
-        // Create overlay
-        this.createOverlay();
-        
-        // Setup event listeners
-        this.setupEvents();
-        
-        // Close menu on page load
-        this.closeMenu();
     }
 
-    createOverlay() {
-        // Remove existing overlay
-        const existingOverlay = document.querySelector('.sidebar-overlay');
-        if (existingOverlay) {
-            existingOverlay.remove();
-        }
-
-        // Create new overlay
-        this.overlay = document.createElement('div');
-        this.overlay.className = 'sidebar-overlay';
-        document.body.appendChild(this.overlay);
-    }
-
-    setupEvents() {
+    setupEventListeners() {
         // Menu button click
         if (this.menuBtn) {
             this.menuBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                this.toggleMenu();
+                this.toggleSidebar();
             });
         }
 
-        // Overlay click - close menu
+        // Overlay click
         if (this.overlay) {
-            this.overlay.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.closeMenu();
+            this.overlay.addEventListener('click', () => {
+                this.closeSidebar();
             });
         }
 
-        // Navigation links - close menu after click
-        const navLinks = document.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                // Close menu immediately for better UX
-                this.closeMenu();
-            });
-        });
+        // Navigation links - IMPROVED AUTO-CLOSE
+        this.setupNavigationListeners();
 
         // Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.isOpen) {
-                this.closeMenu();
+                this.closeSidebar();
             }
         });
 
-        // Window resize - close menu on desktop
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 1024 && this.isOpen) {
-                this.closeMenu();
-            }
-        });
-
-        // Click outside to close
+        // Click outside sidebar
         document.addEventListener('click', (e) => {
-            if (this.isOpen && 
-                !this.sidebar.contains(e.target) && 
-                !this.menuBtn.contains(e.target)) {
-                this.closeMenu();
+            if (this.isOpen && !this.sidebar.contains(e.target) && !this.menuBtn.contains(e.target)) {
+                this.closeSidebar();
             }
         });
+    }
 
-        // Prevent body scroll when menu is open
-        this.sidebar.addEventListener('touchmove', (e) => {
+    setupNavigationListeners() {
+        // Enhanced navigation listener setup
+        const setupNavLinks = () => {
+            const navLinks = this.sidebar?.querySelectorAll('.nav-link, a[href], button[onclick]');
+            
+            if (navLinks) {
+                navLinks.forEach(link => {
+                    // Remove existing listeners to prevent duplicates
+                    link.removeEventListener('click', this.handleNavClick);
+                    link.addEventListener('click', this.handleNavClick.bind(this));
+                });
+            }
+        };
+
+        // Initial setup
+        setupNavLinks();
+
+        // Setup mutation observer to handle dynamic content
+        if (this.sidebar) {
+            const observer = new MutationObserver(() => {
+                setupNavLinks();
+            });
+            
+            observer.observe(this.sidebar, {
+                childList: true,
+                subtree: true
+            });
+        }
+    }
+
+    handleNavClick(e) {
+        const link = e.currentTarget;
+        const href = link.getAttribute('href');
+        const onclick = link.getAttribute('onclick');
+        
+        // Don't close for external links, anchors, or JavaScript actions
+        if (href && (href.startsWith('http') || href.includes('#'))) {
+            return;
+        }
+        
+        if (onclick && onclick.includes('logout')) {
+            return; // Don't close for logout
+        }
+
+        // Close sidebar immediately for internal navigation
+        if (!this.isDesktop) {
+            this.closeSidebar();
+        }
+    }
+
+    setupResizeHandler() {
+        let resizeTimeout;
+        
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const wasDesktop = this.isDesktop;
+                this.isDesktop = window.innerWidth >= 769; // Match CSS breakpoint
+                
+                // Handle transition from mobile to desktop
+                if (!wasDesktop && this.isDesktop) {
+                    this.openSidebar();
+                }
+                // Handle transition from desktop to mobile
+                else if (wasDesktop && !this.isDesktop) {
+                    this.closeSidebar();
+                }
+            }, 250);
+        });
+    }
+
+    setupKeyboardNavigation() {
+        // Tab navigation within sidebar
+        if (this.sidebar) {
+            this.sidebar.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab') {
+                    const focusableElements = this.sidebar.querySelectorAll(
+                        'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                    );
+                    
+                    const firstElement = focusableElements[0];
+                    const lastElement = focusableElements[focusableElements.length - 1];
+                    
+                    if (e.shiftKey && document.activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    } else if (!e.shiftKey && document.activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+            });
+        }
+    }
+
+    setupFocusManagement() {
+        // Store last focused element when opening sidebar
+        let lastFocusedElement = null;
+        
+        this.openSidebar = () => {
+            if (!this.isOpen) {
+                lastFocusedElement = document.activeElement;
+                this.isOpen = true;
+                
+                if (this.sidebar) {
+                    this.sidebar.classList.add('active');
+                    this.sidebar.setAttribute('aria-hidden', 'false');
+                }
+                
+                if (this.overlay) {
+                    this.overlay.classList.add('active');
+                }
+                
+                if (this.menuBtn) {
+                    this.menuBtn.classList.add('active');
+                    this.menuBtn.setAttribute('aria-expanded', 'true');
+                }
+                
+                // Focus first focusable element in sidebar
+                setTimeout(() => {
+                    const firstFocusable = this.sidebar?.querySelector(
+                        'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                    );
+                    if (firstFocusable) {
+                        firstFocusable.focus();
+                    }
+                }, 100);
+                
+                // Prevent body scroll on mobile
+                if (!this.isDesktop) {
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        };
+        
+        this.closeSidebar = () => {
             if (this.isOpen) {
-                e.stopPropagation();
+                this.isOpen = false;
+                
+                if (this.sidebar) {
+                    this.sidebar.classList.remove('active');
+                    this.sidebar.setAttribute('aria-hidden', 'true');
+                }
+                
+                if (this.overlay) {
+                    this.overlay.classList.remove('active');
+                }
+                
+                if (this.menuBtn) {
+                    this.menuBtn.classList.remove('active');
+                    this.menuBtn.setAttribute('aria-expanded', 'false');
+                }
+                
+                // Restore focus
+                if (lastFocusedElement && lastFocusedElement.focus) {
+                    lastFocusedElement.focus();
+                }
+                
+                // Restore body scroll
+                document.body.style.overflow = '';
             }
-        });
+        };
     }
 
-    toggleMenu() {
+    toggleSidebar() {
         if (this.isOpen) {
-            this.closeMenu();
+            this.closeSidebar();
         } else {
-            this.openMenu();
+            this.openSidebar();
         }
     }
 
-    openMenu() {
-        if (!this.sidebar || !this.overlay) return;
-        
-        this.isOpen = true;
-        
-        // Add classes
-        this.sidebar.classList.add('open');
-        this.overlay.classList.add('open');
-        
-        // Prevent body scroll
-        document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
-        
-        // Focus management
-        this.focusFirstElement();
-        
-        // Announce to screen readers
-        this.announce('Meny åpnet');
+    // Public methods
+    isSidebarOpen() {
+        return this.isOpen;
     }
 
-    closeMenu() {
-        if (!this.sidebar || !this.overlay) return;
-        
-        this.isOpen = false;
-        
-        // Remove classes
-        this.sidebar.classList.remove('open');
-        this.overlay.classList.remove('open');
-        
-        // Restore body scroll
-        document.body.style.overflow = '';
-        document.body.style.position = '';
-        document.body.style.width = '';
-        
-        // Return focus to menu button
-        if (this.menuBtn) {
-            this.menuBtn.focus();
-        }
-        
-        // Announce to screen readers
-        this.announce('Meny lukket');
+    getSidebarElement() {
+        return this.sidebar;
     }
 
-    focusFirstElement() {
-        const focusableElements = this.sidebar.querySelectorAll(
-            'a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
-        );
-        
-        if (focusableElements.length > 0) {
-            focusableElements[0].focus();
-        }
-    }
-
-    announce(message) {
-        // Create temporary announcement for screen readers
-        const announcement = document.createElement('div');
-        announcement.setAttribute('aria-live', 'polite');
-        announcement.setAttribute('aria-atomic', 'true');
-        announcement.style.position = 'absolute';
-        announcement.style.left = '-10000px';
-        announcement.style.width = '1px';
-        announcement.style.height = '1px';
-        announcement.style.overflow = 'hidden';
-        announcement.textContent = message;
-        
-        document.body.appendChild(announcement);
-        
-        setTimeout(() => {
-            if (announcement.parentNode) {
-                announcement.parentNode.removeChild(announcement);
-            }
-        }, 1000);
+    getMenuButton() {
+        return this.menuBtn;
     }
 }
 
-// Initialize Bootstrap-style menu
-const bootstrapMenu = new BootstrapMenu();
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    window.mobileMenuManager = new MobileMenuManager();
+});
 
-// Global functions for easy access
-window.toggleMobileMenu = () => bootstrapMenu.toggleMenu();
-window.closeMobileMenu = () => bootstrapMenu.closeMenu();
-window.openMobileMenu = () => bootstrapMenu.openMenu();
-
-// Auto-initialize
-if (typeof window !== 'undefined') {
-    window.bootstrapMenu = bootstrapMenu;
-}
+// Export for external use
+window.MobileMenuManager = MobileMenuManager;

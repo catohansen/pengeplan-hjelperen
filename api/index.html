@@ -2,39 +2,44 @@
 <html lang="no">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengeplan - Din økonomiske hjelper</title>
     
     <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     
-    <title>Pengeplan - Logg inn</title>
+    <!-- OpenGraph Metadata -->
+    <meta property="og:title" content="Pengeplan - Din økonomiske hjelper">
+    <meta property="og:description" content="Få kontroll på din økonomi med smart budsjettering og AI-rådgivning">
+    <meta property="og:image" content="https://pengeplan.no/logo.png">
+    <meta property="og:url" content="https://pengeplan.no">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/png" href="assets/logo.png">
     
-    <!-- OpenGraph metadata -->
-    <meta property="og:image" content="assets/logo.png">
-    <meta property="og:title" content="Pengeplan">
-    <meta property="og:description" content="Din økonomiske hjelper – Budsjett, gjeld og støtteordninger på ett sted.">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="responsive.css">
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <div class="auth-card">
             <div class="logo-section">
-                <div class="brand-logo-fallback">
-                    <div class="logo-icon">☑️</div>
-                    <h1 class="logo">Pengeplan</h1>
+                <div class="logo-container">
+                    <span class="logo-icon">📋</span>
+                    <span class="logo-text">Pengeplan</span>
                 </div>
-                <p class="subtitle">Din økonomiske hjelper</p>
+                <p class="logo-subtitle">Din økonomiske hjelper</p>
             </div>
             
+            <!-- Features Overview -->
             <div class="features-overview">
                 <div class="feature-item">
                     <div class="feature-icon blue">📊</div>
@@ -48,71 +53,103 @@
                     <div class="feature-icon green">📋</div>
                     <span>Støtteordninger</span>
                 </div>
+                <div class="feature-item">
+                    <div class="feature-icon blue">🤖</div>
+                    <span>AI-Rådgiver</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon green">📱</div>
+                    <span>BankID Login</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon blue">🔒</div>
+                    <span>Sikker & Privat</span>
+                </div>
             </div>
             
-            <form id="loginForm" class="login-form" novalidate>
+            <form id="loginForm" class="auth-form">
                 <h2>Logg inn</h2>
                 <p class="welcome-text">Velkommen tilbake til Pengeplan</p>
-                
-                <!-- CSRF Token -->
-                <input type="hidden" id="csrfToken" name="csrfToken">
-                
+
                 <div class="form-group">
-                    <label for="email">E-post</label>
-                    <input type="email" id="email" name="email" required placeholder="din@epost.no" autocomplete="email" maxlength="254">
-                    <div class="error-message" id="emailError"></div>
+                    <div class="input-container">
+                        <div class="input-icon">📧</div>
+                        <input type="email" id="email" name="email" required placeholder="din@epost.no">
+                    </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="password">Passord</label>
-                    <input type="password" id="password" name="password" required placeholder="Ditt passord" autocomplete="current-password" minlength="8" maxlength="128">
-                    <div class="error-message" id="passwordError"></div>
+                    <div class="input-container">
+                        <div class="input-icon">🔒</div>
+                        <input type="password" id="password" name="password" required placeholder="Ditt passord">
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="rememberMe" name="rememberMe">
-                        <span class="checkmark"></span>
-                        Husk meg
-                    </label>
-                </div>
-                
-                <button type="submit" class="login-btn" id="loginBtn">
-                    <span class="btn-text">Logg inn</span>
-                    <div class="spinner" id="spinner"></div>
+                <button type="submit" class="login-btn">
+                    <span>Logg inn</span>
                 </button>
             </form>
             
+            <div class="divider">
+                <span>eller</span>
+            </div>
+            
+            <div class="social-login">
+                <button class="social-btn google-btn" id="loginWithGoogle">
+                    <span class="social-icon">🔍</span>
+                    <span>Google</span>
+                </button>
+                <button class="social-btn bankid-btn" id="loginWithBankID">
+                    <span class="social-icon">🏦</span>
+                    <span>BankID</span>
+                </button>
+            </div>
+            
             <div class="signup-link">
-                <p>Har du ikke konto? <a href="#" id="signupLink">Opprett en her</a></p>
-                
-                <div class="social-login">
-                    <div class="social-buttons">
-                        <button type="button" class="social-btn bankid-btn" id="loginWithBankID">
-                            <span class="social-icon">🏦</span>
-                            <span>Logg inn med BankID</span>
-                        </button>
-                        <button type="button" class="social-btn google-btn" id="loginWithGoogle">
-                            <span class="social-icon">🔍</span>
-                            <span>Logg inn med Google</span>
-                        </button>
-                        <button type="button" class="social-btn facebook-btn" id="loginWithFacebook">
-                            <span class="social-icon">📘</span>
-                            <span>Logg inn med Facebook</span>
-                        </button>
-                    </div>
-                </div>
+                <p>Ny på Pengeplan? <a href="register.html" id="signupLink">Registrer deg</a></p>
             </div>
             
             <div class="terms">
-                <p>Ved å opprette konto godtar du våre <a href="#" id="termsLink">vilkår og betingelser</a>.</p>
+                <p>Ved å opprette konto godtar du våre vilkår og betingelser.</p>
+            </div>
+            
+            <!-- Information Section -->
+            <div class="info-section">
+                <h3>🎯 Hvorfor Pengeplan?</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon">🏦</div>
+                        <h4>BankID Integrasjon</h4>
+                        <p>Sikker innlogging med BankID og fremtidig integrasjon med norske banker</p>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📊</div>
+                        <h4>NAV Støtteordninger</h4>
+                        <p>Automatisk søk og søknadshjelp for NAV-støtteordninger</p>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🤖</div>
+                        <h4>AI Økonomirådgiver</h4>
+                        <p>Personlig rådgivning basert på din økonomiske situasjon</p>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🔒</div>
+                        <h4>GDPR Kompatibel</h4>
+                        <p>Full kontroll over dine data og personvern i henhold til norsk lov</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    
-    <div id="notification" class="notification"></div>
-    
+
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- Scripts -->
     <script src="js/security.js"></script>
     <script src="script.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script src="test-automation.js"></script>
+    <script src="js/enhanced-testing.js"></script>
 </body>
 </html>

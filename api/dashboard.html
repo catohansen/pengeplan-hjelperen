@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- OpenGraph Metadata -->
+    <meta property="og:title" content="Pengeplan - Din økonomiske hjelper">
+    <meta property="og:description" content="Styr din økonomi med AI-rådgivning, budsjettstyring og støtteordninger">
+    <meta property="og:image" content="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjIwIiB2aWV3Qm94PSIwIDAgMTIwIDIwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjIwIiByeD0iNCIgZmlsbD0iIzE2OEQ2MCIvPgo8cGF0aCBkPSJNNSAxMGwzIDMgNS01IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+">
+    <meta property="og:url" content="https://pengeplan.no">
+    
+    <title>Dashboard - Pengeplan</title>
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzE2OEQ2MCIvPgo8cGF0aCBkPSJNOCAxNmw0IDQgOC04IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+        <div class="topbar-content">
+            <div class="topbar-left">
+                <button class="mobile-menu-btn" aria-label="Åpne meny">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Dashboard</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <button class="nav-btn" onclick="location.href='profile.html'">
+                    <span class="nav-icon">👤</span>
+                    <span class="nav-text">Profil</span>
+                </button>
+                <button class="nav-btn" onclick="logout()">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Logg ut</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo" onclick="window.location.href='dashboard.html'" style="cursor: pointer;">
+                <span class="logo-icon">📋</span>
+                <span class="logo-text">Pengeplan</span>
+            </div>
+        </div>
+        
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-link active" data-page="dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            
+            <a href="budget.html" class="nav-link" data-page="budget">
+                <span class="nav-icon">💰</span>
+                <span class="nav-text">Budsjett</span>
+            </a>
+            
+            <a href="debts.html" class="nav-link" data-page="debts">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">Gjeld</span>
+            </a>
+            
+            <a href="support-programs.html" class="nav-link" data-page="support">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">Støtteordninger</span>
+            </a>
+            
+            <a href="ai-advisor.html" class="nav-link" data-page="ai">
+                <span class="nav-icon">🤖</span>
+                <span class="nav-text">AI-Rådgiver</span>
+            </a>
+            
+            <a href="documents.html" class="nav-link" data-page="documents">
+                <span class="nav-icon">📄</span>
+                <span class="nav-text">Dokumenter</span>
+            </a>
+            
+            <a href="calendar.html" class="nav-link" data-page="calendar">
+                <span class="nav-icon">📅</span>
+                <span class="nav-text">Kalender</span>
+            </a>
+            
+            <div class="nav-divider"></div>
+            
+            <a href="test-roles.html" class="nav-link admin-only" data-page="test" style="display: none;">
+                <span class="nav-icon">🧪</span>
+                <span class="nav-text">Test Suite</span>
+            </a>
+            
+            <a href="admin.html" class="nav-link admin-only" data-page="admin" style="display: none;">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Admin</span>
+            </a>
+        </div>
+        
+        <div class="sidebar-footer">
+            <a href="profile.html" class="profile-link" id="profileLink">
+                <span class="profile-avatar">👤</span>
+                <span class="profile-name" id="profileName">cato@catohansen.no</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-container">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <h1 class="welcome-title">Velkommen tilbake!</h1>
+                    <p class="welcome-subtitle">Din økonomiske oversikt for i dag</p>
+                    <div class="welcome-stats">
+                        <div class="stat-item">
+                            <span class="stat-value" id="totalBalance">kr 45,230</span>
+                            <span class="stat-label">Total saldo</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="monthlySavings">+kr 2,450</span>
+                            <span class="stat-label">Denne måneden</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="budgetProgress">78%</span>
+                            <span class="stat-label">Budsjett mål</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="savingsRate">12.5%</span>
+                            <span class="stat-label">Sparerate</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h2 class="section-title">Hurtig handlinger</h2>
+                <div class="action-grid">
+                    <div class="action-card" onclick="location.href='budget.html'">
+                        <span class="action-icon">💰</span>
+                        <span class="action-title">Legg til inntekt</span>
+                        <span class="action-description">Registrer ny inntekt</span>
+                    </div>
+                    
+                    <div class="action-card" onclick="location.href='budget.html'">
+                        <span class="action-icon">💸</span>
+                        <span class="action-title">Registrer utgift</span>
+                        <span class="action-description">Legg til ny utgift</span>
+                    </div>
+                    
+                    <div class="action-card" onclick="location.href='ai-advisor.html'">
+                        <span class="action-icon">🤖</span>
+                        <span class="action-title">AI-rådgivning</span>
+                        <span class="action-description">Få personlig råd</span>
+                    </div>
+                    
+                    <div class="action-card" onclick="location.href='support-programs.html'">
+                        <span class="action-icon">📋</span>
+                        <span class="action-title">Støtteordninger</span>
+                        <span class="action-description">Søk støtte</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="recent-activity">
+                <h2 class="section-title">Siste aktiviteter</h2>
+                <div class="activity-list" id="activityList">
+                    <div class="activity-item">
+                        <div class="activity-icon">💰</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Lønn mottatt</div>
+                            <div class="activity-time">I dag, 09:00</div>
+                        </div>
+                        <div class="activity-amount">+kr 25,000</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">🏠</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Husleie betalt</div>
+                            <div class="activity-time">I går, 14:30</div>
+                        </div>
+                        <div class="activity-amount">-kr 8,500</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">🛒</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Dagligvarer</div>
+                            <div class="activity-time">I går, 12:15</div>
+                        </div>
+                        <div class="activity-amount">-kr 450</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upcoming Bills -->
+            <section class="upcoming-bills">
+                <h2 class="section-title">Kommende regninger</h2>
+                <div class="bills-list" id="billsList">
+                    <div class="bill-item">
+                        <div class="bill-info">
+                            <div class="bill-icon">⚡</div>
+                            <div class="bill-details">
+                                <h4>Strømregning</h4>
+                                <p>Forfaller om 3 dager</p>
+                            </div>
+                        </div>
+                        <div class="bill-amount">kr 1,200</div>
+                    </div>
+                    
+                    <div class="bill-item">
+                        <div class="bill-info">
+                            <div class="bill-icon">📱</div>
+                            <div class="bill-details">
+                                <h4>Mobilregning</h4>
+                                <p>Forfaller om 8 dager</p>
+                            </div>
+                        </div>
+                        <div class="bill-amount">kr 299</div>
+                    </div>
+                    
+                    <div class="bill-item">
+                        <div class="bill-info">
+                            <div class="bill-icon">🏠</div>
+                            <div class="bill-details">
+                                <h4>Husleie</h4>
+                                <p>Forfaller om 15 dager</p>
+                            </div>
+                        </div>
+                        <div class="bill-amount">kr 8,500</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Insights -->
+            <section class="ai-insights">
+                <h2 class="section-title">AI-rådgivning</h2>
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <div class="insight-icon">🤖</div>
+                        <div class="insight-title">Din økonomiske helse</div>
+                    </div>
+                    <div class="insight-content">
+                        Basert på dine siste transaksjoner ser økonomien din bra ut! Du sparer mer enn 10% av inntekten din, som er et godt mål. Vurder å øke sparingen til 15% for å nå dine langsiktige mål raskere.
+                    </div>
+                    <a href="ai-advisor.html" class="insight-btn">Få mer råd</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/security.js"></script>
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script src="test-automation.js"></script>
+    <script src="js/enhanced-testing.js"></script>
+</body>
+</html>

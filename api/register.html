@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrer deg - Pengeplan</title>
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- OpenGraph Metadata -->
+    <meta property="og:title" content="Registrer deg - Pengeplan">
+    <meta property="og:description" content="Bli med i Pengeplan og få kontroll på din økonomi">
+    <meta property="og:image" content="https://pengeplan.no/logo.png">
+    <meta property="og:url" content="https://pengeplan.no/register">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="register.css">
+    
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="register-card">
+            <!-- Header -->
+            <div class="register-header">
+                <a href="index.html" class="back-link">
+                    <span class="back-icon">←</span>
+                    <span>Tilbake til innlogging</span>
+                </a>
+                
+                <div class="logo-section">
+                    <div class="logo-container">
+                        <span class="logo-icon">📋</span>
+                        <span class="logo-text">Pengeplan</span>
+                    </div>
+                    <p class="logo-subtitle">Bli med i din økonomiske hjelper</p>
+                </div>
+            </div>
+            
+            <!-- Registration Form -->
+            <form id="registerForm" class="register-form">
+                <h2>Opprett din konto</h2>
+                <p class="welcome-text">Fyll ut informasjonen nedenfor for å komme i gang</p>
+                
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h3>📋 Personlig informasjon</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Fornavn *</label>
+                            <div class="input-container">
+                                <div class="input-icon">👤</div>
+                                <input type="text" id="firstName" name="firstName" required placeholder="Ditt fornavn">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName">Etternavn *</label>
+                            <div class="input-container">
+                                <div class="input-icon">👤</div>
+                                <input type="text" id="lastName" name="lastName" required placeholder="Ditt etternavn">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-postadresse *</label>
+                        <div class="input-container">
+                            <div class="input-icon">📧</div>
+                            <input type="email" id="email" name="email" required placeholder="din@epost.no">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Telefonnummer</label>
+                        <div class="input-container">
+                            <div class="input-icon">📱</div>
+                            <input type="tel" id="phone" name="phone" placeholder="+47 123 45 678">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birthDate">Fødselsdato</label>
+                        <div class="input-container">
+                            <div class="input-icon">🎂</div>
+                            <input type="date" id="birthDate" name="birthDate">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Address Information -->
+                <div class="form-section">
+                    <h3>🏠 Adresseinformasjon</h3>
+                    
+                    <div class="form-group">
+                        <label for="street">Gateadresse</label>
+                        <div class="input-container">
+                            <div class="input-icon">📍</div>
+                            <input type="text" id="street" name="street" placeholder="Storgata 123">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="postalCode">Postnummer</label>
+                            <div class="input-container">
+                                <div class="input-icon">📮</div>
+                                <input type="text" id="postalCode" name="postalCode" placeholder="0001">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="city">Poststed</label>
+                            <div class="input-container">
+                                <div class="input-icon">🏙️</div>
+                                <input type="text" id="city" name="city" placeholder="Oslo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Financial Information -->
+                <div class="form-section">
+                    <h3>💰 Økonomisk informasjon</h3>
+                    
+                    <div class="form-group">
+                        <label for="income">Årlig inntekt (NOK)</label>
+                        <div class="input-container">
+                            <div class="input-icon">💵</div>
+                            <input type="number" id="income" name="income" placeholder="500000">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="employment">Arbeidssituasjon</label>
+                        <div class="input-container">
+                            <div class="input-icon">💼</div>
+                            <select id="employment" name="employment">
+                                <option value="">Velg arbeidssituasjon</option>
+                                <option value="employed">Ansatt</option>
+                                <option value="self-employed">Selvstendig næringsdrivende</option>
+                                <option value="student">Student</option>
+                                <option value="unemployed">Arbeidsledig</option>
+                                <option value="retired">Pensjonist</option>
+                                <option value="other">Annet</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="household">Husholdningstype</label>
+                        <div class="input-container">
+                            <div class="input-icon">👨‍👩‍👧‍👦</div>
+                            <select id="household" name="household">
+                                <option value="">Velg husholdningstype</option>
+                                <option value="single">Enslig</option>
+                                <option value="couple">Par uten barn</option>
+                                <option value="family">Familie med barn</option>
+                                <option value="shared">Delt husholdning</option>
+                                <option value="other">Annet</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security -->
+                <div class="form-section">
+                    <h3>🔒 Sikkerhet</h3>
+                    
+                    <div class="form-group">
+                        <label for="password">Passord *</label>
+                        <div class="input-container">
+                            <div class="input-icon">🔒</div>
+                            <input type="password" id="password" name="password" required placeholder="Minst 8 tegn">
+                        </div>
+                        <div class="password-strength" id="passwordStrength"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Bekreft passord *</label>
+                        <div class="input-container">
+                            <div class="input-icon">🔒</div>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Gjenta passordet">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Preferences -->
+                <div class="form-section">
+                    <h3>⚙️ Innstillinger</h3>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            <span class="checkmark"></span>
+                            Jeg vil motta nyhetsbrev og tips om økonomi
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="marketing" name="marketing">
+                            <span class="checkmark"></span>
+                            Jeg godtar å motta markedsføringsmateriell
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkmark"></span>
+                            Jeg godtar <a href="#" class="link">vilkår og betingelser</a> *
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="privacy" name="privacy" required>
+                            <span class="checkmark"></span>
+                            Jeg godtar <a href="#" class="link">personvernpolicy</a> *
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="register-btn">
+                    <span>Opprett konto</span>
+                </button>
+            </form>
+            
+            <!-- Login Link -->
+            <div class="login-link">
+                <p>Har du allerede en konto? <a href="index.html">Logg inn her</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/security.js"></script>
+    <script src="register.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script src="test-automation.js"></script>
+    <script src="js/enhanced-testing.js"></script>
+</body>
+</html>

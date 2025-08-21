@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrer deg - Pengeplan</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="register.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <div class="register-card">
+            <div class="register-header">
+                <a href="index.html" class="back-link">
+                    <span class="back-icon">←</span>
+                    <span>Tilbake til innlogging</span>
+                </a>
+                
+                <div class="logo-section">
+                    <div class="logo-container">
+                        <span class="logo-icon">📋</span>
+                        <span class="logo-text">Pengeplan</span>
+                    </div>
+                    <p class="logo-subtitle">Bli med i din økonomiske hjelper</p>
+                </div>
+            </div>
+            
+            <form id="registerForm" class="register-form">
+                <h2>Opprett din konto</h2>
+                <p class="welcome-text">Fyll ut informasjonen nedenfor for å komme i gang</p>
+                
+                <div class="form-section">
+                    <h3>📋 Personlig informasjon</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Fornavn *</label>
+                            <div class="input-container">
+                                <div class="input-icon">👤</div>
+                                <input type="text" id="firstName" name="firstName" required placeholder="Ditt fornavn">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName">Etternavn *</label>
+                            <div class="input-container">
+                                <div class="input-icon">👤</div>
+                                <input type="text" id="lastName" name="lastName" required placeholder="Ditt etternavn">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-postadresse *</label>
+                        <div class="input-container">
+                            <div class="input-icon">📧</div>
+                            <input type="email" id="email" name="email" required placeholder="din@epost.no">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Telefonnummer</label>
+                        <div class="input-container">
+                            <div class="input-icon">📱</div>
+                            <input type="tel" id="phone" name="phone" placeholder="+47 123 45 678">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>🔒 Sikkerhet</h3>
+                    
+                    <div class="form-group">
+                        <label for="password">Passord *</label>
+                        <div class="input-container">
+                            <div class="input-icon">🔒</div>
+                            <input type="password" id="password" name="password" required placeholder="Minst 8 tegn">
+                        </div>
+                        <div class="password-strength" id="passwordStrength"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Bekreft passord *</label>
+                        <div class="input-container">
+                            <div class="input-icon">🔒</div>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Gjenta passordet">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>⚙️ Innstillinger</h3>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkmark"></span>
+                            Jeg godtar vilkår og betingelser *
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="privacy" name="privacy" required>
+                            <span class="checkmark"></span>
+                            Jeg godtar personvernpolicy *
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="register-btn">
+                    <span>Opprett konto</span>
+                </button>
+            </form>
+            
+            <div class="login-link">
+                <p>Har du allerede en konto? <a href="index.html">Logg inn her</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="notificationContainer" class="notification-container"></div>
+    <script src="js/security.js"></script>
+    <script src="register.js"></script>
+</body>
+</html>

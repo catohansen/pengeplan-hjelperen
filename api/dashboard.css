@@ -1,0 +1,506 @@
+/* Dashboard Styles - Optimized Bobble Box Design */
+
+:root {
+    --primary-green: #168d60;
+    --secondary-green: #22c55e;
+    --accent-orange: #f97316;
+    --light-bg: #f8fafc;
+    --card-bg: rgba(255, 255, 255, 0.98);
+    --border-radius: 15px;
+    --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.15);
+    --shadow-heavy: 0 8px 30px rgba(0, 0, 0, 0.2);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dashboard-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%);
+    padding: 20px;
+    margin-top: 200px; /* Significantly increased to provide much more space for topbar */
+    margin-left: 0;
+    transition: var(--transition);
+}
+
+/* Fix for pages that use main-content + dashboard-container */
+.main-content .dashboard-container {
+    margin-left: 0; /* Reset margin-left when inside main-content */
+    margin-top: 0; /* Reset margin-top when inside main-content since main-content already has margin-top */
+}
+
+/* Welcome Section */
+.welcome-section {
+    margin-bottom: 30px;
+}
+
+.welcome-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--shadow-medium);
+    border: 1px solid rgba(22, 141, 96, 0.1);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-green), var(--secondary-green));
+    transform: scaleX(0);
+    transition: var(--transition);
+}
+
+.welcome-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.welcome-card:hover::before {
+    transform: scaleX(1);
+}
+
+.welcome-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.welcome-title::before {
+    content: '👋';
+    font-size: 1.5rem;
+}
+
+.welcome-subtitle {
+    color: #64748b;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.welcome-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(22, 141, 96, 0.2);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-green), var(--secondary-green));
+    transform: scaleX(0);
+    transition: var(--transition);
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--primary-green);
+}
+
+.stat-item:hover::before {
+    transform: scaleX(1);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Quick Actions */
+.quick-actions {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title::before {
+    content: '⚡';
+    font-size: 1.2rem;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.action-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(22, 141, 96, 0.1);
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+}
+
+.action-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-green), var(--secondary-green));
+    transform: scaleX(0);
+    transition: var(--transition);
+}
+
+.action-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-heavy);
+    border-color: var(--primary-green);
+}
+
+.action-card:hover::before {
+    transform: scaleX(1);
+}
+
+.action-icon {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.action-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.action-description {
+    font-size: 0.9rem;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+/* Recent Activity */
+.recent-activity {
+    margin-bottom: 30px;
+}
+
+.activity-list {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(22, 141, 96, 0.1);
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.activity-item:hover {
+    background: rgba(22, 141, 96, 0.05);
+    border-color: rgba(22, 141, 96, 0.1);
+    transform: translateX(5px);
+}
+
+.activity-item:last-child {
+    margin-bottom: 0;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+    color: white;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 3px;
+}
+
+.activity-time {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.activity-amount {
+    font-weight: 600;
+    color: var(--primary-green);
+}
+
+/* Upcoming Bills */
+.upcoming-bills {
+    margin-bottom: 30px;
+}
+
+.bills-list {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(22, 141, 96, 0.1);
+}
+
+.bill-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.bill-item:hover {
+    background: rgba(249, 115, 22, 0.05);
+    border-color: rgba(249, 115, 22, 0.1);
+    transform: translateX(5px);
+}
+
+.bill-item:last-child {
+    margin-bottom: 0;
+}
+
+.bill-info {
+    display: flex;
+    align-items: center;
+}
+
+.bill-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 1rem;
+    background: linear-gradient(135deg, var(--accent-orange), #fb923c);
+    color: white;
+}
+
+.bill-details h4 {
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 3px;
+}
+
+.bill-details p {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.bill-amount {
+    font-weight: 700;
+    color: var(--accent-orange);
+    font-size: 1.1rem;
+}
+
+/* AI Insights */
+.ai-insights {
+    margin-bottom: 30px;
+}
+
+.insight-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(22, 141, 96, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.insight-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #8b5cf6, #a855f7);
+    transform: scaleX(0);
+    transition: var(--transition);
+}
+
+.insight-card:hover::before {
+    transform: scaleX(1);
+}
+
+.insight-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.insight-icon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+.insight-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.insight-content {
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.insight-btn {
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-block;
+}
+
+.insight-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 15px;
+        margin-top: 0; /* Reset margin-top when inside main-content since main-content already has margin-top */
+    }
+    
+    .welcome-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .action-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .welcome-title {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .welcome-card,
+    .action-card,
+    .activity-list,
+    .bills-list,
+    .insight-card {
+        padding: 20px;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .dashboard-container {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    }
+    
+    .welcome-card,
+    .action-card,
+    .activity-list,
+    .bills-list,
+    .insight-card {
+        background: rgba(30, 41, 59, 0.95);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .welcome-title,
+    .action-title,
+    .activity-title,
+    .bill-details h4,
+    .insight-title {
+        color: #f1f5f9;
+    }
+    
+    .welcome-subtitle,
+    .action-description,
+    .activity-time,
+    .bill-details p,
+    .insight-content {
+        color: #94a3b8;
+    }
+    
+    .stat-item {
+        background: rgba(30, 41, 59, 0.8);
+        border-color: rgba(22, 141, 96, 0.2);
+    }
+}
+

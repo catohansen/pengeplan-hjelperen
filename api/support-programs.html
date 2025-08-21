@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- OpenGraph Metadata -->
+    <meta property="og:title" content="Støtteordninger - Pengeplan">
+    <meta property="og:description" content="Finn og søk relevante støtteordninger">
+    <meta property="og:image" content="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjIwIiB2aWV3Qm94PSIwIDAgMTIwIDIwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjIwIiByeD0iNCIgZmlsbD0iIzE2OEQ2MCIvPgo8cGF0aCBkPSJNNSAxMGwzIDMgNS01IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+">
+    <meta property="og:url" content="https://pengeplan.no/support-programs">
+    
+    <title>Støtteordninger - Pengeplan</title>
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzE2OEQ2MCIvPgo8cGF0aCBkPSJNOCAxNmw0IDQgOC04IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+        <div class="topbar-content">
+            <div class="topbar-left">
+                <button class="mobile-menu-btn" aria-label="Åpne meny">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Støtteordninger</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <button class="nav-btn" onclick="location.href='profile.html'">
+                    <span class="nav-icon">👤</span>
+                    <span class="nav-text">Profil</span>
+                </button>
+                <button class="nav-btn" onclick="logout()">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Logg ut</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">📋</span>
+                <span class="logo-text">Pengeplan</span>
+            </div>
+        </div>
+        
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-link" data-page="dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            
+            <a href="budget.html" class="nav-link" data-page="budget">
+                <span class="nav-icon">💰</span>
+                <span class="nav-text">Budsjett</span>
+            </a>
+            
+            <a href="debts.html" class="nav-link" data-page="debts">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">Gjeld</span>
+            </a>
+            
+            <a href="support-programs.html" class="nav-link active" data-page="support">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">Støtteordninger</span>
+            </a>
+            
+            <a href="ai-advisor.html" class="nav-link" data-page="ai">
+                <span class="nav-icon">🤖</span>
+                <span class="nav-text">AI-Rådgiver</span>
+            </a>
+            
+            <a href="documents.html" class="nav-link" data-page="documents">
+                <span class="nav-icon">📄</span>
+                <span class="nav-text">Dokumenter</span>
+            </a>
+            
+            <a href="calendar.html" class="nav-link" data-page="calendar">
+                <span class="nav-icon">📅</span>
+                <span class="nav-text">Kalender</span>
+            </a>
+            
+            <div class="nav-divider"></div>
+            
+            <a href="test-roles.html" class="nav-link admin-only" data-page="test" style="display: none;">
+                <span class="nav-icon">🧪</span>
+                <span class="nav-text">Test Suite</span>
+            </a>
+            
+            <a href="admin.html" class="nav-link admin-only" data-page="admin" style="display: none;">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Admin</span>
+            </a>
+        </div>
+        
+        <div class="sidebar-footer">
+            <a href="profile.html" class="profile-link" id="profileLink">
+                <span class="profile-avatar">👤</span>
+                <span class="profile-name" id="profileName">cato@catohansen.no</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-container">
+            <!-- Support Overview -->
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <h1 class="welcome-title">Støtteordninger</h1>
+                    <p class="welcome-subtitle">Finn relevante støtteordninger for din situasjon</p>
+                    <div class="welcome-stats">
+                        <div class="stat-item">
+                            <span class="stat-value" id="totalPrograms">127</span>
+                            <span class="stat-label">Tilgjengelige ordninger</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="eligiblePrograms">8</span>
+                            <span class="stat-label">Du kvalifiserer for</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="monthlySupport">kr 3,200</span>
+                            <span class="stat-label">Potensiell støtte</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="appliedPrograms">2</span>
+                            <span class="stat-label">Søknader sendt</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Search and Filter -->
+            <section class="quick-actions">
+                <h2 class="section-title">Søk støtteordninger</h2>
+                <div class="action-grid">
+                    <div class="action-card">
+                        <div class="action-icon">🔍</div>
+                        <div class="action-title">Søk etter kategori</div>
+                        <div class="action-description">Housing, education, health</div>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">👤</div>
+                        <div class="action-title">Personlig profil</div>
+                        <div class="action-description">Basert på din situasjon</div>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">📍</div>
+                        <div class="action-title">Lokale ordninger</div>
+                        <div class="action-description">I ditt område</div>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">📊</div>
+                        <div class="action-title">Inntektsbasert</div>
+                        <div class="action-description">Basert på inntekt</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recommended Programs -->
+            <section class="recent-activity">
+                <h2 class="section-title">Anbefalte støtteordninger</h2>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">🏠</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Housing Benefit (Bostøtte)</div>
+                            <div class="activity-time">Månedlig støtte til boligutgifter</div>
+                        </div>
+                        <div class="activity-amount">kr 1,800</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">👨‍👩‍👧‍👦</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Child Benefit (Barnetrygd)</div>
+                            <div class="activity-time">Støtte for barn under 18 år</div>
+                        </div>
+                        <div class="activity-amount">kr 1,054</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">🏥</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Healthcare Support</div>
+                            <div class="activity-time">Støtte til helseutgifter</div>
+                        </div>
+                        <div class="activity-amount">kr 350</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Insights -->
+            <section class="ai-insights">
+                <h2 class="section-title">AI-rådgivning</h2>
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <div class="insight-icon">🤖</div>
+                        <div class="insight-title">Din støttepotensial</div>
+                    </div>
+                    <div class="insight-content">
+                        Basert på din profil og økonomiske situasjon kan du kvalifisere for opptil kr 3,200 i månedlig støtte. Vi anbefaler å søke på Housing Benefit først, da du har høy sannsynlighet for å få godkjent.
+                    </div>
+                    <a href="ai-advisor.html" class="insight-btn">Få personlig rådgivning</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/security.js"></script>
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script src="test-automation.js"></script>
+    <script src="js/enhanced-testing.js"></script>
+</body>
+</html>
