@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Pengeplan – Admin</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <meta property="og:image" content="assets/logo.png">
+    <meta property="og:title" content="Pengeplan">
+    <meta property="og:description" content="Din økonomiske hjelper – Budsjett, gjeld og støtteordninger på ett sted.">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="logo brand">
+                    <span class="logo-icon">☑️</span>
+                    <span class="logo-text">Pengeplan</span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a class="nav-link" href="dashboard.html"><span class="nav-icon">🏠</span><span class="nav-text">Bruker‑app</span></a></li>
+                <li class="nav-item active" data-admin="users"><a class="nav-link" href="#" onclick="switchAdminTab('users')"><span class="nav-icon">👥</span><span class="nav-text">Brukere</span></a></li>
+                <li class="nav-item" data-admin="settings"><a class="nav-link" href="#" onclick="switchAdminTab('settings')"><span class="nav-icon">⚙️</span><span class="nav-text">Innstillinger</span></a></li>
+                <li class="nav-item" data-admin="apis"><a class="nav-link" href="#" onclick="switchAdminTab('apis')"><span class="nav-icon">🔌</span><span class="nav-text">API & Integrasjoner</span></a></li>
+            </ul>
+        </aside>
+
+        <div class="overlay" id="overlay"></div>
+
+        <main class="main-content">
+            <header class="topbar container">
+                <button id="menuBtn" class="only-mobile" aria-label="Åpne meny">☰</button>
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <h1>Admin</h1>
+                    <button class="btn-sm" onclick="window.open('test-admin.html', '_blank')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
+                        🧪 Test Panel
+                    </button>
+                </div>
+            </header>
+
+            <section class="container">
+                <div class="card-grid">
+                    <div class="card" style="grid-column: 1 / -1;">
+                        <div class="admin-tabs">
+                            <button class="tab-btn admin-tab active" data-target="usersView">Brukere</button>
+                            <button class="tab-btn admin-tab" data-target="settingsView">Innstillinger</button>
+                            <button class="tab-btn admin-tab" data-target="apisView">API & Integrasjoner</button>
+                        </div>
+
+                        <div id="usersView" class="admin-view active">
+                            <div class="admin-actions">
+                                <div class="admin-actions-left">
+                                    <button id="addUserBtn" class="btn btn-success" aria-label="Legg til ny bruker">
+                                        <span class="btn-icon" aria-hidden="true">+</span>
+                                        <span>Ny bruker</span>
+                                    </button>
+                                    <div class="admin-stats">
+                                        <span class="stat-item">
+                                            <span class="stat-number" id="totalUsers">0</span>
+                                            <span class="stat-label">Totalt</span>
+                                        </span>
+                                        <span class="stat-item">
+                                            <span class="stat-number" id="activeUsers">0</span>
+                                            <span class="stat-label">Aktive</span>
+                                        </span>
+                                        <span class="stat-item">
+                                            <span class="stat-number" id="adminUsers">0</span>
+                                            <span class="stat-label">Admin</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="admin-actions-right">
+                                    <div class="search-box">
+                                        <span class="search-icon" aria-hidden="true">🔍</span>
+                                        <input id="searchUsers" class="input" placeholder="Søk brukere…" aria-label="Søk i brukerliste">
+                                    </div>
+                                    <button id="exportUsers" class="btn-secondary btn-info" aria-label="Eksporter brukerliste">
+                                        <span class="btn-icon" aria-hidden="true">📊</span>
+                                        <span>Eksporter</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table class="admin-table" aria-label="Brukerliste">
+                                    <thead>
+                                        <tr>
+                                            <th>Bruker</th>
+                                            <th>Kontakt</th>
+                                            <th>Rolle</th>
+                                            <th>Plan</th>
+                                            <th>Status</th>
+                                            <th>Handlinger</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usersTbody"></tbody>
+                                </table>
+                                <div id="paginationContainer"></div>
+                            </div>
+                        </div>
+
+                        <div id="settingsView" class="admin-view">
+                            <h3>Globale innstillinger</h3>
+                            <div class="two-col">
+                                <div>
+                                    <label>Appnavn</label>
+                                    <input id="appName" class="input" placeholder="Pengeplan">
+                                </div>
+                                <div>
+                                    <label>Standard plan</label>
+                                    <select id="defaultPlan" class="select"><option value="free">Gratis</option><option value="pro">Pro</option><option value="partner">Partner</option></select>
+                                </div>
+                            </div>
+                            <div class="sticky-actions">
+                                <button id="saveSettings" class="btn btn-success">Lagre</button>
+                            </div>
+                        </div>
+
+                        <div id="apisView" class="admin-view">
+                            <h3>API & Integrasjoner</h3>
+                            <div class="two-col">
+                                <div>
+                                    <label>AI administrert endpoint</label>
+                                    <input id="managedAiUrl" class="input" placeholder="https://api.example.com/ai/chat">
+                                </div>
+                                <div>
+                                    <label>Auth token</label>
+                                    <input id="managedAiToken" class="input" placeholder="Bearer …">
+                                </div>
+                            </div>
+                            <div class="sticky-actions">
+                                <button id="saveApis" class="btn btn-success">Lagre</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for user create/edit -->
+    <div id="userModal" class="modal-overlay hidden" aria-hidden="true">
+        <div class="modal admin-modal" role="dialog" aria-modal="true" aria-labelledby="userModalTitle">
+            <div class="modal-header">
+                <h2 id="userModalTitle">Bruker</h2>
+                <button id="closeUserModal" class="modal-close" aria-label="Lukk modal">✕</button>
+            </div>
+            <div class="modal-content">
+                <div class="user-form-grid">
+                    <div class="form-section">
+                        <h3>Grunnleggende informasjon</h3>
+                        <div class="two-col">
+                            <div>
+                                <label>Fornavn</label>
+                                <input id="userFirstName" class="input" placeholder="Fornavn">
+                            </div>
+                            <div>
+                                <label>Etternavn</label>
+                                <input id="userLastName" class="input" placeholder="Etternavn">
+                            </div>
+                            <div>
+                                <label>E‑post</label>
+                                <input id="userEmail" class="input" type="email" placeholder="epost@domene.no">
+                            </div>
+                            <div>
+                                <label>Telefon</label>
+                                <input id="userPhone" class="input" placeholder="9xx xx xxx">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Adresse</h3>
+                        <div class="two-col">
+                            <div>
+                                <label>Gateadresse</label>
+                                <input id="userStreet" class="input" placeholder="Gate 1">
+                            </div>
+                            <div>
+                                <label>Postnummer</label>
+                                <input id="userPostalCode" class="input" placeholder="xxxx">
+                            </div>
+                            <div>
+                                <label>Poststed</label>
+                                <input id="userCity" class="input" placeholder="Sted">
+                            </div>
+                            <div>
+                                <label>Kommune</label>
+                                <input id="userMunicipality" class="input" placeholder="Kommune">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Konto & tilgang</h3>
+                        <div class="two-col">
+                            <div>
+                                <label>Rolle</label>
+                                <select id="userRole" class="select">
+                                    <option value="user">Bruker</option>
+                                    <option value="partner">Partner</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Plan</label>
+                                <select id="userPlan" class="select">
+                                    <option value="free">Gratis</option>
+                                    <option value="pro">Pro</option>
+                                    <option value="partner">Partner</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Status</label>
+                                <select id="userStatus" class="select">
+                                    <option value="active">Aktiv</option>
+                                    <option value="inactive">Inaktiv</option>
+                                    <option value="suspended">Suspender</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Husholdning</label>
+                                <input id="userHousehold" class="input" placeholder="Antall personer">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Varsler & samtykker</h3>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-item">
+                                <input id="userEmailNotif" type="checkbox" checked>
+                                <span>E-postvarsler</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input id="userSmsNotif" type="checkbox">
+                                <span>SMS-varsler</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input id="userWeeklyTips" type="checkbox" checked>
+                                <span>Ukentlige tips</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input id="userAnalytics" type="checkbox">
+                                <span>Analytics-samtykke</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input id="userMarketing" type="checkbox">
+                                <span>Markedsføring</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input id="userBeta" type="checkbox">
+                                <span>Beta-tilgang</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelUser" class="secondary-btn btn-warning">Avbryt</button>
+                <button id="saveUser" class="add-btn btn-success">
+                    <span class="add-icon">✓</span>
+                    <span>Lagre bruker</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/admin.js"></script>
+</body>
+</html>
+
+

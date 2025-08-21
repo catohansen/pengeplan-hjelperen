@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pengeplan - Test</title>
+    <link rel="stylesheet" href="responsive.css">
+    <style>
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px; }
+        .test-result { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background: #d1fae5; color: #065f46; }
+        .error { background: #fee2e2; color: #991b1b; }
+        .info { background: #dbeafe; color: #1e40af; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Pengeplan - System Test</h1>
+        
+        <div class="test-section">
+            <h2>📁 Filstruktur Test</h2>
+            <div id="fileTest" class="test-result info">Sjekker filer...</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔗 Supabase Test</h2>
+            <div id="supabaseTest" class="test-result info">Tester Supabase-tilkobling...</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🎨 CSS Test</h2>
+            <div id="cssTest" class="test-result info">Sjekker styling...</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>📱 Responsiv Test</h2>
+            <div id="responsiveTest" class="test-result info">Tester responsivt design...</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔧 Admin Panel Test</h2>
+            <div id="adminTest" class="test-result info">Tester admin-funksjoner...</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>👤 Profil Test</h2>
+            <div id="profileTest" class="test-result info">Tester profil-funksjoner...</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🎯 Navigasjon</h2>
+            <div class="two-col">
+                <a href="index.html" class="btn">🏠 Login</a>
+                <a href="dashboard.html" class="btn">📊 Dashboard</a>
+                <a href="profile.html" class="btn">👤 Profil</a>
+                <a href="admin.html" class="btn">⚙️ Admin</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Test funksjoner
+        function updateTest(id, status, message) {
+            const element = document.getElementById(id);
+            element.className = `test-result ${status}`;
+            element.textContent = message;
+        }
+
+        // Filstruktur test
+        async function testFiles() {
+            const requiredFiles = [
+                'index.html', 'dashboard.html', 'profile.html', 'admin.html',
+                'styles.css', 'dashboard.css', 'responsive.css',
+                'script.js', 'dashboard.js',
+                'js/db.js', 'js/profile.js', 'js/admin.js', 'js/supabaseClient.js',
+                'api/public/auth-config.js', 'supabase/schema.sql'
+            ];
+            
+            let missingFiles = [];
+            for (const file of requiredFiles) {
+                try {
+                    const response = await fetch(file, { method: 'HEAD' });
+                    if (!response.ok) missingFiles.push(file);
+                } catch {
+                    missingFiles.push(file);
+                }
+            }
+            
+            if (missingFiles.length === 0) {
+                updateTest('fileTest', 'success', '✅ Alle nødvendige filer finnes');
+            } else {
+                updateTest('fileTest', 'error', `❌ Mangler filer: ${missingFiles.join(', ')}`);
+            }
+        }
+
+        // Supabase test
+        async function testSupabase() {
+            try {
+                const { db } = await import('./js/db.js');
+                const result = await db.testConnection();
+                if (result.ok) {
+                    updateTest('supabaseTest', 'success', '✅ Supabase-tilkobling OK');
+                } else {
+                    updateTest('supabaseTest', 'error', `❌ Supabase-feil: ${result.message}`);
+                }
+            } catch (error) {
+                updateTest('supabaseTest', 'error', `❌ Supabase-test feilet: ${error.message}`);
+            }
+        }
+
+        // CSS test
+        function testCSS() {
+            const styles = getComputedStyle(document.body);
+            const hasCustomProperties = styles.getPropertyValue('--container-max');
+            
+            if (hasCustomProperties) {
+                updateTest('cssTest', 'success', '✅ CSS lastet korrekt');
+            } else {
+                updateTest('cssTest', 'error', '❌ CSS-problemer oppdaget');
+            }
+        }
+
+        // Responsiv test
+        function testResponsive() {
+            const width = window.innerWidth;
+            let status = 'success';
+            let message = '✅ Responsivt design fungerer';
+            
+            if (width < 640) {
+                message += ' (mobil)';
+            } else if (width < 1024) {
+                message += ' (tablet)';
+            } else {
+                message += ' (desktop)';
+            }
+            
+            updateTest('responsiveTest', status, message);
+        }
+
+        // Admin test
+        async function testAdmin() {
+            try {
+                const { db } = await import('./js/db.js');
+                const users = await db.getAllUsers();
+                updateTest('adminTest', 'success', `✅ Admin-funksjoner OK (${users.length} brukere)`);
+            } catch (error) {
+                updateTest('adminTest', 'error', `❌ Admin-test feilet: ${error.message}`);
+            }
+        }
+
+        // Profil test
+        async function testProfile() {
+            try {
+                const { db } = await import('./js/db.js');
+                const profile = await db.getProfile();
+                if (profile) {
+                    updateTest('profileTest', 'success', '✅ Profil-funksjoner OK');
+                } else {
+                    updateTest('profileTest', 'info', 'ℹ️ Ingen profil funnet (normal for ny bruker)');
+                }
+            } catch (error) {
+                updateTest('profileTest', 'error', `❌ Profil-test feilet: ${error.message}`);
+            }
+        }
+
+        // Kjør alle tester
+        async function runAllTests() {
+            await testFiles();
+            await testSupabase();
+            testCSS();
+            testResponsive();
+            await testAdmin();
+            await testProfile();
+        }
+
+        // Start tester når siden lastes
+        runAllTests();
+        
+        // Test responsivt design ved vindusstørrelse-endring
+        window.addEventListener('resize', testResponsive);
+    </script>
+</body>
+</html>

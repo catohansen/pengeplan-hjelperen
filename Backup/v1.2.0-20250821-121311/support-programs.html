@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Støtteordninger - Pengeplan</title>
+    <meta name="description" content="Finn støtteordninger og økonomisk hjelp fra NAV og andre instanser">
+    
+    <!-- OpenGraph metadata -->
+    <meta property="og:title" content="Støtteordninger - Pengeplan">
+    <meta property="og:description" content="Finn støtteordninger og økonomisk hjelp fra NAV og andre instanser">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pengeplan.vercel.app/support-programs">
+    
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="brand-inline">
+                    <span class="logo-icon">☑️</span>
+                    <span class="logo-text">Pengeplan</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <span class="nav-icon">📊</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="profile.html" class="nav-link">
+                            <span class="nav-icon">👤</span>
+                            <span>Profil</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="support-programs.html" class="nav-link">
+                            <span class="nav-icon">🏛️</span>
+                            <span>Støtteordninger</span>
+                        </a>
+                    </li>
+                    <li class="nav-item admin-only" style="display:none">
+                        <a href="admin.html" class="nav-link">
+                            <span class="nav-icon">⚙️</span>
+                            <span>Admin</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Overlay for mobile -->
+        <div class="overlay" id="overlay"></div>
+
+        <!-- Main content -->
+        <main class="main">
+            <header class="topbar container">
+                <button id="menuBtn" class="only-mobile" aria-label="Åpne meny">☰</button>
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <h1>Støtteordninger</h1>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn-sm" onclick="window.open('test-admin.html', '_blank')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+                            🧪 Test Suite
+                        </button>
+                        <button class="btn-sm" onclick="window.open('admin.html', '_blank')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
+                            ⚙️ Admin
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <section class="container">
+                <!-- Search and filters -->
+                <div class="card">
+                    <div class="search-filters">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="searchInput" placeholder="Søk i støtteordninger..." class="input">
+                        </div>
+                        
+                        <div class="filter-controls">
+                            <select id="categoryFilter" class="select">
+                                <option value="">Alle kategorier</option>
+                            </select>
+                            
+                            <select id="providerFilter" class="select">
+                                <option value="">Alle leverandører</option>
+                            </select>
+                            
+                            <select id="priorityFilter" class="select">
+                                <option value="">Alle prioriteter</option>
+                                <option value="høy">Høy prioritet</option>
+                                <option value="medium">Medium prioritet</option>
+                                <option value="lav">Lav prioritet</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-actions">
+                            <button id="exportBtn" class="btn btn-info">
+                                <span class="btn-icon">📊</span>
+                                <span>Eksporter CSV</span>
+                            </button>
+                            <button id="clearFiltersBtn" class="btn-secondary btn-warning">
+                                <span class="btn-icon">🔄</span>
+                                <span>Nullstill</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="card">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number" id="totalPrograms">0</div>
+                            <div class="stat-label">Totalt antall</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="relevantPrograms">0</div>
+                            <div class="stat-label">Relevante for deg</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="savedPrograms">0</div>
+                            <div class="stat-label">Lagrede</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="highPriority">0</div>
+                            <div class="stat-label">Høy prioritet</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Programs list -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Støtteordninger</h2>
+                        <div class="view-controls">
+                            <button id="gridViewBtn" class="view-btn active" data-view="grid">
+                                <span>📱</span>
+                            </button>
+                            <button id="listViewBtn" class="view-btn" data-view="list">
+                                <span>📋</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="programsContainer" class="programs-grid">
+                        <!-- Programs will be loaded here -->
+                    </div>
+                    
+                    <div id="noResults" class="no-results" style="display: none;">
+                        <div class="no-results-icon">🔍</div>
+                        <h3>Ingen støtteordninger funnet</h3>
+                        <p>Prøv å endre søkekriteriene eller nullstill filtrene.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Program detail modal -->
+    <div id="programModal" class="modal" aria-hidden="true">
+        <div class="modal__panel">
+            <div class="modal__header">
+                <h2 id="modalTitle">Støtteordning</h2>
+                <button class="modal__close" id="closeModal" aria-label="Lukk">×</button>
+            </div>
+            
+            <div class="modal__content" id="modalContent">
+                <!-- Program details will be loaded here -->
+            </div>
+            
+            <div class="modal__footer">
+                <button id="saveProgramBtn" class="btn btn-success">
+                    <span class="btn-icon">💾</span>
+                    <span>Lagre</span>
+                </button>
+                <button id="applyProgramBtn" class="btn btn-info">
+                    <span class="btn-icon">📝</span>
+                    <span>Søk nå</span>
+                </button>
+                <button id="cancelModalBtn" class="btn-secondary btn-warning">Avbryt</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/support-programs.js"></script>
+    <script src="js/support-programs-ui.js"></script>
+</body>
+</html>

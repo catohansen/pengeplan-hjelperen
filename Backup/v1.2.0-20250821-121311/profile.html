@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Pengeplan - Profil</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <meta property="og:image" content="assets/logo.png">
+    <meta property="og:title" content="Pengeplan">
+    <meta property="og:description" content="Din økonomiske hjelper – Budsjett, gjeld og støtteordninger på ett sted.">
+    <link rel="stylesheet" href="responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="logo brand">
+                    <span class="logo-icon">☑️</span>
+                    <span class="logo-text">Pengeplan</span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item" data-page="dashboard">
+                    <a href="dashboard.html" class="nav-link"><span class="nav-icon">🏠</span><span class="nav-text">Dashboard</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link"><span class="nav-icon">👤</span><span class="nav-text">Profil</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="support-programs.html" class="nav-link"><span class="nav-icon">🏛️</span><span class="nav-text">Støtteordninger</span></a>
+                </li>
+                <li class="nav-item admin-only" style="display:none">
+                    <a href="admin.html" class="nav-link"><span class="nav-icon">⚙️</span><span class="nav-text">Admin</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="documents.html" class="nav-link"><span class="nav-icon">📄</span><span class="nav-text">Dokumenter</span></a>
+                </li>
+            </ul>
+        </aside>
+
+        <div class="overlay" id="overlay"></div>
+
+        <main class="main-content">
+            <header class="topbar container">
+                <button id="menuBtn" class="only-mobile" aria-label="Åpne meny">☰</button>
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <h1>Min profil</h1>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn-sm" onclick="window.open('test-admin.html', '_blank')" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+                            🧪 Test Suite
+                        </button>
+                        <button class="btn-sm" onclick="window.open('admin.html', '_blank')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
+                            ⚙️ Admin
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <section class="container">
+                <div class="card-grid">
+
+                    <div class="card">
+                        <h2>Konto & Plan</h2>
+                        <div class="two-col">
+                            <div>
+                                <p><strong>Rolle:</strong> <span id="roleBadge" class="chip">User</span></p>
+                                <p><strong>Plan:</strong> <span id="planBadge" class="chip chip--green">Gratis</span></p>
+                            </div>
+                            <div class="actions-end">
+                                <button id="upgradeBtn" class="btn btn-success">Oppgrader til Pro</button>
+                                <a href="admin.html" id="adminLink" class="btn btn-warning" style="display:none">Åpne Admin</a>
+                            </div>
+                        </div>
+                        <small>Planstyring er lokal nå. Backend/betaling kobles senere.</small>
+                    </div>
+
+                    <div class="card">
+                        <h2>Profilbilde</h2>
+                        <div class="avatar-row">
+                            <img id="avatarImg" class="avatar" alt="Profilbilde" />
+                            <div class="stack">
+                                <input id="avatarInput" type="file" accept="image/*" />
+                                <button id="removeAvatarBtn" class="btn-sm">Fjern bilde</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h2>Personopplysninger</h2>
+                        <form id="profileForm" name="profileForm" novalidate>
+                            <div class="two-col">
+                                <div>
+                                    <label>Navn</label>
+                                    <input class="input" name="full_name" required placeholder="Ditt navn" />
+                                </div>
+                                <div>
+                                    <label>E-post</label>
+                                    <input class="input" name="email" type="email" required placeholder="deg@example.no" />
+                                </div>
+                                <div>
+                                    <label>Telefon</label>
+                                    <input class="input" name="phone" inputmode="tel" placeholder="9xx xx xxx" />
+                                </div>
+                                <div>
+                                    <label>Husholdning</label>
+                                    <div class="two-col">
+                                        <input class="input" name="household_size" type="number" min="1" max="10" placeholder="Antall" />
+                                        <input class="input" name="household_note" placeholder="Beskrivelse (valgfri)" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3>Adresse</h3>
+                            <div class="two-col">
+                                <div>
+                                    <label>Gateadresse</label>
+                                    <input class="input" name="street" placeholder="Gate 1" />
+                                </div>
+                                <div>
+                                    <label>Postnummer</label>
+                                    <input class="input" name="postal_code" inputmode="numeric" pattern="[0-9]{4}" placeholder="xxxx" />
+                                </div>
+                                <div>
+                                    <label>Poststed</label>
+                                    <input class="input" name="city" placeholder="Sted" />
+                                </div>
+                                <div>
+                                    <label>Kommune</label>
+                                    <input class="input" name="municipality" placeholder="Din kommune" />
+                                </div>
+                            </div>
+
+                            <div class="sticky-actions">
+                                <button type="button" id="cancelBtn" class="btn-sm btn-warning">Avbryt</button>
+                                <button type="submit" id="saveBtn" class="btn btn-success">Lagre endringer</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <h2>Varsler</h2>
+                        <label class="switch"><input id="notifEmail" type="checkbox"><span class="slider"></span>E-postvarsler</label>
+                        <label class="switch"><input id="notifSms" type="checkbox"><span class="slider"></span>SMS-varsler</label>
+                        <label class="switch"><input id="weeklyTips" type="checkbox"><span class="slider"></span>Ukentlige tips</label>
+
+                        <div style="margin-top:12px;">
+                            <label>Standard påminnelse (dager før forfall)</label>
+                            <select id="reminderDays" class="select">
+                                <option value="1">1 dag før</option>
+                                <option value="2">2 dager før</option>
+                                <option value="3" selected>3 dager før</option>
+                                <option value="5">5 dager før</option>
+                                <option value="7">7 dager før</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h2>Personvern & Data</h2>
+                        <label class="switch"><input id="consentPrivacy" type="checkbox" checked disabled><span class="slider"></span>Jeg aksepterer personvernerklæringen</label>
+                        <label class="switch"><input id="consentAnalytics" type="checkbox"><span class="slider"></span>Del anonymisert statistikk</label>
+                        <label class="switch"><input id="consentMarketing" type="checkbox"><span class="slider"></span>Markedsføring</label>
+
+                        <div class="two-col" style="margin-top:12px;">
+                            <button id="exportBtn" class="btn btn-info">Eksporter mine data (ZIP)</button>
+                            <button id="deleteBtn" class="btn btn-danger">Slett konto</button>
+                        </div>
+                        <small>Eksport/sletting er lokal nå. Med Supabase vil sletting være soft-delete + purge etter X dager.</small>
+                    </div>
+
+                    <div class="card">
+                        <h2>Avansert</h2>
+                        <div class="two-col">
+                            <div>
+                                <label>Rolle</label>
+                                <select id="roleSelect" class="select">
+                                    <option value="user">Bruker</option>
+                                    <option value="partner">Partner</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Plan</label>
+                                <select id="planSelect" class="select">
+                                    <option value="free">Gratis</option>
+                                    <option value="pro">Pro</option>
+                                    <option value="partner">Partner</option>
+                                </select>
+                            </div>
+                        </div>
+                        <small>Kun for demo. I produksjon styres dette av backend/betaling.</small>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="js/profile.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pengeplan – Min profil</title>
+    <link rel="stylesheet" href="dashboard.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo"><span class="logo-icon">💰</span><span class="logo-text">Pengeplan</span></div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a class="nav-link" href="dashboard.html"><span class="nav-icon">🏠</span><span class="nav-text">Dashboard</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="documents.html"><span class="nav-icon">📄</span><span class="nav-text">Dokumenter</span></a></li>
+                <li class="nav-item active"><a class="nav-link" href="#"><span class="nav-icon">👤</span><span class="nav-text">Profil</span></a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="user-profile"><span class="user-icon">👤</span><div class="user-info"><div class="user-name" id="sidebarName">Bruker</div><div class="user-email" id="sidebarEmail">din@epost.no</div></div></div>
+                <a href="#" class="logout-link" id="logoutFromProfile"><span class="logout-icon">→</span><span>Logg ut</span></a>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <div class="page active">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h1>Min profil</h1>
+                        <p>Oppdater opplysninger, varsler og personvern.</p>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button class="secondary-btn" id="cancelProfilePage">Avbryt</button>
+                        <button class="add-btn" id="saveProfilePage"><span class="add-icon">✓</span><span>Lagre endringer</span></button>
+                    </div>
+                </div>
+
+                <div class="content-sections">
+                    <section class="section">
+                        <h3>Profil</h3>
+                        <div style="display:flex; gap:20px; align-items:flex-start;">
+                            <div style="text-align:center;">
+                                <div id="avatarPreview" style="width:96px;height:96px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;color:#1a1a1a;">PP</div>
+                                <div style="display:flex; gap:8px; margin-top:10px;">
+                                    <input type="file" id="avatarInput" accept="image/*" style="display:none;" />
+                                    <button class="secondary-btn" id="uploadAvatar"><span class="btn-icon">⬆</span><span>Last opp</span></button>
+                                    <button class="secondary-btn" id="removeAvatar"><span class="btn-icon">✕</span><span>Fjern</span></button>
+                                </div>
+                            </div>
+                            <div style="flex:1;">
+                                <div class="form-grid">
+                                    <div class="form-group"><label for="pfName">Navn</label><input id="pfName" type="text" placeholder="Ditt navn" /></div>
+                                    <div class="form-group"><label for="pfEmail">E‑post</label><input id="pfEmail" type="email" /></div>
+                                    <div class="form-group"><label for="pfMunicipality">Kommune</label><input id="pfMunicipality" type="text" placeholder="Din kommune" /></div>
+                                    <div class="form-group"><label for="pfHousehold">Husholdning</label><input id="pfHousehold" type="text" placeholder="Antall personer / beskrivelse" /></div>
+                                </div>
+
+                                <div class="toggle-grid" style="margin-top:12px;">
+                                    <label class="toggle-item"><input type="checkbox" id="pfNotifyEmail" /> E‑postvarsler</label>
+                                    <label class="toggle-item"><input type="checkbox" id="pfNotifySms" /> SMS‑varsler</label>
+                                    <label class="toggle-item"><input type="checkbox" id="pfWeeklyTips" /> Ukentlige tips</label>
+                                    <label class="toggle-item"><input type="checkbox" id="pfBillsReminder" /> Regningspåminnelser</label>
+                                    <label class="toggle-item"><input type="checkbox" id="pfBeta" /> Beta‑tilgang</label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="section">
+                        <h3>Personvern & data</h3>
+                        <div class="toggle-grid">
+                            <label class="toggle-item"><input type="checkbox" id="consentPrivacy" /> Jeg aksepterer personvernerklæringen</label>
+                            <label class="toggle-item"><input type="checkbox" id="consentAnalytics" /> Anonymisert statistikk</label>
+                            <label class="toggle-item"><input type="checkbox" id="consentMarketing" /> Markedsføring</label>
+                        </div>
+                        <div style="display:flex; gap:8px; margin-top:12px;">
+                            <button class="secondary-btn" id="exportData"><span class="btn-icon">⬇</span><span>Eksporter data</span></button>
+                            <button class="secondary-btn" id="deleteAccount"><span class="btn-icon">🗑</span><span>Slett konto</span></button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="js/profile.js"></script>
+</body>
+</html>
+
+
